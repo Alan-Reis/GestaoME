@@ -10,7 +10,7 @@ namespace ClickServ.Models
     {
         //Esse atributo permite inserir a PK para o curso em vez de fazer com que o banco de dados o gere.
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int OrdemID { get; set; }
+        public int OrdemServicoID { get; set; }
         public int EquipamentoID { get; set; }
         public int ColaboradorID { get; set; }
         public DateTime Data { get; set; }
