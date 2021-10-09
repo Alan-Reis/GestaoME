@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using ClickServ.Models;
 using ClickServ.Repository;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace ClickServ.Controllers
 {
@@ -34,7 +35,11 @@ namespace ClickServ.Controllers
             }
 
             var pessoa = await _context.Pessoas
-                .FirstOrDefaultAsync(m => m.PessoaID == id);
+                .Include(e => e.Enderecos)
+                    .Include(c => c.Contatos)
+                    .AsNoTracking()
+                    .FirstOrDefaultAsync(m => m.PessoaID == id);
+
             if (pessoa == null)
             {
                 return NotFound();
@@ -54,15 +59,70 @@ namespace ClickServ.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PessoaID,Nome")] Pessoa pessoa)
+        public async Task<IActionResult> Create(
+            [Bind("PessoaID,Nome,Logradouro,Bairro,Complemento,CidadeTelefone,celular,Email")] Pessoa pessoa, Endereco endereco, Contato contato)
         {
-            if (ModelState.IsValid)
+            try
             {
-                _context.Add(pessoa);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    //_context.Add(pessoa);
+                    _context.Add(endereco);
+                    //_context.Add(contato);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                ModelState.AddModelError("", "Não foi possível salvar. " +
+                                        "Tente novamente, e se o problema persistir " +
+                                        "chame o suporte.");
             }
             return View(pessoa);
+        }
+
+        public async Task<IActionResult> AdicionarEndereco(
+            [Bind("PessoaID,Logradouro,Bairro,Complemento,Cidade")]Endereco endereco)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(endereco);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details));
+                }
+            }
+            catch(DbUpdateException /* ex */)
+            {
+                ModelState.AddModelError("", "Não foi possível salvar. " +
+                                       "Tente novamente, e se o problema persistir " +
+                                       "chame o suporte.");
+            }
+            return View();
+        }
+
+
+        public async Task<IActionResult> AdicionarContato(
+            [Bind("PessoaID,Telefone,celular,Email")] Contato contato)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    _context.Add(contato);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details));
+                }
+            }
+            catch (DbUpdateException /* ex */)
+            {
+                ModelState.AddModelError("", "Não foi possível salvar. " +
+                                       "Tente novamente, e se o problema persistir " +
+                                       "chame o suporte.");
+            }
+            return View();
         }
 
         // GET: Pessoa/Edit/5
@@ -126,6 +186,7 @@ namespace ClickServ.Controllers
 
             var pessoa = await _context.Pessoas
                 .FirstOrDefaultAsync(m => m.PessoaID == id);
+
             if (pessoa == null)
             {
                 return NotFound();
@@ -141,13 +202,25 @@ namespace ClickServ.Controllers
         {
             var pessoa = await _context.Pessoas.FindAsync(id);
             _context.Pessoas.Remove(pessoa);
+
+            //Caso o cliente tenha Endereço
+            if(pessoa.Enderecos != null)
+            {
+                //var endereco = _context.Enderecos.Where(e => e.PessoaID == id).First();
+                //_context.Enderecos.Remove(endereco);
+            }
+
+            var endereco = _context.Enderecos.Where(e => e.PessoaID == id).First();
+            _context.Enderecos.Remove(endereco);
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool PessoaExists(int id)
         {
-            return _context.Pessoas.Any(e => e.PessoaID == id);
+             _context.Enderecos.Any(p => p.PessoaID == id);
+            return _context.Pessoas.Any(p => p.PessoaID == id);
         }
     }
 }

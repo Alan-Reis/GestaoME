@@ -10,11 +10,74 @@
     <h4>Pessoa</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Nome)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Enderecos)
+        </dt>
+
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Logradouro</th>
+                    <th>Bairro</th>
+                    <th>Complemento</th>
+                    <th>Cidade</th>
+                </tr>
+                @foreach (var item in Model.Enderecos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Logradouro)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Bairro)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Complemento)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cidade)
+                        </td>
+                    </tr>
+                }
+            </table>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Contatos)
+        </dt>
+        <dd class="col-sm-10">
+            <table class="table">
+                <tr>
+                    <th>Telefone</th>
+                    <th>Celular</th>
+                    <th>E-mail</th>
+                </tr>
+                @foreach (var item in Model.Contatos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Telefone)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Celular)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+
+                    </tr>
+                }
+            </table>
         </dd>
     </dl>
 </div>

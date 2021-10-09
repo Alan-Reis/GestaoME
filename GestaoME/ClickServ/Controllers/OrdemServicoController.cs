@@ -49,7 +49,7 @@ namespace ClickServ.Controllers
         // GET: OrdemServico/Create
         public IActionResult Create()
         {
-            ViewData["ColaboradorID"] = new SelectList(_context.Colaboradors, "ColaboradorID", "ColaboradorID");
+            ViewData["ColaboradorID"] = new SelectList(_context.Colaboradors, "Nome", "Nome");
             ViewData["EquipamentoID"] = new SelectList(_context.Equipamentos, "EquipamentoID", "EquipamentoID");
             return View();
         }
@@ -67,7 +67,7 @@ namespace ClickServ.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ColaboradorID"] = new SelectList(_context.Colaboradors, "ColaboradorID", "ColaboradorID", ordemServico.ColaboradorID);
+            ViewData["ColaboradorID"] = new SelectList(_context.Colaboradors, "Nome", "Nome", ordemServico.ColaboradorID);
             ViewData["EquipamentoID"] = new SelectList(_context.Equipamentos, "EquipamentoID", "EquipamentoID", ordemServico.EquipamentoID);
             return View(ordemServico);
         }
