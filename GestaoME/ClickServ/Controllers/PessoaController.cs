@@ -60,14 +60,15 @@ namespace ClickServ.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(
-            [Bind("PessoaID,Nome,Logradouro,Bairro,Complemento,CidadeTelefone,celular,Email")] Pessoa pessoa, Endereco endereco, Contato contato)
+            [Bind("PessoaID,Nome,Logradouro,Bairro,Complemento,CidadeTelefone,Celular,Email")] Pessoa pessoa, Endereco endereco, Contato contato)
         {
+            
             try
             {
                 if (ModelState.IsValid)
                 {
                     //_context.Add(pessoa);
-                    _context.Add(endereco);
+                    //_context.Add(endereco);
                     //_context.Add(contato);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

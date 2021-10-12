@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace ClickServ.Models
 {
-    public class Endereco
+    public class Endereco 
     {
         public int EnderecoID { get; set; }
         public string Logradouro { get; set; }

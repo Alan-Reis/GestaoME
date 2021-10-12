@@ -9,7 +9,7 @@ namespace ClickServ.Models
     {
         public int PessoaID { get; set; }
         public string Nome { get; set; }
-
+       
         public ICollection<Endereco> Enderecos { get; set; }
         public ICollection<Contato> Contatos { get; set; }
         public ICollection <Equipamento> Equipamentos { get; set; }
