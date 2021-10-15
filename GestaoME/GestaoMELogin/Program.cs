@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClickServDesktop
+namespace GestaoMELogin
 {
     static class Program
     {
@@ -14,11 +14,10 @@ namespace ClickServDesktop
         [STAThread]
         static void Main()
         {
-
             Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frmDesktop());
+            Application.Run(new frmLogin());
         }
     }
 }

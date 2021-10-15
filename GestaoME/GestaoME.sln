@@ -5,7 +5,11 @@ VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickServDesktop", "ClickServDesktop\ClickServDesktop.csproj", "{8076DD36-1796-4446-9E11-66AE595D0480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickServClassLibrary", "ClickServClassLibrary\ClickServClassLibrary.csproj", "{CCA6FD3A-DEDB-46A0-A507-ACDE70090E43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickServClassLibrary", "ClickServClassLibrary\ClickServClassLibrary.csproj", "{CCA6FD3A-DEDB-46A0-A507-ACDE70090E43}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GestaoMELogin", "GestaoMELogin\GestaoMELogin.csproj", "{D80EFC2C-8C0F-439D-8A0D-E6EE07AFC27F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickServ", "ClickServ\ClickServ.csproj", "{4BC52CC7-FED3-454D-B8B1-B29E2EFC61B2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{CCA6FD3A-DEDB-46A0-A507-ACDE70090E43}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CCA6FD3A-DEDB-46A0-A507-ACDE70090E43}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CCA6FD3A-DEDB-46A0-A507-ACDE70090E43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D80EFC2C-8C0F-439D-8A0D-E6EE07AFC27F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D80EFC2C-8C0F-439D-8A0D-E6EE07AFC27F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D80EFC2C-8C0F-439D-8A0D-E6EE07AFC27F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D80EFC2C-8C0F-439D-8A0D-E6EE07AFC27F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4BC52CC7-FED3-454D-B8B1-B29E2EFC61B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4BC52CC7-FED3-454D-B8B1-B29E2EFC61B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4BC52CC7-FED3-454D-B8B1-B29E2EFC61B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4BC52CC7-FED3-454D-B8B1-B29E2EFC61B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

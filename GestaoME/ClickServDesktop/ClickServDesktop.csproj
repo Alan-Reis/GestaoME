@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="img\" />
-    <Folder Include="Forms\" />
   </ItemGroup>
 
   <ItemGroup>

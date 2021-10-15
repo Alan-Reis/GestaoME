@@ -9,8 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace ClickServDesktop
-{
+namespace GestaoMELogin
+{ 
     public partial class frmLogin : Form
     {
         //Variavel para mostrar e ocultar a senha

@@ -1,5 +1,5 @@
 ﻿
-namespace ClickServDesktop
+namespace GestaoMELogin
 {
     partial class frmLogin
     {
