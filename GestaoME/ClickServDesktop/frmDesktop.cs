@@ -48,15 +48,45 @@ namespace ClickServDesktop
 
         private void novoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //frmPessoa frm = new frmPessoa();
-            //frm.Show();
-            //Hide();
             frmCliente cliente = new frmCliente();
             TabPage tb = new TabPage();
             tb.Name = "Cliente";
             tb.Text = "Novo Cliente";
             tb.Controls.Add(cliente);
             tbcForms.TabPages.Add(tb);
+
+            if (tb.Text == "Novo Cliente")
+            {
+                btnNovoCliente.Enabled = false;
+            }
+        }
+
+        private void novoToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            frmAtendimento atendimento = new frmAtendimento();
+            TabPage tb = new TabPage();
+            tb.Name = "Atendimento";
+            tb.Text = "Novo atendimento";
+            tb.Controls.Add(atendimento);
+            tbcForms.TabPages.Add(tb);
+
+            if (tb.Text == "Novo atendimento")
+            {
+                btnNovoAtendimento.Enabled = false;
+            }
+
+        }
+
+        private void fecharToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            if (!(tbcForms.SelectedTab == null))
+            {
+                tbcForms.TabPages.Remove(tbcForms.SelectedTab);
+            }
+
+            btnNovoCliente.Enabled = true;
+            btnNovoAtendimento.Enabled = true;
+
         }
     }
 }

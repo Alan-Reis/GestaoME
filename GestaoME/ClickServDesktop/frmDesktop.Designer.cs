@@ -33,12 +33,13 @@ namespace ClickServDesktop
             this.lblData = new System.Windows.Forms.Label();
             this.menuPainel = new System.Windows.Forms.MenuStrip();
             this.clienteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.novoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnNovoCliente = new System.Windows.Forms.ToolStripMenuItem();
             this.pesquisarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.atendimentoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.novoToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnNovoAtendimento = new System.Windows.Forms.ToolStripMenuItem();
             this.relatórioToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sairToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.fecharToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.tbcForms = new System.Windows.Forms.TabControl();
             this.menuPainel.SuspendLayout();
             this.SuspendLayout();
@@ -68,7 +69,8 @@ namespace ClickServDesktop
             this.menuPainel.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.clienteToolStripMenuItem,
             this.atendimentoToolStripMenuItem,
-            this.sairToolStripMenuItem});
+            this.sairToolStripMenuItem,
+            this.fecharToolStripMenuItem1});
             this.menuPainel.Location = new System.Drawing.Point(0, 0);
             this.menuPainel.Name = "menuPainel";
             this.menuPainel.Padding = new System.Windows.Forms.Padding(4, 1, 0, 1);
@@ -79,20 +81,20 @@ namespace ClickServDesktop
             // clienteToolStripMenuItem
             // 
             this.clienteToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.novoToolStripMenuItem,
+            this.btnNovoCliente,
             this.pesquisarToolStripMenuItem});
             this.clienteToolStripMenuItem.Name = "clienteToolStripMenuItem";
             this.clienteToolStripMenuItem.Size = new System.Drawing.Size(56, 22);
             this.clienteToolStripMenuItem.Text = "Cliente";
             // 
-            // novoToolStripMenuItem
+            // btnNovoCliente
             // 
-            this.novoToolStripMenuItem.Image = global::ClickServDesktop.Properties.Resources.newClient;
-            this.novoToolStripMenuItem.Name = "novoToolStripMenuItem";
-            this.novoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.novoToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
-            this.novoToolStripMenuItem.Text = "Novo";
-            this.novoToolStripMenuItem.Click += new System.EventHandler(this.novoToolStripMenuItem_Click);
+            this.btnNovoCliente.Image = global::ClickServDesktop.Properties.Resources.newClient;
+            this.btnNovoCliente.Name = "btnNovoCliente";
+            this.btnNovoCliente.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.btnNovoCliente.Size = new System.Drawing.Size(188, 30);
+            this.btnNovoCliente.Text = "Novo";
+            this.btnNovoCliente.Click += new System.EventHandler(this.novoToolStripMenuItem_Click);
             // 
             // pesquisarToolStripMenuItem
             // 
@@ -104,24 +106,25 @@ namespace ClickServDesktop
             // atendimentoToolStripMenuItem
             // 
             this.atendimentoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.novoToolStripMenuItem1,
+            this.btnNovoAtendimento,
             this.relatórioToolStripMenuItem});
             this.atendimentoToolStripMenuItem.Name = "atendimentoToolStripMenuItem";
             this.atendimentoToolStripMenuItem.Size = new System.Drawing.Size(89, 22);
             this.atendimentoToolStripMenuItem.Text = "Atendimento";
             // 
-            // novoToolStripMenuItem1
+            // btnNovoAtendimento
             // 
-            this.novoToolStripMenuItem1.Image = global::ClickServDesktop.Properties.Resources.atendimento1;
-            this.novoToolStripMenuItem1.Name = "novoToolStripMenuItem1";
-            this.novoToolStripMenuItem1.Size = new System.Drawing.Size(122, 22);
-            this.novoToolStripMenuItem1.Text = "Novo";
+            this.btnNovoAtendimento.Image = global::ClickServDesktop.Properties.Resources.atendimento1;
+            this.btnNovoAtendimento.Name = "btnNovoAtendimento";
+            this.btnNovoAtendimento.Size = new System.Drawing.Size(188, 30);
+            this.btnNovoAtendimento.Text = "Novo";
+            this.btnNovoAtendimento.Click += new System.EventHandler(this.novoToolStripMenuItem1_Click);
             // 
             // relatórioToolStripMenuItem
             // 
             this.relatórioToolStripMenuItem.Image = global::ClickServDesktop.Properties.Resources.historico;
             this.relatórioToolStripMenuItem.Name = "relatórioToolStripMenuItem";
-            this.relatórioToolStripMenuItem.Size = new System.Drawing.Size(122, 22);
+            this.relatórioToolStripMenuItem.Size = new System.Drawing.Size(188, 30);
             this.relatórioToolStripMenuItem.Text = "Histórico";
             // 
             // sairToolStripMenuItem
@@ -130,6 +133,13 @@ namespace ClickServDesktop
             this.sairToolStripMenuItem.Size = new System.Drawing.Size(38, 22);
             this.sairToolStripMenuItem.Text = "Sair";
             this.sairToolStripMenuItem.Click += new System.EventHandler(this.sairToolStripMenuItem_Click);
+            // 
+            // fecharToolStripMenuItem1
+            // 
+            this.fecharToolStripMenuItem1.Name = "fecharToolStripMenuItem1";
+            this.fecharToolStripMenuItem1.Size = new System.Drawing.Size(54, 22);
+            this.fecharToolStripMenuItem1.Text = "Fechar";
+            this.fecharToolStripMenuItem1.Click += new System.EventHandler(this.fecharToolStripMenuItem1_Click);
             // 
             // tbcForms
             // 
@@ -165,12 +175,13 @@ namespace ClickServDesktop
         private System.Windows.Forms.Label lblData;
         private System.Windows.Forms.MenuStrip menuPainel;
         private System.Windows.Forms.ToolStripMenuItem clienteToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem novoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem btnNovoCliente;
         private System.Windows.Forms.ToolStripMenuItem pesquisarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem atendimentoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem sairToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem novoToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem btnNovoAtendimento;
         private System.Windows.Forms.ToolStripMenuItem relatórioToolStripMenuItem;
         private System.Windows.Forms.TabControl tbcForms;
+        private System.Windows.Forms.ToolStripMenuItem fecharToolStripMenuItem1;
     }
 }
