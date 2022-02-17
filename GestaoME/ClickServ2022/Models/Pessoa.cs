@@ -8,6 +8,6 @@ namespace ClickServ2022.Models
     public class Pessoa
     {
         public int PessoaID { get; set; }
-        public int Nome { get; set; }
+        public string Nome { get; set; }
     }
 }
