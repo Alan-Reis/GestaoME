@@ -1,0 +1,165 @@
+﻿@model ClickServ2022.Models.Cliente
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Pessoa</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.ClienteID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.ClienteID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Nome)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Nome)
+        </dd>
+    </dl>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               ContatoID
+            </th>
+            <th>
+               Celular
+            </th>
+            <th>
+               Telefone
+            </th>
+            <th>
+               Email
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Contatos) {
+        <tr>
+             <td>
+                @Html.DisplayFor(modelItem => item.ContatoID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Celular)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.ContatoID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.ContatoID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.ContatoID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               Logradouro
+            </th>
+            <th>
+               Bairro
+            </th>
+            <th>
+               Complemento
+            </th>
+            <th>
+               Cidade
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Enderecos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Logradouro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bairro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Complemento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cidade)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.EnderecoID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.EnderecoID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.EnderecoID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+               EquipamentoID
+            </th>
+            <th>
+               Tipo
+            </th>
+            <th>
+               Fabricante
+            </th>
+            <th>
+               Modelo
+            </th>
+            <th>
+              Número de Série
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Equipamentos) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EquipamentoID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Fabricante)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Modelo)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => item.NSerie)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id=item.EquipamentoID }) |
+                @Html.ActionLink("Details", "Details", new { id=item.EquipamentoID }) |
+                @Html.ActionLink("Delete", "Delete", new { id=item.EquipamentoID })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+<div>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ClienteID }) |
+    <a asp-action="Index">Voltar</a>
+</div>

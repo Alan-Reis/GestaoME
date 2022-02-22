@@ -11,10 +11,11 @@ namespace ClickServ2022.Models
         public string  Defeito { get; set; }
         public DateTime Data { get; set; }
         public string Periodo { get; set; }
-        public Enum Observacao { get; set; }
-        public Enum Status { get; set; }
-        public Equipamento Equipamento { get; set; }
-        public Colaborador Colaborador { get; set; }
+        public string Observacao { get; set; }
+        public Enum Status { get; set; } //Ativo - Cancelado - Aguardando Aprovação - Agardando Peça
+        public Enum Tipo { get; set; } //Novo - Retorno - Garantia
+        public Equipamento equipamentoID { get; set; }
+        public Colaborador colaboradorID { get; set; }
 
     }
 }

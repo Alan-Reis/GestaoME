@@ -12,7 +12,8 @@ namespace ClickServ2022.Models
         public string Valor { get; set; }
         public string Defeito { get; set; }
         public string Relatorio { get; set; }
-        public Equipamento Equipamento { get; set; }
-        public Colaborador Colaborador { get; set; }
+        public Cliente clienteID { get; set; }
+        public Equipamento equipamentoID { get; set; }
+        public Colaborador colaboradorID { get; set; }
     }
 }

@@ -11,6 +11,6 @@ namespace ClickServ2022.Models
         public string Nome { get; set; }
         public string Torre { get; set; }
         public string Apartamento { get; set; }
-        public Endereco Endereco { get; set; }
+        public Endereco enderecoID { get; set; }
     }
 }
