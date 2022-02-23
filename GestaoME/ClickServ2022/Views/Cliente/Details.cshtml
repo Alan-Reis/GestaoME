@@ -25,6 +25,10 @@
     </dl>
 </div>
 
+<div>
+    @Html.ActionLink("Adicionar Contato", "Create","Contato", new { id = Model.ClienteID })
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -59,9 +63,8 @@
                 @Html.DisplayFor(modelItem => item.Email)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.ContatoID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.ContatoID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.ContatoID })
+                @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID }) |
+                @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID })
             </td>
         </tr>
 }

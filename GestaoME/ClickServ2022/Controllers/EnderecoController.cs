@@ -13,7 +13,6 @@ namespace ClickServ2022.Controllers
             endereco = _endereco;
         }
 
-        // GET: EnderecoController
         public IActionResult Index()
         {
             return View();

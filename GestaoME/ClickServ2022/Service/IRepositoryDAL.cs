@@ -15,6 +15,12 @@ namespace ClickServ2022.Service
 
         #region Contato
         IEnumerable<Contato> GetAllContatos(int? id);
+        void AddContato(Contato contato);
+        void UpdateContato(Contato contato);
+        Contato GetContato(int? id);
+        //criado para setar o ClienteID quando for criar um novo contato.
+        Contato GetClienteID(int? id);
+        void DeleteContato(int? id);
         #endregion
 
         #region Endereço

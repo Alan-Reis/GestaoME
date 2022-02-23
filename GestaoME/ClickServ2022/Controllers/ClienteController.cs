@@ -56,7 +56,6 @@ namespace ClickServ2022.Controllers
             return View(cliente);
         }
 
-
         public IActionResult Edit(int? id)
         {
             if(id == null)
@@ -109,7 +108,7 @@ namespace ClickServ2022.Controllers
         public IActionResult DeleteConfirmed(int? id)
         {
             cliente.DeleteCliente(id);
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Contato");
         }
     }
 }

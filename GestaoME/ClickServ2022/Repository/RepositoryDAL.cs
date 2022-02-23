@@ -60,7 +60,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = "SELECT * FROM PESSOA WHERE PessoaID= " + id;
+                string sqlQuery = $"SELECT * FROM PESSOA WHERE PessoaID= {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -88,10 +88,9 @@ namespace ClickServ2022.Repository
 
             using(SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = "INSERT INTO PESSOA (Nome) Values(@Nome)";
+                string comandoSQL = $"INSERT INTO PESSOA (Nome) Values('{cliente.Nome}')";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-                cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -104,13 +103,10 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = "UPDATE Pessoa SET Nome = @Nome WHERE PessoaID = @Id";
+                string comandoSQL = $"UPDATE Pessoa SET Nome = '{cliente.Nome}' WHERE PessoaID = {cliente.ClienteID}";
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-
-                cmd.Parameters.AddWithValue("@Id", cliente.ClienteID);
-                cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
 
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -125,11 +121,9 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = "DELETE FROM PESSOA WHERE PessoaID = @Id";
+                string comandoSQL = $"DELETE FROM PESSOA WHERE PessoaID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-
-                cmd.Parameters.AddWithValue("@Id", id);
 
                 con.Open();
                 cmd.ExecuteNonQuery();
@@ -167,6 +161,127 @@ namespace ClickServ2022.Repository
 
             return listContato;
         }
+
+        public Contato GetClienteID(int? id)
+        {
+
+            string connectionString = Conexao();
+
+            Contato contato = new Contato();
+
+            Cliente cliente = new Cliente();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM Pessoa WHERE PessoaID = {id}";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    cliente.ClienteID = Convert.ToInt32(reader["PessoaID"]);
+
+                    contato.Cliente = cliente;
+
+                }
+                con.Close();
+            }
+
+            return contato;
+        }
+
+        public Contato GetContato(int? id)
+        {
+
+            string connectionString = Conexao();
+
+            Contato contato = new Contato();
+
+            Cliente cliente = new Cliente();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM Contato WHERE ContatoID = {id}";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    cliente.ClienteID = Convert.ToInt32(reader["PessoaID"]);
+                    contato.Cliente = cliente;
+
+                    contato.ContatoID = Convert.ToInt32(reader["ContatoID"]);
+                    contato.Celular = reader["Celular"].ToString();
+                    contato.Telefone = reader["Telefone"].ToString();
+                    contato.Email = reader["Email"].ToString();
+
+                }
+                con.Close();
+            }
+
+            return contato;
+        }
+
+        public void UpdateContato(Contato contato)
+        {
+            string connectionString = Conexao();
+
+            using(SqlConnection con = new SqlConnection(connectionString))
+            {
+                
+                string comandoSQL = $"UPDATE Contato SET " +
+                                    $"Celular   =   '{contato.Celular}', " +
+                                    $"Telefone  =   '{contato.Telefone}', " +
+                                    $"Email     =   '{contato.Email}'" +
+                                    " WHERE ContatoID = " + contato.ContatoID;
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public void AddContato(Contato contato)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"INSERT INTO Contato (PessoaID, Celular, Telefone, Email) " +
+                                    $"Values({contato.Cliente.ClienteID}, " +
+                                    $"'{contato.Celular}', " +
+                                    $"'{contato.Telefone}', " +
+                                    $"'{contato.Email}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public void DeleteContato(int? id)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"DELETE FROM Contato WHERE ContatoID = {id}";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
         #endregion
 
         #region Endereco
@@ -178,7 +293,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Endereco WHERE PessoaID = " + id, con);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Endereco WHERE PessoaID = {id} ", con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -208,7 +323,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = "SELECT * FROM PESSOA WHERE PessoaID= " + id;
+                string sqlQuery = $"SELECT * FROM PESSOA WHERE PessoaID= {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -232,10 +347,10 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = "INSERT INTO PESSOA (Nome) Values(@Nome)";
+                string comandoSQL = $"INSERT INTO PESSOA (Nome) Values()";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-                //cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
+               
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
