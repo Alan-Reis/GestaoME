@@ -12,6 +12,6 @@ namespace ClickServ2022.Models
         public string Fabricante { get; set; }
         public string Modelo { get; set; }
         public string NSerie { get; set; }
-        public Cliente clienteID { get; set; }
+        public Cliente Cliente { get; set; }
     }
 }

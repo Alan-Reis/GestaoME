@@ -31,6 +31,10 @@ namespace ClickServ2022.Service
 
         #region Equipamento
         IEnumerable<Equipamento> GetAllEquipamentos(int? id);
+        void AddEquipamento(Equipamento equipamento);
+        void UpdateEquipamento(Equipamento equipamento);
+        Equipamento GetEquipamento(int? id);
+        void DeleteEquipamento(int? id);
         #endregion
 
         

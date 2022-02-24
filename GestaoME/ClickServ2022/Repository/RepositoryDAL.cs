@@ -371,14 +371,12 @@ namespace ClickServ2022.Repository
         public IEnumerable<Equipamento> GetAllEquipamentos(int? id)
         {
             string connectionString = Conexao();
-
             List<Equipamento> listEquipamento = new List<Equipamento>();
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Equipamento WHERE PessoaID = " + id, con);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Equipamento WHERE PessoaID = {id}", con);
                 cmd.CommandType = CommandType.Text;
-
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -395,6 +393,96 @@ namespace ClickServ2022.Repository
             }
 
             return listEquipamento;
+        }
+
+        public Equipamento GetEquipamento(int? id)
+        {
+
+            string connectionString = Conexao();
+
+            Equipamento equipamento = new Equipamento();
+            Cliente cliente = new Cliente();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM Equipamento WHERE EquipamentoID = {id}";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    cliente.ClienteID = Convert.ToInt32(reader["PessoaID"]);
+                    equipamento.Cliente = cliente;
+
+                    equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
+                    equipamento.Tipo = reader["Tipo"].ToString();
+                    equipamento.Fabricante = reader["Fabricante"].ToString();
+                    equipamento.Modelo = reader["Modelo"].ToString();
+                    equipamento.NSerie = reader["NSerie"].ToString();
+                }
+                con.Close();
+            }
+
+            return equipamento;
+        }
+
+        public void AddEquipamento(Equipamento equipamento)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"INSERT INTO Equipamento " +
+                                    $"Values({equipamento.Cliente.ClienteID}, " +
+                                    $"'{equipamento.Tipo}', " +
+                                    $"'{equipamento.Fabricante}', " +
+                                    $"'{equipamento.Modelo}', " +
+                                    $"'{equipamento.NSerie}')";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public void UpdateEquipamento(Equipamento equipamento)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"UPDATE Equipamento SET " +
+                                    $"Tipo =       '{equipamento.Tipo}', " +
+                                    $"Fabricante = '{equipamento.Fabricante}', " +
+                                    $"Modelo =     '{equipamento.Modelo}', " +
+                                    $"NSerie =     '{equipamento.NSerie}' " +
+                                    $"WHERE EquipamentoID = '{equipamento.EquipamentoID}'";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+        }
+
+        public void DeleteEquipamento(int? id)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"DELETE FROM Equipamento WHERE EquipamentoID = {id}";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
         }
         #endregion
     }

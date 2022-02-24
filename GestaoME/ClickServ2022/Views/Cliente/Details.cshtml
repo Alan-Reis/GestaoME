@@ -118,6 +118,10 @@
     </tbody>
 </table>
 
+<div>
+    @Html.ActionLink("Adicionar Equipamento", "Create","Equipamento", new { id = Model.ClienteID })
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -158,9 +162,9 @@
                 @Html.DisplayFor(modelItem => item.NSerie)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.EquipamentoID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.EquipamentoID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.EquipamentoID })
+                @Html.ActionLink("Edit", "Edit","Equipamento", new { id=item.EquipamentoID }) |
+                @Html.ActionLink("Details", "Details","Equipamento", new { id=item.EquipamentoID }) |
+                @Html.ActionLink("Delete", "Delete","Equipamento", new { id=item.EquipamentoID })
             </td>
         </tr>
 }
