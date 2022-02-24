@@ -40,8 +40,9 @@
 </div>
 
 <div>
-    <a asp-action="Index", asp-controller="Cliente">Voltar</a>
+    @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID})
 </div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

@@ -71,6 +71,10 @@
     </tbody>
 </table>
 
+<div>
+    @Html.ActionLink("Adicionar Endereço", "Create","Endereco", new { id = Model.ClienteID })
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -105,9 +109,9 @@
                 @Html.DisplayFor(modelItem => item.Cidade)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.EnderecoID }) |
-                @Html.ActionLink("Details", "Details", new { id=item.EnderecoID }) |
-                @Html.ActionLink("Delete", "Delete", new { id=item.EnderecoID })
+                @Html.ActionLink("Edit", "Edit", "Endereco", new { id=item.EnderecoID }) |
+                @Html.ActionLink("Details", "Details", "Endereco", new { id=item.EnderecoID }) |
+                @Html.ActionLink("Delete", "Delete", "Endereco", new { id=item.EnderecoID })
             </td>
         </tr>
 }

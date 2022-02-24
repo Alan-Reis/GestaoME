@@ -1,4 +1,5 @@
-﻿using ClickServ2022.Service;
+﻿using ClickServ2022.Models;
+using ClickServ2022.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,78 +14,112 @@ namespace ClickServ2022.Controllers
             endereco = _endereco;
         }
 
-        public IActionResult Index()
+        public IActionResult Details(int? id)
         {
-            return View();
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            Endereco endereco = this.endereco.GetEndereco(id);
+
+            if(endereco == null)
+            {
+                return NotFound();
+            }
+            return View(endereco);
         }
 
-        // GET: EnderecoController/Details/5
-        public IActionResult Details(int id)
+        public IActionResult Create(int? id)
         {
-            return View();
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Endereco endereco = new Endereco();
+            Cliente cliente = new Cliente();
+            cliente.ClienteID = (int)id;
+            endereco.Cliente = cliente;
+                
+            if (endereco == null)
+            {
+                return NotFound();
+            }
+
+            return View(endereco);
         }
 
-        // GET: EnderecoController/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: EnderecoController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(IFormCollection collection)
+        public IActionResult Create([Bind]Endereco endereco)
         {
-            try
+            if (ModelState.IsValid)
             {
-                return RedirectToAction(nameof(Index));
+                this.endereco.AddEndereco(endereco);
+                return RedirectToAction("Details", "Cliente", new { id = endereco.Cliente.ClienteID });
             }
-            catch
-            {
-                return View();
-            }
+            return View(endereco);
         }
 
-        // GET: EnderecoController/Edit/5
-        public IActionResult Edit(int id)
+        public IActionResult Edit(int? id)
         {
-            return View();
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            Endereco endereco = this.endereco.GetEndereco(id);
+
+            if(endereco == null)
+            {
+                return NotFound();
+            }
+
+            return View(endereco);
         }
 
-        // POST: EnderecoController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, IFormCollection collection)
+        public IActionResult Edit(int id, [Bind]Endereco endereco)
         {
-            try
+            if(id != endereco.EnderecoID)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            catch
+            if (ModelState.IsValid)
             {
-                return View();
+                this.endereco.UpdateEndereco(endereco);
+                return RedirectToAction("Details", "Cliente", new { id = endereco.Cliente.ClienteID });
             }
+            return View(endereco);
         }
 
-        // GET: EnderecoController/Delete/5
-        public IActionResult Delete(int id)
+        public IActionResult Delete(int? id)
         {
-            return View();
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            Endereco endereco = this.endereco.GetEndereco(id);
+
+            if(endereco == null)
+            {
+                return NotFound();
+            }
+
+            return View(endereco);
         }
 
-        // POST: EnderecoController/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult Delete(int id, IFormCollection collection)
+        public IActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            Endereco endereco = this.endereco.GetEndereco(id);
+
+            this.endereco.DeleteEndereco(id);
+            return RedirectToAction("Details", "Cliente", new { id = endereco.Cliente.ClienteID });
         }
     }
 }

@@ -52,10 +52,8 @@ namespace ClickServ2022.Repository
         }
 
         public Cliente GetCliente(int? id)
-        {
-
+        { 
             string connectionString = Conexao();
-
             Cliente cliente = new Cliente();
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -69,16 +67,13 @@ namespace ClickServ2022.Repository
                 {
                     cliente.ClienteID = Convert.ToInt32(reader["PessoaID"]);
                     cliente.Nome = reader["Nome"].ToString();
-                                        
+                    
                     cliente.Enderecos = GetAllEnderecos(id);
                     cliente.Equipamentos = GetAllEquipamentos(id);
                     cliente.Contatos = GetAllContatos(id);
-                  
                 }
-
                 con.Close();
             }
-
             return cliente;
         }
 
@@ -86,7 +81,7 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
-            using(SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string comandoSQL = $"INSERT INTO PESSOA (Nome) Values('{cliente.Nome}')";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
@@ -153,42 +148,13 @@ namespace ClickServ2022.Repository
                     contato.Celular = reader["Celular"].ToString();
                     contato.Telefone = reader["Telefone"].ToString();
                     contato.Email = reader["Email"].ToString();
-                   
+
                     listContato.Add(contato);
                 }
                 con.Close();
             }
 
             return listContato;
-        }
-
-        public Contato GetClienteID(int? id)
-        {
-
-            string connectionString = Conexao();
-
-            Contato contato = new Contato();
-
-            Cliente cliente = new Cliente();
-
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string sqlQuery = $"SELECT * FROM Pessoa WHERE PessoaID = {id}";
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    cliente.ClienteID = Convert.ToInt32(reader["PessoaID"]);
-
-                    contato.Cliente = cliente;
-
-                }
-                con.Close();
-            }
-
-            return contato;
         }
 
         public Contato GetContato(int? id)
@@ -216,7 +182,6 @@ namespace ClickServ2022.Repository
                     contato.Celular = reader["Celular"].ToString();
                     contato.Telefone = reader["Telefone"].ToString();
                     contato.Email = reader["Email"].ToString();
-
                 }
                 con.Close();
             }
@@ -228,9 +193,9 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
-            using(SqlConnection con = new SqlConnection(connectionString))
+            using (SqlConnection con = new SqlConnection(connectionString))
             {
-                
+
                 string comandoSQL = $"UPDATE Contato SET " +
                                     $"Celular   =   '{contato.Celular}', " +
                                     $"Telefone  =   '{contato.Telefone}', " +
@@ -288,14 +253,12 @@ namespace ClickServ2022.Repository
         public IEnumerable<Endereco> GetAllEnderecos(int? id)
         {
             string connectionString = Conexao();
-
             List<Endereco> listEndereco = new List<Endereco>();
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand($"SELECT * FROM Endereco WHERE PessoaID = {id} ", con);
                 cmd.CommandType = CommandType.Text;
-
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -310,7 +273,6 @@ namespace ClickServ2022.Repository
                 }
                 con.Close();
             }
-
             return listEndereco;
         }
 
@@ -320,20 +282,25 @@ namespace ClickServ2022.Repository
             string connectionString = Conexao();
 
             Endereco endereco = new Endereco();
+            Cliente cliente = new Cliente();
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM PESSOA WHERE PessoaID= {id}";
+                string sqlQuery = $"SELECT * FROM Endereco WHERE EnderecoID = {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
                 {
+                    cliente.ClienteID = Convert.ToInt32(reader["PessoaID"]);
+                    endereco.Cliente = cliente;
 
-                    //cliente.ClienteID = Convert.ToInt32(reader["PessoaID"]);
-                   // cliente.Nome = reader["Nome"].ToString();
-
+                    endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
+                    endereco.Logradouro = reader["Logradouro"].ToString();
+                    endereco.Bairro = reader["Bairro"].ToString();
+                    endereco.Complemento = reader["Complemento"].ToString();
+                    endereco.Cidade = reader["Cidade"].ToString();
                 }
                 con.Close();
             }
@@ -347,10 +314,15 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO PESSOA (Nome) Values()";
+                string comandoSQL = $"INSERT INTO Endereco " +
+                                    $"Values({endereco.Cliente.ClienteID}, " +
+                                    $"'{endereco.Logradouro}', " +
+                                    $"'{endereco.Bairro}', " +
+                                    $"'{endereco.Complemento}', " +
+                                    $"'{endereco.Cidade}')";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-               
+
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -363,14 +335,14 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = "UPDATE Pessoa SET Nome = @Nome WHERE PessoaID = @Id";
-
+                string comandoSQL = $"UPDATE Endereco SET " +
+                                    $"Logradouro = '{endereco.Logradouro}', " +
+                                    $"Bairro = '{endereco.Bairro}', " +
+                                    $"Complemento = '{endereco.Complemento}', " +
+                                    $"Cidade = '{endereco.Cidade}' " +
+                                    $"WHERE EnderecoID = '{endereco.EnderecoID}'";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-
-                //cmd.Parameters.AddWithValue("@Id", cliente.ClienteID);
-                //cmd.Parameters.AddWithValue("@Nome", cliente.Nome);
-
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -384,11 +356,9 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = "DELETE FROM PESSOA WHERE PessoaID = @Id";
+                string comandoSQL = $"DELETE FROM Endereco WHERE EnderecoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-
-                cmd.Parameters.AddWithValue("@Id", id);
 
                 con.Open();
                 cmd.ExecuteNonQuery();

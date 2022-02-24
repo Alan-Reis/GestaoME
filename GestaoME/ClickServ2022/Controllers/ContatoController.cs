@@ -24,7 +24,10 @@ namespace ClickServ2022.Controllers
                 return NotFound();
             }
 
-            Contato contato = this.contato.GetClienteID(id);
+            Contato contato = new Contato();
+            Cliente cliente = new Cliente();
+            cliente.ClienteID = (int)id;
+            contato.Cliente = cliente;
 
             if (contato == null)
             {
