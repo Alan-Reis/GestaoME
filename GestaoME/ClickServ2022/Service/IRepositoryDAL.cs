@@ -8,6 +8,7 @@ namespace ClickServ2022.Service
         #region Cliente
         IEnumerable<Cliente> GetAllClientes();
         void AddCliente(Cliente cliente);
+        void AddDados(Cliente cliente);
         void UpdateCliente(Cliente cliente);
         Cliente GetCliente(int? id);
         void DeleteCliente(int? id);

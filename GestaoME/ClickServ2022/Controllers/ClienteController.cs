@@ -108,7 +108,28 @@ namespace ClickServ2022.Controllers
         public IActionResult DeleteConfirmed(int? id)
         {
             cliente.DeleteCliente(id);
-            return RedirectToAction("Index", "Contato");
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult AddDados(int? id)
+        {
+            Cliente cliente = this.cliente.GetCliente(id);
+            
+            return View(cliente);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddDados([Bind] Cliente cliente)
+        {
+
+            if (ModelState.IsValid)
+            {
+                this.cliente.AddDados(cliente);
+                return RedirectToAction("Index");
+            }
+
+            return View(cliente);
         }
     }
 }

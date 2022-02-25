@@ -1,0 +1,131 @@
+﻿@model ClickServ2022.Models.Cliente
+
+@{
+    ViewData["Title"] = "AddDados";
+}
+<h1>Adicionar informações</h1>
+
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.ClienteID)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.ClienteID)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Nome)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Nome)
+    </dd>
+</dl>
+
+<form asp-action="AddDados">
+
+    <table>
+        <tr>
+            <th>Cliente</th>
+        </tr>
+        <tr>
+            <td>
+                <input asp-for="ClienteID" class="form-control" />
+                <span asp-validation-for="ClienteID" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Telefone:</td>
+            <td>
+                <input asp-for="Contato.Telefone" class="form-control" />
+                <span asp-validation-for="Contato.Telefone" class="text-danger"></span>
+            </td>
+             <td>Celular:</td>
+            <td>
+                <input asp-for="Contato.Celular" class="form-control" />
+                <span asp-validation-for="Contato.Celular" class="text-danger"></span>
+            </td>
+             <td>E-mail:</td>
+            <td>
+                <input asp-for="Contato.Email" class="form-control" />
+                <span asp-validation-for="Contato.Email" class="text-danger"></span>
+            </td>
+        </tr>
+      
+        <tr>
+            <th>Endereço</th>
+        </tr>
+        <tr>
+            <td>Logradouro:</td>
+            <td>
+                <input asp-for="Endereco.Logradouro" class="form-control" />
+                <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+            </td>
+             <td>Complemento:</td>
+            <td>
+                <input asp-for="Endereco.Complemento" class="form-control" />
+                <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+            </td>
+            <td>Bairro:</td>
+            <td>
+                <input asp-for="Endereco.Bairro" class="form-control" />
+                <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Cidade:</td>
+            <td>
+                <input asp-for="Endereco.Cidade" class="form-control" />
+                <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+            </td>
+             <td>Estado:</td>
+            <td>
+                <input asp-for="Endereco.Estado" class="form-control" />
+                <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
+            </td>
+            <td>Observação:</td>
+            <td>
+                <input asp-for="Endereco.Observacao" class="form-control" />
+                <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Equipamento</th>
+        </tr>
+        <tr>
+            <td>Tipo:</td>
+            <td>
+                <input asp-for="Equipamento.Tipo" class="form-control" />
+                <span asp-validation-for="Equipamento.Tipo" class="text-danger"></span>
+            </td>
+            <td>Fabricante:</td>
+            <td>
+                <input asp-for="Equipamento.Fabricante" class="form-control" />
+                <span asp-validation-for="Equipamento.Fabricante" class="text-danger"></span>
+            </td>
+        </tr>
+        <tr>
+            <td>Modelo:</td>
+            <td>
+                <input asp-for="Equipamento.Modelo" class="form-control" />
+                <span asp-validation-for="Equipamento.Modelo" class="text-danger"></span>
+            </td>
+            <td>N. série:</td>
+            <td>
+                <input asp-for="Equipamento.NSerie" class="form-control" />
+                <span asp-validation-for="Equipamento.NSerie" class="text-danger"></span>
+            </td>
+        </tr>
+    </table>
+
+    <div class="form-group">
+        <input type="submit" value="Create" class="btn btn-primary" /> |
+        <a asp-action="Index">Voltar</a>
+    </div>
+</form>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

@@ -92,6 +92,31 @@ namespace ClickServ2022.Repository
             }
         }
 
+        public void AddDados(Cliente cliente)
+        {
+            string connectionString = Conexao();
+
+            cliente.Contato.Cliente = cliente;
+            cliente.Endereco.Cliente = cliente;
+            cliente.Equipamento.Cliente = cliente;
+
+            AddContato(cliente.Contato);
+            AddEndereco(cliente.Endereco);
+            AddEquipamento(cliente.Equipamento);
+
+            /*
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"INSERT INTO PESSOA (Nome) Values('{cliente.Nome}')";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+            */
+        }
+
         public void UpdateCliente(Cliente cliente)
         {
             string connectionString = Conexao();
@@ -116,8 +141,11 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
+                string delContato = $"DELETE FROM Contato WHERE PessoaID = {id}";
+                string delEndereco = $"DELETE FROM Endereco WHERE PessoaID = {id}";
+                string delEquipamento = $"DELETE FROM Equipamento WHERE PessoaID = {id}";
                 string comandoSQL = $"DELETE FROM PESSOA WHERE PessoaID = {id}";
-                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                SqlCommand cmd = new SqlCommand(delContato + delEndereco + delEquipamento + comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
