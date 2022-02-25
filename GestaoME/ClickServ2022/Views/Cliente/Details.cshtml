@@ -33,45 +33,47 @@
     <thead>
         <tr>
             <th>
-               ContatoID
+                ContatoID
             </th>
             <th>
-               Celular
+                Celular
             </th>
             <th>
-               Telefone
+                Telefone
             </th>
             <th>
-               Email
+                Email
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Contatos) {
-        <tr>
-             <td>
-                @Html.DisplayFor(modelItem => item.ContatoID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Celular)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefone)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID }) |
-                @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Contatos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ContatoID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Celular)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID }) |
+                    @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
 <div>
+    <h4>Adicionar Endereço</h4>
     @Html.ActionLink("Adicionar Endereço", "Create","Endereco", new { id = Model.ClienteID })
 </div>
 
@@ -79,42 +81,43 @@
     <thead>
         <tr>
             <th>
-               Logradouro
+                Logradouro
             </th>
             <th>
-               Bairro
+                Bairro
             </th>
             <th>
-               Complemento
+                Complemento
             </th>
             <th>
-               Cidade
+                Cidade
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Enderecos) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Logradouro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Bairro)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Complemento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cidade)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", "Endereco", new { id=item.EnderecoID }) |
-                @Html.ActionLink("Details", "Details", "Endereco", new { id=item.EnderecoID }) |
-                @Html.ActionLink("Delete", "Delete", "Endereco", new { id=item.EnderecoID })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Enderecos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Logradouro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bairro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Complemento)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cidade)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", "Endereco", new { id=item.EnderecoID }) |
+                    @Html.ActionLink("Details", "Details", "Endereco", new { id=item.EnderecoID }) |
+                    @Html.ActionLink("Delete", "Delete", "Endereco", new { id=item.EnderecoID })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 
@@ -126,48 +129,49 @@
     <thead>
         <tr>
             <th>
-               EquipamentoID
+                EquipamentoID
             </th>
             <th>
-               Tipo
+                Tipo
             </th>
             <th>
-               Fabricante
+                Fabricante
             </th>
             <th>
-               Modelo
+                Modelo
             </th>
             <th>
-              Número de Série
+                Número de Série
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Equipamentos) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.EquipamentoID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Tipo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fabricante)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Modelo)
-            </td>
-             <td>
-                @Html.DisplayFor(modelItem => item.NSerie)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit","Equipamento", new { id=item.EquipamentoID }) |
-                @Html.ActionLink("Details", "Details","Equipamento", new { id=item.EquipamentoID }) |
-                @Html.ActionLink("Delete", "Delete","Equipamento", new { id=item.EquipamentoID })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Equipamentos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EquipamentoID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fabricante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NSerie)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit","Equipamento", new { id=item.EquipamentoID }) |
+                    @Html.ActionLink("Details", "Details","Equipamento", new { id=item.EquipamentoID }) |
+                    @Html.ActionLink("Delete", "Delete","Equipamento", new { id=item.EquipamentoID })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <div>

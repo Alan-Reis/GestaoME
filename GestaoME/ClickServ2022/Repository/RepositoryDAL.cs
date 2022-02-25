@@ -266,9 +266,11 @@ namespace ClickServ2022.Repository
                     Endereco endereco = new Endereco();
                     endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
                     endereco.Logradouro = reader["Logradouro"].ToString();
-                    endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Complemento = reader["Complemento"].ToString();
+                    endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Cidade = reader["Cidade"].ToString();
+                    endereco.Estado = reader["Estado"].ToString();
+                    endereco.Observacao = reader["Observacao"].ToString();
                     listEndereco.Add(endereco);
                 }
                 con.Close();
@@ -298,9 +300,11 @@ namespace ClickServ2022.Repository
 
                     endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
                     endereco.Logradouro = reader["Logradouro"].ToString();
-                    endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Complemento = reader["Complemento"].ToString();
+                    endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Cidade = reader["Cidade"].ToString();
+                    endereco.Estado = reader["Estado"].ToString();
+                    endereco.Observacao = reader["Observacao"].ToString();
                 }
                 con.Close();
             }
@@ -317,9 +321,12 @@ namespace ClickServ2022.Repository
                 string comandoSQL = $"INSERT INTO Endereco " +
                                     $"Values({endereco.Cliente.ClienteID}, " +
                                     $"'{endereco.Logradouro}', " +
-                                    $"'{endereco.Bairro}', " +
                                     $"'{endereco.Complemento}', " +
-                                    $"'{endereco.Cidade}')";
+                                    $"'{endereco.Bairro}', " +
+                                    $"'{endereco.Cidade}', " +
+                                    $"'{endereco.Estado}', " +
+                                    $"'{endereco.Observacao}')";
+
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 
@@ -337,9 +344,11 @@ namespace ClickServ2022.Repository
             {
                 string comandoSQL = $"UPDATE Endereco SET " +
                                     $"Logradouro = '{endereco.Logradouro}', " +
-                                    $"Bairro = '{endereco.Bairro}', " +
                                     $"Complemento = '{endereco.Complemento}', " +
-                                    $"Cidade = '{endereco.Cidade}' " +
+                                    $"Bairro = '{endereco.Bairro}', " +
+                                    $"Cidade = '{endereco.Cidade}', " +
+                                    $"Estado = '{endereco.Estado}', " +
+                                    $"Observacao = '{endereco.Observacao}' " +
                                     $"WHERE EnderecoID = '{endereco.EnderecoID}'";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
