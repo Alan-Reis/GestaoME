@@ -19,7 +19,7 @@ namespace ClickServ2022.Repository
         }
         protected string Conexao()
         {
-            string connectionString = Configuration.GetConnectionString("DefaultConnection");
+            string connectionString = Configuration.GetConnectionString("DefaultConnection1");
             return connectionString;
         }
         #endregion
@@ -77,6 +77,24 @@ namespace ClickServ2022.Repository
             return cliente;
         }
 
+        public int GetClienteLast()
+        {
+            string connectionString = Conexao();
+            int endereco = 0;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $" SELECT TOP 1 PessoaID FROM Pessoa ORDER BY PessoaID DESC ";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                endereco = Convert.ToInt32(reader["PessoaID"]);
+                con.Close();
+            }
+            return endereco;
+        }
+
         public void AddCliente(Cliente cliente)
         {
             string connectionString = Conexao();
@@ -88,33 +106,34 @@ namespace ClickServ2022.Repository
                 cmd.CommandType = CommandType.Text;
                 con.Open();
                 cmd.ExecuteNonQuery();
+
+                //Pega o último ClienteID inserido no banco de dados
+                cliente.ClienteID = GetClienteLast();
+
+                AddDados(cliente);
+
                 con.Close();
             }
         }
 
         public void AddDados(Cliente cliente)
         {
+            
             string connectionString = Conexao();
 
             cliente.Contato.Cliente = cliente;
             cliente.Endereco.Cliente = cliente;
-            cliente.Equipamento.Cliente = cliente;
+           
 
             AddContato(cliente.Contato);
             AddEndereco(cliente.Endereco);
+
+            //Pega endereçoID para salvar na FK da tbl Equipamento
+            cliente.Endereco.EnderecoID = GetEnderecoLast();
+
+            cliente.Equipamento.Cliente = cliente;
             AddEquipamento(cliente.Equipamento);
 
-            /*
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string comandoSQL = $"INSERT INTO PESSOA (Nome) Values('{cliente.Nome}')";
-                SqlCommand cmd = new SqlCommand(comandoSQL, con);
-                cmd.CommandType = CommandType.Text;
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
-            */
         }
 
         public void UpdateCliente(Cliente cliente)
@@ -285,13 +304,21 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Endereco WHERE PessoaID = {id} ", con);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM Endereco E" +
+                                                $" INNER JOIN Equipamento Eq" +
+                                                $" ON E.EnderecoID = Eq.EnderecoID" +
+                                                $" AND E.PessoaID = Eq.PessoaID" +
+                                                $" WHERE E.PessoaID = {id} ", con);
+
                 cmd.CommandType = CommandType.Text;
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
+                            
                 while (reader.Read())
                 {
                     Endereco endereco = new Endereco();
+                    Equipamento equipamento = new Equipamento();
+
                     endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
                     endereco.Logradouro = reader["Logradouro"].ToString();
                     endereco.Complemento = reader["Complemento"].ToString();
@@ -299,8 +326,17 @@ namespace ClickServ2022.Repository
                     endereco.Cidade = reader["Cidade"].ToString();
                     endereco.Estado = reader["Estado"].ToString();
                     endereco.Observacao = reader["Observacao"].ToString();
+
+                    equipamento.Tipo = reader["Tipo"].ToString();
+                    equipamento.Fabricante = reader["Fabricante"].ToString();
+                    equipamento.Modelo = reader["Modelo"].ToString();
+                    equipamento.NSerie = reader["NSerie"].ToString();
+
+                    endereco.Equipamento = equipamento;
+
                     listEndereco.Add(endereco);
                 }
+            
                 con.Close();
             }
             return listEndereco;
@@ -340,10 +376,27 @@ namespace ClickServ2022.Repository
             return endereco;
         }
 
+        public int GetEnderecoLast()
+        {
+            string connectionString = Conexao();
+            int endereco = 0;
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $" SELECT TOP 1 EnderecoID FROM Endereco ORDER BY EnderecoID DESC ";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                reader.Read();
+                endereco = Convert.ToInt32(reader["EnderecoID"]);
+                con.Close();
+            }
+            return endereco;
+        }
+
         public void AddEndereco(Endereco endereco)
         {
             string connectionString = Conexao();
-
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string comandoSQL = $"INSERT INTO Endereco " +
@@ -471,7 +524,8 @@ namespace ClickServ2022.Repository
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string comandoSQL = $"INSERT INTO Equipamento " +
-                                    $"Values({equipamento.Cliente.ClienteID}, " +
+                                    $"Values({equipamento.Cliente.Endereco.EnderecoID}, " +
+                                    $"'{equipamento.Cliente.ClienteID}', " +
                                     $"'{equipamento.Tipo}', " +
                                     $"'{equipamento.Fabricante}', " +
                                     $"'{equipamento.Modelo}', " +

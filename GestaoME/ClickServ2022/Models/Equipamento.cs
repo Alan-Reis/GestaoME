@@ -13,5 +13,6 @@ namespace ClickServ2022.Models
         public string Modelo { get; set; }
         public string NSerie { get; set; }
         public Cliente Cliente { get; set; }
+        public Endereco Endereco { get; set; }
     }
 }

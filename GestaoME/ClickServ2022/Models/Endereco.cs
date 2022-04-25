@@ -15,5 +15,8 @@ namespace ClickServ2022.Models
         public string Estado { get; set; }
         public string Observacao { get; set; }
         public Cliente Cliente { get; set; }
+        public Equipamento Equipamento { get; set; }
+
+        public IEnumerable<Equipamento> Equipamentos;
     }
 }
