@@ -1,9 +1,8 @@
-﻿
+﻿using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
-using SistemaLogin.Models;
-using SistemaLogin.Service;
+using ClickServ2022.Models;
 
-namespace SistemaLogin.Controllers
+namespace ClickServ2022.Controllers
 {
     public class LoginController : Controller
     {
@@ -35,11 +34,11 @@ namespace SistemaLogin.Controllers
 
             }
 
-            return RedirectToAction("Home", "Login", login);
+            return RedirectToAction("Index", "Home", login);
         }
 
         public IActionResult Home(Login login)
-         {
+        {
             ViewBag.Nome = login.Nome;
             return View();
 

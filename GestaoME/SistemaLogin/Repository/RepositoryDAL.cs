@@ -37,8 +37,8 @@ namespace SistemaLogin.Repository
                 while (reader.Read())
                 {
                     login.Nome = reader["Nome"].ToString();
-                    login.Usuario = reader["Usuario"].ToString();
-                    login.Senha = reader["Senha"].ToString();
+                    //login.Usuario = reader["Usuario"].ToString();
+                    //login.Senha = reader["Senha"].ToString();
 
                 }
                 con.Close();

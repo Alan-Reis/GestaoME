@@ -15,8 +15,7 @@ namespace ClickServ2022
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            //Cinfiguração para hospedagem no IIS
-            //BuildWebHost(args).Run();
+        
         }
 
         
@@ -27,13 +26,5 @@ namespace ClickServ2022
                     webBuilder.UseStartup<Startup>();
                 });
         
-
-        /*Cinfiguração para hospedagem no IIS
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-            .UseIISIntegration()
-            .Build();
-        */
     }
 }

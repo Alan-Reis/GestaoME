@@ -19,8 +19,40 @@ namespace ClickServ2022.Repository
         }
         protected string Conexao()
         {
-            string connectionString = Configuration.GetConnectionString("DefaultConnection1");
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             return connectionString;
+        }
+
+        protected string ConexaoLogin()
+        {
+            string connectionString = Configuration.GetConnectionString("DefaultConnectionLogin");
+            return connectionString;
+        }
+        #endregion
+
+        #region Login
+        public Login GetLogin(string usuario, string senha)
+        {
+            string connectionString = ConexaoLogin();
+            Login login = new Login();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM tbl_login WHERE Usuario = '{usuario}' AND Senha = '{senha}'";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    login.Nome = reader["Nome"].ToString();
+                    //login.Usuario = reader["Usuario"].ToString();
+                    //login.Senha = reader["Senha"].ToString();
+
+                }
+                con.Close();
+            }
+            return login;
         }
         #endregion
 

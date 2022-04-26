@@ -5,6 +5,10 @@ namespace ClickServ2022.Service
 {
     public interface IRepositoryDAL
     {
+        #region Login
+        Login GetLogin(string usuario, string senha);
+        #endregion
+
         #region Cliente
         IEnumerable<Cliente> GetAllClientes();
         void AddCliente(Cliente cliente);

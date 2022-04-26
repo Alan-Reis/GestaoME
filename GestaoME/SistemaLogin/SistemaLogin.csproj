@@ -9,8 +9,4 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\ClickServ2022\ClickServ2022.csproj" />
-  </ItemGroup>
-
 </Project>
