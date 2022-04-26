@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿
+using Microsoft.Extensions.Configuration;
 using SistemaLogin.Models;
 using SistemaLogin.Service;
 using System.Data.SqlClient;

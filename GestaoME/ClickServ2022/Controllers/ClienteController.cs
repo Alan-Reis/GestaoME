@@ -1,5 +1,4 @@
-﻿
-using ClickServ2022.Models;
+﻿using ClickServ2022.Models;
 using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;

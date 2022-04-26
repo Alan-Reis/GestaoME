@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ClickServ2022.Controllers;
+using Microsoft.AspNetCore.Mvc;
 using SistemaLogin.Models;
 using SistemaLogin.Service;
 
@@ -6,6 +7,8 @@ namespace SistemaLogin.Controllers
 {
     public class LoginController : Controller
     {
+        string nome;
+
         private readonly IRepositoryDAL login;
         public LoginController(IRepositoryDAL _login)
         {
@@ -33,8 +36,14 @@ namespace SistemaLogin.Controllers
                 return View();
 
             }
-            return RedirectToAction("Index", "Home");
-                       
+
+            return RedirectToAction("Home", "Login", login);
+        }
+
+        public IActionResult Home(Login login)
+         {
+            ViewBag.Nome = login.Nome;
+            return View();
         }
     }
 }

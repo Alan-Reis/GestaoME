@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClickServ2022", "ClickServ2
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SistemaLogin", "SistemaLogin\SistemaLogin.csproj", "{878CEC64-D3B2-46CA-9250-D5F8E01E0744}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{226B74F9-3B21-4A67-B35C-2EF013F94F81}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{878CEC64-D3B2-46CA-9250-D5F8E01E0744}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{878CEC64-D3B2-46CA-9250-D5F8E01E0744}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{878CEC64-D3B2-46CA-9250-D5F8E01E0744}.Release|Any CPU.Build.0 = Release|Any CPU
-		{226B74F9-3B21-4A67-B35C-2EF013F94F81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{226B74F9-3B21-4A67-B35C-2EF013F94F81}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{226B74F9-3B21-4A67-B35C-2EF013F94F81}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{226B74F9-3B21-4A67-B35C-2EF013F94F81}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

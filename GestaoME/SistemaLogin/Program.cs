@@ -14,25 +14,13 @@ namespace SistemaLogin
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
-            //Cinfiguração para hospedagem no IIS
-            //BuildWebHost(args).Run();
+
         }
-
-
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
-
-
-        /*Cinfiguração para hospedagem no IIS
-        public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-            .UseIISIntegration()
-            .Build();
-        */
     }
 }
