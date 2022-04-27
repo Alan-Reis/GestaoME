@@ -31,10 +31,8 @@ namespace ClickServ2022.Controllers
             {
                 ViewBag.Falha = "Usuário ou senha incorreta";
                 return View();
-
             }
-
-            return RedirectToAction("Index", "Home", login);
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult Home(Login login)

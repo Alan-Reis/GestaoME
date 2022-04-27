@@ -1,4 +1,5 @@
-﻿namespace ClickServ2022.Models
+﻿
+namespace ClickServ2022.Models
 {
     public class Login
     {

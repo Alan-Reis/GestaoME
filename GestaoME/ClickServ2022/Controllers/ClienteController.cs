@@ -13,24 +13,47 @@ namespace ClickServ2022.Controllers
         public ClienteController(IRepositoryDAL _cliente)
         {
             cliente = _cliente;
+
         }
-        public IActionResult Index()
+
+        public IActionResult Index(Cliente nome)
         {
             List<Cliente> listCliente = new List<Cliente>();
-            listCliente = cliente.GetAllClientes().ToList();
+
+            if (nome.Nome == null)
+            {
+                string nomeNull = null;
+                listCliente = cliente.GetAllClientes(nomeNull).ToList();
+                return View(listCliente);
+            }
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Index(string nome)
+        {
+            if (nome == null)
+            {
+                return NotFound();
+            }
+            List<Cliente> listCliente = new List<Cliente>();
+            listCliente = cliente.GetAllClientes(nome).ToList();
             return View(listCliente);
+
         }
 
         public IActionResult Details(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             Cliente cliente = this.cliente.GetCliente(id);
 
-            if(cliente == null)
+            if (cliente == null)
             {
                 return NotFound();
             }
@@ -44,26 +67,31 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Cliente cliente)
+        public IActionResult Create([Bind] Cliente cliente, Login login)
         {
+            Log log = new Log();
+
+            log.Nome = login.Nome;
+
             if (ModelState.IsValid)
             {
                 this.cliente.AddCliente(cliente);
+                this.cliente.AddLog(log, cliente);
                 return RedirectToAction("Index");
             }
-           
+
             return View(cliente);
         }
 
         public IActionResult Edit(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
             Cliente cliente = this.cliente.GetCliente(id);
 
-            if(cliente == null)
+            if (cliente == null)
             {
                 return NotFound();
             }
@@ -72,9 +100,9 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind]Cliente cliente)
+        public IActionResult Edit(int id, [Bind] Cliente cliente)
         {
-            if(id != cliente.ClienteID)
+            if (id != cliente.ClienteID)
             {
                 return NotFound();
             }
@@ -88,14 +116,14 @@ namespace ClickServ2022.Controllers
 
         public IActionResult Delete(int? id)
         {
-            if(id == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             Cliente cliente = this.cliente.GetCliente(id);
 
-            if(cliente == null)
+            if (cliente == null)
             {
                 return NotFound();
             }
@@ -113,7 +141,7 @@ namespace ClickServ2022.Controllers
         public IActionResult AddDados(int? id)
         {
             Cliente cliente = this.cliente.GetCliente(id);
-            
+
             return View(cliente);
         }
 
