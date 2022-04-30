@@ -34,6 +34,7 @@ namespace ClickServ2022.Repository
         public Login GetLogin(string usuario, string senha)
         {
             string connectionString = ConexaoGestaoME();
+
             Login login = new Login();
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -45,47 +46,18 @@ namespace ClickServ2022.Repository
 
                 while (reader.Read())
                 {
-                    login.Nome = reader["Nome"].ToString();
-                    
+                    login.Usuario = reader["Usuario"].ToString();  
                 }
                 con.Close();
             }
             return login;
-        }
-
-        //Não está ativo, o nome que está sendo inserido é o nome do Cliente e não do Colaborador que está
-        //inserindo o registro
-        public void AddLog(Log log, Cliente cliente)
-        {
-            string connectionString = ConexaoGestaoME();
-
-            string Data = DateTime.Now.ToString("dd-MM-yyyy");
-            string Hora = DateTime.Now.ToString("hh:mm:");
-
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string comandoSQL = $"INSERT INTO tbl_log (Nome, Data, Hora, Tabela, Acao, Id, De, Para) Values(" +                                             
-                                                                $" '{log.Nome}'     ," +
-                                                                $" '{Data}'     ," +
-                                                                $" '{Hora}'     ," +
-                                                                $" 'tbl_Cliente'   ," +
-                                                                $" 'Insert'     ," +
-                                                                $" '{cliente.ClienteID}'       ," +
-                                                                $" '{log.De}'       ," +
-                                                                $" '{log.Para}'     )";
-                SqlCommand cmd = new SqlCommand(comandoSQL, con);
-                cmd.CommandType = CommandType.Text;
-                con.Open();
-                cmd.ExecuteNonQuery();
-
-                con.Close();
-            }
         }
         #endregion
 
         #region Cliente
         public IEnumerable<Cliente> GetAllClientes(string nome)
         {
+           
             string connectionString = Conexao();
 
             List<Cliente> listPessoa = new List<Cliente>();

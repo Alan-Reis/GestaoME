@@ -18,28 +18,21 @@ namespace ClickServ2022.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(string Usuario, string Senha)
+        public IActionResult Index(string usuario, string senha)
         {
-            Login login = this.login.GetLogin(Usuario, Senha);
+            Login login = this.login.GetLogin(usuario, senha);
 
-            if (login == null)
+            if (login.Usuario == null)
             {
                 return NotFound();
             }
 
-            if (login.Nome == null)
+            if (login.Usuario == null)
             {
                 ViewBag.Falha = "Usuário ou senha incorreta";
                 return View();
             }
             return RedirectToAction("Index", "Home");
-        }
-
-        public IActionResult Home(Login login)
-        {
-            ViewBag.Nome = login.Nome;
-            return View();
-
         }
     }
 }

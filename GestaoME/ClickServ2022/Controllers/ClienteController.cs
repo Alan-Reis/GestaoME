@@ -16,14 +16,15 @@ namespace ClickServ2022.Controllers
 
         }
 
-        public IActionResult Index(Cliente nome)
+        public IActionResult Index(Cliente cliente)
         {
             List<Cliente> listCliente = new List<Cliente>();
 
-            if (nome.Nome == null)
+            if (cliente.Nome == null)
             {
+                //string criada para que se possa obter todos os clientes sem que possa passar um nome como parametro
                 string nomeNull = null;
-                listCliente = cliente.GetAllClientes(nomeNull).ToList();
+                listCliente = this.cliente.GetAllClientes(nomeNull).ToList();
                 return View(listCliente);
             }
             return View();
@@ -67,16 +68,12 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Cliente cliente, Login login)
+        public IActionResult Create([Bind] Cliente cliente)
         {
-            Log log = new Log();
-
-            log.Nome = login.Nome;
 
             if (ModelState.IsValid)
             {
                 this.cliente.AddCliente(cliente);
-                this.cliente.AddLog(log, cliente);
                 return RedirectToAction("Index");
             }
 
