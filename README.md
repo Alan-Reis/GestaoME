@@ -1,5 +1,7 @@
-
 # Projeto Gestão ME
+
+![LogoGestãoME_B](https://user-images.githubusercontent.com/69443030/166120567-4a61ccc4-671f-4519-8735-60a2774fc957.png)
+
 ![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
 
 
@@ -26,7 +28,7 @@ Cadastro de cliente:
 ![print](https://user-images.githubusercontent.com/69443030/165844940-70a11301-0034-40a9-89f7-51824c5b488c.png)
 
 
-## Porque desenvolver o Gestão ME ?
+## Por que desenvolver o Gestão ME ?
 Mesmo com o sistema ClickServ sendo útil para a empresa, novas funcionalidades devem ser incluídas. A empresa possui estoque de peças, geração de orçamento, fornecedores, contrato com atendimento mensal, dentre outras. 
 Então o objetivo do Gestão ME é criar novas funcionalidades e módulos para integrar com o ClickServ.
 
