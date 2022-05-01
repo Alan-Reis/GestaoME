@@ -45,15 +45,25 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(int? pagina, string nome)
+        public IActionResult Index(int? pagina,string coluna, string nome)
         {
             if (nome == null)
             {
                 return NotFound();
             }
             List<Cliente> listCliente = new List<Cliente>();
-            listCliente = cliente.GetAllClientes(nome).ToList();
-            
+
+            //Seleção de pesquisa
+            if(coluna == "Nome")
+            {
+                listCliente = cliente.GetAllClientes(nome).ToList();
+
+            }
+            else if(coluna == "Condomínio")
+            {
+                listCliente = cliente.GetAllClientes(nome).ToList();
+            }
+
             //paginação
             int paginaTamanho = 4;
             int paginaNumero = (pagina ?? 1);
