@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 using System.Linq;
+using PagedList;
 
 namespace ClickServ2022.Controllers
 {
@@ -16,24 +17,35 @@ namespace ClickServ2022.Controllers
 
         }
 
-        public IActionResult Index(Cliente cliente)
+        public IActionResult Index(int? pagina, Cliente cliente)
         {
             List<Cliente> listCliente = new List<Cliente>();
+
+            //paginação
+            int paginaTamanho = 4;
+            int paginaNumero = (pagina ?? 1);
+            //fim
 
             if (cliente.Nome == null)
             {
                 //string criada para que se possa obter todos os clientes sem que possa passar um nome como parametro
                 string nomeNull = null;
                 listCliente = this.cliente.GetAllClientes(nomeNull).ToList();
-                return View(listCliente);
+
+                return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
             }
-            return View();
+
+           // return View();
+           
+
+            return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
+     
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(string nome)
+        public IActionResult Index(int? pagina, string nome)
         {
             if (nome == null)
             {
@@ -41,8 +53,13 @@ namespace ClickServ2022.Controllers
             }
             List<Cliente> listCliente = new List<Cliente>();
             listCliente = cliente.GetAllClientes(nome).ToList();
-            return View(listCliente);
+            
+            //paginação
+            int paginaTamanho = 4;
+            int paginaNumero = (pagina ?? 1);
+            //fim
 
+            return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
         }
 
         public IActionResult Details(int? id)
