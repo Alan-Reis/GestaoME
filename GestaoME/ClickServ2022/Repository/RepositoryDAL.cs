@@ -46,7 +46,7 @@ namespace ClickServ2022.Repository
 
                 while (reader.Read())
                 {
-                    login.Usuario = reader["Usuario"].ToString();  
+                    login.Usuario = reader["Usuario"].ToString();
                 }
                 con.Close();
             }
@@ -55,18 +55,22 @@ namespace ClickServ2022.Repository
         #endregion
 
         #region Cliente
-        public IEnumerable<Cliente> GetAllClientes(string nome)
+        public IEnumerable<Cliente> GetAllClientes(string coluna, string nome)
         {
-           
+
             string connectionString = Conexao();
 
             List<Cliente> listPessoa = new List<Cliente>();
 
-            if(nome != null)
+            if (nome != null)
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
                 {
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Cliente WHERE Nome LIKE '%{nome}%' ORDER BY Nome DESC", con);
+                    SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Cliente C " +
+                                                    $"INNER JOIN tbl_Endereco E " +
+                                                    $"ON C.ClienteID = E.ClienteID " +
+                                                    $"WHERE {coluna} LIKE '%{nome}%' ORDER BY Nome DESC", con);
+
                     cmd.CommandType = CommandType.Text;
 
                     con.Open();
@@ -74,9 +78,16 @@ namespace ClickServ2022.Repository
                     while (reader.Read())
                     {
                         Cliente cliente = new Cliente();
+                        Endereco endereco = new Endereco();
+
                         cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
                         cliente.Nome = reader["Nome"].ToString();
-                        cliente.CPF = reader["CPF"].ToString();
+
+                        endereco.Logradouro = reader["Logradouro"].ToString();
+                        endereco.Complemento = reader["Complemento"].ToString();
+
+                        cliente.Endereco = endereco;
+                        
                         listPessoa.Add(cliente);
                     }
                     con.Close();
@@ -87,7 +98,10 @@ namespace ClickServ2022.Repository
             using (SqlConnection con = new SqlConnection(connectionString))
             {
 
-                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Cliente ORDER BY ClienteID DESC", con);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Cliente C " +
+                                                   $"INNER JOIN tbl_Endereco E " +
+                                                   $"ON C.ClienteID = E.ClienteID", con);
+
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -95,9 +109,16 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     Cliente cliente = new Cliente();
+                    Endereco endereco = new Endereco();
+
                     cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
                     cliente.Nome = reader["Nome"].ToString();
-                    cliente.CPF = reader["CPF"].ToString();
+
+                    endereco.Logradouro = reader["Logradouro"].ToString();
+                    endereco.Complemento = reader["Complemento"].ToString();
+
+                    cliente.Endereco = endereco;
+
                     listPessoa.Add(cliente);
                 }
                 con.Close();
@@ -105,9 +126,9 @@ namespace ClickServ2022.Repository
 
             return listPessoa;
         }
-       
+
         public Cliente GetCliente(int? id)
-        { 
+        {
             string connectionString = Conexao();
             Cliente cliente = new Cliente();
 
@@ -174,12 +195,12 @@ namespace ClickServ2022.Repository
 
         public void AddDados(Cliente cliente)
         {
-            
+
             string connectionString = Conexao();
 
             cliente.Contato.Cliente = cliente;
             cliente.Endereco.Cliente = cliente;
-           
+
 
             AddContato(cliente.Contato);
             AddEndereco(cliente.Endereco);
@@ -216,9 +237,9 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string delContato = $"DELETE FROM Contato WHERE ClienteID = {id}";
-                string delEndereco = $"DELETE FROM Endereco WHERE ClienteID = {id}";
-                string delEquipamento = $"DELETE FROM Equipamento WHERE ClienteID = {id}";
+                string delContato = $"DELETE FROM tbl_Contato WHERE ClienteID = {id}";
+                string delEndereco = $"DELETE FROM tbl_Endereco WHERE ClienteID = {id}";
+                string delEquipamento = $"DELETE FROM tbl_Equipamento WHERE ClienteID = {id}";
                 string comandoSQL = $"DELETE FROM tbl_Cliente WHERE ClienteID = {id}";
                 SqlCommand cmd = new SqlCommand(delContato + delEndereco + delEquipamento + comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
@@ -239,7 +260,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Contato WHERE ClienteID = " + id, con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Contato WHERE ClienteID = " + id, con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -271,7 +292,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM Contato WHERE ContatoID = {id}";
+                string sqlQuery = $"SELECT * FROM tbl_Contato WHERE ContatoID = {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -299,7 +320,7 @@ namespace ClickServ2022.Repository
             using (SqlConnection con = new SqlConnection(connectionString))
             {
 
-                string comandoSQL = $"UPDATE Contato SET " +
+                string comandoSQL = $"UPDATE tbl_Contato SET " +
                                     $"Celular   =   '{contato.Celular}', " +
                                     $"Telefone  =   '{contato.Telefone}', " +
                                     $"Email     =   '{contato.Email}'" +
@@ -320,7 +341,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO Contato (ClienteID, Celular, Telefone, Email) " +
+                string comandoSQL = $"INSERT INTO tbl_Contato (ClienteID, Celular, Telefone, Email) " +
                                     $"Values({contato.Cliente.ClienteID}, " +
                                     $"'{contato.Celular}', " +
                                     $"'{contato.Telefone}', " +
@@ -341,7 +362,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"DELETE FROM Contato WHERE ContatoID = {id}";
+                string comandoSQL = $"DELETE FROM tbl_Contato WHERE ContatoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 
@@ -360,8 +381,8 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Endereco E" +
-                                                $" INNER JOIN Equipamento Eq" +
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Endereco E" +
+                                                $" INNER JOIN tbl_Equipamento Eq" +
                                                 $" ON E.EnderecoID = Eq.EnderecoID" +
                                                 $" AND E.ClienteID = Eq.ClienteID" +
                                                 $" WHERE E.ClienteID = {id} ", con);
@@ -369,7 +390,7 @@ namespace ClickServ2022.Repository
                 cmd.CommandType = CommandType.Text;
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
-                            
+
                 while (reader.Read())
                 {
                     Endereco endereco = new Endereco();
@@ -392,7 +413,7 @@ namespace ClickServ2022.Repository
 
                     listEndereco.Add(endereco);
                 }
-            
+
                 con.Close();
             }
             return listEndereco;
@@ -408,7 +429,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM Endereco WHERE EnderecoID = {id}";
+                string sqlQuery = $"SELECT * FROM tbl_Endereco WHERE EnderecoID = {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -439,7 +460,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $" SELECT TOP 1 EnderecoID FROM Endereco ORDER BY EnderecoID DESC ";
+                string sqlQuery = $" SELECT TOP 1 EnderecoID FROM tbl_Endereco ORDER BY EnderecoID DESC ";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -455,7 +476,7 @@ namespace ClickServ2022.Repository
             string connectionString = Conexao();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO Endereco " +
+                string comandoSQL = $"INSERT INTO tbl_Endereco " +
                                     $"Values({endereco.Cliente.ClienteID}, " +
                                     $"'{endereco.Logradouro}', " +
                                     $"'{endereco.Complemento}', " +
@@ -479,7 +500,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"UPDATE Endereco SET " +
+                string comandoSQL = $"UPDATE tbl_Endereco SET " +
                                     $"Logradouro = '{endereco.Logradouro}', " +
                                     $"Complemento = '{endereco.Complemento}', " +
                                     $"Bairro = '{endereco.Bairro}', " +
@@ -502,7 +523,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"DELETE FROM Endereco WHERE EnderecoID = {id}";
+                string comandoSQL = $"DELETE FROM tbl_Endereco WHERE EnderecoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 
@@ -521,7 +542,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Equipamento WHERE ClienteID = {id}", con);
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Equipamento WHERE ClienteID = {id}", con);
                 cmd.CommandType = CommandType.Text;
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -551,7 +572,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM Equipamento WHERE EquipamentoID = {id}";
+                string sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -579,7 +600,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO Equipamento " +
+                string comandoSQL = $"INSERT INTO tbl_Equipamento " +
                                     $"Values({equipamento.Cliente.Endereco.EnderecoID}, " +
                                     $"'{equipamento.Cliente.ClienteID}', " +
                                     $"'{equipamento.Tipo}', " +
@@ -601,7 +622,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"UPDATE Equipamento SET " +
+                string comandoSQL = $"UPDATE tbl_Equipamento SET " +
                                     $"Tipo =       '{equipamento.Tipo}', " +
                                     $"Fabricante = '{equipamento.Fabricante}', " +
                                     $"Modelo =     '{equipamento.Modelo}', " +
@@ -622,7 +643,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"DELETE FROM Equipamento WHERE EquipamentoID = {id}";
+                string comandoSQL = $"DELETE FROM tbl_Equipamento WHERE EquipamentoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 

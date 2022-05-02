@@ -10,7 +10,7 @@ namespace ClickServ2022.Service
         #endregion
 
         #region Cliente
-        IEnumerable<Cliente> GetAllClientes(string nome);
+        IEnumerable<Cliente> GetAllClientes(string coluna, string nome);
         void AddCliente(Cliente cliente);
         void AddDados(Cliente cliente);
         void UpdateCliente(Cliente cliente);

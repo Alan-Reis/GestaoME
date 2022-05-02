@@ -30,44 +30,51 @@ namespace ClickServ2022.Controllers
             {
                 //string criada para que se possa obter todos os clientes sem que possa passar um nome como parametro
                 string nomeNull = null;
-                listCliente = this.cliente.GetAllClientes(nomeNull).ToList();
+                string colunaNull = null;
+                listCliente = this.cliente.GetAllClientes(colunaNull, nomeNull).ToList();
 
                 return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
             }
 
-           // return View();
-           
+            return View();
 
-            return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
-     
+            //return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
+
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(int? pagina,string coluna, string nome)
+        public IActionResult Index(int? pagina, string coluna, string nome)
         {
-            if (nome == null)
+            if (coluna == "Condomínio")
             {
-                return NotFound();
+                coluna = "Complemento";
             }
+
             List<Cliente> listCliente = new List<Cliente>();
+            listCliente = cliente.GetAllClientes(coluna, nome).ToList();
 
-            //Seleção de pesquisa
-            if(coluna == "Nome")
+            //se não tiver o cliente, vai para adicionar            
+            if(listCliente.Count == 0)
             {
-                listCliente = cliente.GetAllClientes(nome).ToList();
-
+                ViewBag.Erro = "Cliente inexistente, deseja criar? ";
             }
-            else if(coluna == "Condomínio")
-            {
-                listCliente = cliente.GetAllClientes(nome).ToList();
-            }
+            
 
             //paginação
             int paginaTamanho = 4;
             int paginaNumero = (pagina ?? 1);
             //fim
+
+            //Condicional criada para trazer todos os resultado em uma única página
+            if (listCliente.Count > 4)
+            {
+                //paginação
+                paginaTamanho = listCliente.Count;
+                paginaNumero = (pagina ?? 1);
+                //fim
+            }
 
             return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
         }

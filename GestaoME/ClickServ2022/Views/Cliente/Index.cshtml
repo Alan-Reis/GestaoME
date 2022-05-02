@@ -1,5 +1,4 @@
-﻿
-@model PagedList.IPagedList<ClickServ2022.Models.Cliente>
+﻿@model PagedList.IPagedList<ClickServ2022.Models.Cliente>
 
 @{
     ViewData["Title"] = "Index";
@@ -8,27 +7,40 @@
 <h1>CLIENTES</h1>
 
 <p>
-    <a asp-action="Create">Novo Cliente</a>
+    @Html.ActionLink("Novo", "Create",null,null,new { @class = "btn btn-primary"})
 </p>
 
 <form asp-action="Index">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <table>
         <tr>
-            <td>NOME / CONDOMÍNIO</td>
             <td>
-                <select name="coluna">
-                    <option>Nome</option>
-                    <option>Condomínio</option>
-                </select>
-                <input name="nome" class="form-control" />
+                <div class="form-group">
+                    <p>Pesquisar por:</p>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <select name="coluna" class="form-control">
+                        <option>Nome</option>
+                        <option>Condomínio</option>
+                    </select>
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <input name="nome" class="form-control" focus required />
+                </div>
+            </td>
+            <td>
+                <div class="form-group">
+                    <input type="submit" value="Buscar" class="btn btn-primary" />
+                </div>
             </td>
         </tr>
     </table>
 
-    <div class="form-group">
-        <input type="submit" value="BUSCAR" class="btn btn-primary" />
-    </div>
+
 </form>
 <table class="table">
     <thead>
@@ -36,10 +48,24 @@
             <th>
                 <h3>Nome</h3>
             </th>
+            <th>
+                <h3>Logradouro</h3>
+            </th>
+            <th>
+                <h3>Complemento</h3>
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
+
+        <h5 style="color:red">@ViewBag.Erro</h5>
+
+        @if (Model.Count == 0)
+        {
+            @Html.ActionLink("SIM", "Create",null,null,new { @class = "btn btn-primary"}) 
+            @Html.ActionLink("NÃO", "Index",null,null,new { @class = "btn btn-danger"})
+        }
         @foreach (var item in Model)
         {
             <tr>
@@ -47,39 +73,52 @@
                     @Html.DisplayFor(modelItem => item.Nome)
                 </td>
                 <td>
-                    @Html.ActionLink("Add Dados", "AddDados", new { id=item.ClienteID }) |
-                    @Html.ActionLink("Edit", "Edit", new { id=item.ClienteID }) |
-                    @Html.ActionLink("Details", "Details", new { id=item.ClienteID }) |
-                    @Html.ActionLink("Delete", "Delete", new { id=item.ClienteID })
+                    @Html.DisplayFor(modelItem => item.Endereco.Logradouro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Endereco.Complemento)
+                </td>
+                <td>
+                    @Html.ActionLink("Detalhar", "Details", new { id=item.ClienteID}, new {@class = "btn btn-primary" }) |
+                    @Html.ActionLink("Deletar", "Delete", new { id=item.ClienteID}, new { @class = "btn btn-danger"})
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+<script>
+        function Mensagem() {
+        alert('Registro gravado com sucesso!');
+    }
+
+</script>
 <!--Código para gerar paginação-->
 <div>
     Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
     of @Model.PageCount
-    
+
     @if (Model.HasPreviousPage)
     {
-        @Html.ActionLink("<<", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
-        @Html.Raw(" ");
+        @Html.ActionLink("Primeira", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ")
+        ;
         @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
     }
     else
     {
         @:<<
-        @Html.Raw(" ");
+        @Html.Raw(" ")
+        ;
         @:< Anterior
     }
-    
+
     @if (Model.HasNextPage)
     {
         @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
-        @Html.Raw(" ");
-        @Html.ActionLink(">>", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ")
+        ;
+        @Html.ActionLink("Última", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
     }
     else
     {
