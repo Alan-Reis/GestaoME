@@ -4,7 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>CLIENTES</h1>
+<h4>CLIENTES</h4>
 
 <p>
     @Html.ActionLink("Novo", "Create",null,null,new { @class = "btn btn-primary"})
@@ -46,13 +46,13 @@
     <thead>
         <tr>
             <th>
-                <h3>Nome</h3>
+                <h5>Nome</h5>
             </th>
             <th>
-                <h3>Logradouro</h3>
+                <h5>Logradouro</h5>
             </th>
             <th>
-                <h3>Complemento</h3>
+                <h5>Complemento</h5>
             </th>
             <th></th>
         </tr>
@@ -79,7 +79,7 @@
                     @Html.DisplayFor(modelItem => item.Endereco.Complemento)
                 </td>
                 <td>
-                    @Html.ActionLink("Detalhar", "Details", new { id=item.ClienteID}, new {@class = "btn btn-primary" }) |
+                    @Html.ActionLink("Detalhar", "Details", new { id=item.ClienteID}, new {@class = "btn btn-primary" })
                     @Html.ActionLink("Deletar", "Delete", new { id=item.ClienteID}, new { @class = "btn btn-danger"})
                 </td>
             </tr>

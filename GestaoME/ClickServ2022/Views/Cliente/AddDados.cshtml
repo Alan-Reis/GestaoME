@@ -3,31 +3,20 @@
 @{
     ViewData["Title"] = "AddDados";
 }
-<h1>Adicionar informações</h1>
 
 <hr />
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.ClienteID)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.ClienteID)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Nome)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Nome)
-    </dd>
-</dl>
-
 <form asp-action="AddDados">
-
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <table>
         <tr>
-             <td>
-                <input asp-for="ClienteID" class="form-control" type="hidden"/>
+            <td>
+                <input asp-for="ClienteID" class="form-control" type="hidden" />
             </td>
+        </tr>
+        <tr>
+            <th>
+                <h5>CONTATOS:</h5>
+            </th>
         </tr>
         <tr>
             <td>Telefone:</td>
@@ -35,20 +24,23 @@
                 <input asp-for="Contato.Telefone" class="form-control" />
                 <span asp-validation-for="Contato.Telefone" class="text-danger"></span>
             </td>
-             <td>Celular:</td>
+            <td>Celular:</td>
             <td>
                 <input asp-for="Contato.Celular" class="form-control" />
                 <span asp-validation-for="Contato.Celular" class="text-danger"></span>
             </td>
-             <td>E-mail:</td>
+            <td>E-mail:</td>
             <td>
                 <input asp-for="Contato.Email" class="form-control" />
-                <span asp-validation-for="Contato.Email" class="text-danger"></span>
+                <span type="email" asp-validation-for="Contato.Email" class="text-danger"></span>
             </td>
         </tr>
-      
+
         <tr>
-            <th>Endereço</th>
+            <th>
+                <hr />
+                <h5>ENDEREÇO:</h5>
+            </th>
         </tr>
         <tr>
             <td>Logradouro:</td>
@@ -56,7 +48,7 @@
                 <input asp-for="Endereco.Logradouro" class="form-control" />
                 <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
             </td>
-             <td>Complemento:</td>
+            <td>Complemento:</td>
             <td>
                 <input asp-for="Endereco.Complemento" class="form-control" />
                 <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
@@ -73,7 +65,7 @@
                 <input asp-for="Endereco.Cidade" class="form-control" />
                 <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
             </td>
-             <td>Estado:</td>
+            <td>Estado:</td>
             <td>
                 <input asp-for="Endereco.Estado" class="form-control" />
                 <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
@@ -84,9 +76,11 @@
                 <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
             </td>
         </tr>
-
         <tr>
-            <th>Equipamento</th>
+            <th>
+                <hr />
+                <h5>EQUIPAMENTO:</h5>
+            </th>
         </tr>
         <tr>
             <td>Tipo:</td>
@@ -106,22 +100,24 @@
                 <input asp-for="Equipamento.Modelo" class="form-control" />
                 <span asp-validation-for="Equipamento.Modelo" class="text-danger"></span>
             </td>
-            <td>N. série:</td>
+            <td>Nº série:</td>
             <td>
                 <input asp-for="Equipamento.NSerie" class="form-control" />
                 <span asp-validation-for="Equipamento.NSerie" class="text-danger"></span>
             </td>
         </tr>
     </table>
-
+    </br>
     <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-primary" /> |
-        <a asp-action="Index">Voltar</a>
+        <input type="submit" value="Criar" class="btn btn-primary" />
+        @Html.ActionLink("Voltar", "Details", new { id = Model.ClienteID }, new { @class = "btn btn-primary"})
     </div>
 </form>
 
+
+
 @section Scripts {
-    @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+        @{
+            await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
-}
+        }

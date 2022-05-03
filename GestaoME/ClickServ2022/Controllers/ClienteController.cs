@@ -131,16 +131,19 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind] Cliente cliente)
+        public IActionResult Edit([Bind] Cliente cliente)
         {
+            /*
             if (id != cliente.ClienteID)
             {
                 return NotFound();
             }
+            */
             if (ModelState.IsValid)
             {
                 this.cliente.UpdateCliente(cliente);
-                return RedirectToAction("Index");
+                int id = cliente.ClienteID;
+                return RedirectToAction("Details", "Cliente", new { id });
             }
             return View(cliente);
         }
@@ -184,7 +187,8 @@ namespace ClickServ2022.Controllers
             if (ModelState.IsValid)
             {
                 this.cliente.AddDados(cliente);
-                return RedirectToAction("Index");
+                int id = cliente.ClienteID;
+                return RedirectToAction("Details","Cliente",new { id });
             }
 
             return View(cliente);

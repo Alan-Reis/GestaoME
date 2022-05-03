@@ -1,17 +1,12 @@
 ﻿@model ClickServ2022.Models.Cliente
 
 @{
+
     ViewData["Title"] = "Details";
 }
 
 <div>
     <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ClienteID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ClienteID)
-        </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Nome)
         </dt>
@@ -28,10 +23,12 @@
 </div>
 
 <div>
-    @Html.ActionLink("Adicionar Contato", "Create","Contato", new { id = Model.ClienteID }) |
-    @Html.ActionLink("Add Dados", "AddDados", new { id = Model.ClienteID }) 
+    @Html.ActionLink("Novo", "AddDados", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+    @Html.ActionLink("Editar", "Edit", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+    @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
 </div>
 
+</br>
 <table class="table">
     <thead>
         <tr>
@@ -41,7 +38,14 @@
             <th>
                 Telefone
             </th>
-            <th></th>
+            <th>
+                E-mail
+            </th>
+            <th>
+                <div>
+                    @Html.ActionLink("Novo", "Create","Contato", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+                </div>
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -55,14 +59,20 @@
                     @Html.DisplayFor(modelItem => item.Telefone)
                 </td>
                 <td>
-                    @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID }) |
-                    @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID })
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID },new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID },new { @class = "btn btn-danger"})
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
+
+
+</br>
 <table class="table">
     <thead>
         <tr>
@@ -73,13 +83,7 @@
                 Complemento
             </th>
             <th>
-                Bairro
-            </th>
-            <th>
                 Equipamento
-            </th>
-            <th>
-                Modelo
             </th>
             <th></th>
         </tr>
@@ -95,25 +99,16 @@
                     @Html.DisplayFor(modelItem => item.Complemento)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Bairro)
-                </td>
-                <td>
                     @Html.DisplayFor(modelItem => item.Equipamento.Tipo)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Equipamento.Modelo)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", "Endereco", new { id=item.EnderecoID }) |
-                    @Html.ActionLink("Detalhes", "Details", "Endereco", new { id=item.EnderecoID }) |
-                    @Html.ActionLink("Deletar", "Delete", "Endereco", new { id=item.EnderecoID })
+                    @Html.ActionLink("Editar", "Edit", "Endereco", new { id=item.EnderecoID },new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Detalhar", "Details", "Endereco", new { id=item.EnderecoID },new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Deletar", "Delete", "Endereco", new { id=item.EnderecoID },new { @class = "btn btn-danger"})
                 </td>
             </tr>
         }
     </tbody>
 </table>
 
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClienteID }) |
-    <a asp-action="Index">Voltar</a>
-</div>
+
