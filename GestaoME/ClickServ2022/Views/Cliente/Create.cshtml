@@ -4,7 +4,6 @@
     ViewData["Title"] = "Create";
 }
 
-<h4>NOVO CLIENTE</h4>
 <hr />
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -17,7 +16,7 @@
         <tr>
             <td>Nome:</td>
             <td>
-                <input asp-for="Nome" class="form-control" />
+                <input asp-for="Nome" class="form-control" required/>
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </td>
             <td>CPF:</td>
@@ -34,7 +33,7 @@
             </td>
             <td>Celular:</td>
             <td>
-                <input asp-for="Contato.Celular" class="form-control" />
+                <input asp-for="Contato.Celular" class="form-control" required/>
                 <span asp-validation-for="Contato.Celular" class="text-danger"></span>
             </td>
             <td>E-mail:</td>
@@ -53,7 +52,7 @@
         <tr>
             <td>Logradouro:</td>
             <td>
-                <input asp-for="Endereco.Logradouro" class="form-control" />
+                <input asp-for="Endereco.Logradouro" class="form-control" required/>
                 <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
             </td>
             <td>Complemento:</td>
@@ -93,7 +92,7 @@
         <tr>
             <td>Tipo:</td>
             <td>
-                <input asp-for="Equipamento.Tipo" class="form-control" />
+                <input asp-for="Equipamento.Tipo" class="form-control" required/>
                 <span asp-validation-for="Equipamento.Tipo" class="text-danger"></span>
             </td>
             <td>Fabricante:</td>
@@ -117,7 +116,7 @@
     </table>
     </br>
     <div class="form-group">
-        <input type="submit" value="Criar" class="btn btn-primary" /> |
+        <input type="submit" value="Criar" class="btn btn-primary" /> 
         <a asp-action="Index" class="btn btn-primary">Voltar</a>
     </div>
 </form>

@@ -23,7 +23,6 @@
 </div>
 
 <div>
-    @Html.ActionLink("Novo", "AddDados", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
     @Html.ActionLink("Editar", "Edit", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
     @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
 </div>
@@ -83,9 +82,11 @@
                 Complemento
             </th>
             <th>
-                Equipamento
+                Cidade
             </th>
-            <th></th>
+            <th>
+                @Html.ActionLink("Novo", "AddDados", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+            </th>
         </tr>
     </thead>
     <tbody>
@@ -99,12 +100,10 @@
                     @Html.DisplayFor(modelItem => item.Complemento)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Equipamento.Tipo)
+                    @Html.DisplayFor(modelItem => item.Cidade)
                 </td>
                 <td>
-                    @Html.ActionLink("Editar", "Edit", "Endereco", new { id=item.EnderecoID },new { @class = "btn btn-primary"})
                     @Html.ActionLink("Detalhar", "Details", "Endereco", new { id=item.EnderecoID },new { @class = "btn btn-primary"})
-                    @Html.ActionLink("Deletar", "Delete", "Endereco", new { id=item.EnderecoID },new { @class = "btn btn-danger"})
                 </td>
             </tr>
         }

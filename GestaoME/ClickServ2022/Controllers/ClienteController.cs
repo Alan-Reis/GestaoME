@@ -38,8 +38,6 @@ namespace ClickServ2022.Controllers
 
             return View();
 
-            //return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
-
         }
 
 
@@ -175,7 +173,6 @@ namespace ClickServ2022.Controllers
         public IActionResult AddDados(int? id)
         {
             Cliente cliente = this.cliente.GetCliente(id);
-
             return View(cliente);
         }
 

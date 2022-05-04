@@ -6,7 +6,7 @@
 
 <hr />
 <form asp-action="AddDados">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger" ></div>
     <table>
         <tr>
             <td>
@@ -15,37 +15,13 @@
         </tr>
         <tr>
             <th>
-                <h5>CONTATOS:</h5>
-            </th>
-        </tr>
-        <tr>
-            <td>Telefone:</td>
-            <td>
-                <input asp-for="Contato.Telefone" class="form-control" />
-                <span asp-validation-for="Contato.Telefone" class="text-danger"></span>
-            </td>
-            <td>Celular:</td>
-            <td>
-                <input asp-for="Contato.Celular" class="form-control" />
-                <span asp-validation-for="Contato.Celular" class="text-danger"></span>
-            </td>
-            <td>E-mail:</td>
-            <td>
-                <input asp-for="Contato.Email" class="form-control" />
-                <span type="email" asp-validation-for="Contato.Email" class="text-danger"></span>
-            </td>
-        </tr>
-
-        <tr>
-            <th>
-                <hr />
                 <h5>ENDEREÇO:</h5>
             </th>
         </tr>
         <tr>
             <td>Logradouro:</td>
             <td>
-                <input asp-for="Endereco.Logradouro" class="form-control" />
+                <input asp-for="Endereco.Logradouro" class="form-control" required/>
                 <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
             </td>
             <td>Complemento:</td>
@@ -85,7 +61,7 @@
         <tr>
             <td>Tipo:</td>
             <td>
-                <input asp-for="Equipamento.Tipo" class="form-control" />
+                <input asp-for="Equipamento.Tipo" class="form-control" required/>
                 <span asp-validation-for="Equipamento.Tipo" class="text-danger"></span>
             </td>
             <td>Fabricante:</td>

@@ -62,6 +62,8 @@ namespace ClickServ2022.Repository
 
             List<Cliente> listPessoa = new List<Cliente>();
 
+
+            //IF realizado para consulta por nome ou condomínio
             if (nome != null)
             {
                 using (SqlConnection con = new SqlConnection(connectionString))
@@ -83,6 +85,7 @@ namespace ClickServ2022.Repository
                         cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
                         cliente.Nome = reader["Nome"].ToString();
 
+                        
                         endereco.Logradouro = reader["Logradouro"].ToString();
                         endereco.Complemento = reader["Complemento"].ToString();
 
@@ -146,7 +149,8 @@ namespace ClickServ2022.Repository
                     cliente.CPF = reader["CPF"].ToString();
 
                     cliente.Enderecos = GetAllEnderecos(id);
-                    cliente.Equipamentos = GetAllEquipamentos(id);
+                    string view = null;
+                    cliente.Equipamentos = GetAllEquipamentos(id, view);
                     cliente.Contatos = GetAllContatos(id);
                 }
                 con.Close();
@@ -186,7 +190,6 @@ namespace ClickServ2022.Repository
 
                 //Pega o último ClienteID inserido no banco de dados
                 cliente.ClienteID = GetClienteLast();
-
                 AddDados(cliente);
 
                 con.Close();
@@ -198,11 +201,15 @@ namespace ClickServ2022.Repository
 
             string connectionString = Conexao();
 
-            cliente.Contato.Cliente = cliente;
+            //Para cadastro completo de cliente. Quando o cadastro é feito para adicionar um novo
+            //endereço e equipamento o Contato vem nulo e daria erro se não estivesse esse if.
+            if(cliente.Contato != null)
+            {
+                cliente.Contato.Cliente = cliente;
+                AddContato(cliente.Contato);
+            }
+            
             cliente.Endereco.Cliente = cliente;
-
-
-            AddContato(cliente.Contato);
             AddEndereco(cliente.Endereco);
 
             //Pega endereçoID para salvar na FK da tbl Equipamento
@@ -381,11 +388,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Endereco E" +
-                                                $" INNER JOIN tbl_Equipamento Eq" +
-                                                $" ON E.EnderecoID = Eq.EnderecoID" +
-                                                $" AND E.ClienteID = Eq.ClienteID" +
-                                                $" WHERE E.ClienteID = {id} ", con);
+                SqlCommand cmd = new SqlCommand($" SELECT * FROM tbl_Endereco E WHERE E.ClienteID = {id} ", con);
 
                 cmd.CommandType = CommandType.Text;
                 con.Open();
@@ -404,22 +407,16 @@ namespace ClickServ2022.Repository
                     endereco.Estado = reader["Estado"].ToString();
                     endereco.Observacao = reader["Observacao"].ToString();
 
-                    equipamento.Tipo = reader["Tipo"].ToString();
-                    equipamento.Fabricante = reader["Fabricante"].ToString();
-                    equipamento.Modelo = reader["Modelo"].ToString();
-                    equipamento.NSerie = reader["NSerie"].ToString();
-
-                    endereco.Equipamento = equipamento;
-
                     listEndereco.Add(endereco);
                 }
-
+                 
+                
                 con.Close();
             }
             return listEndereco;
         }
 
-        public Endereco GetEndereco(int? id)
+        public Endereco GetEndereco(int? id, string view)
         {
 
             string connectionString = Conexao();
@@ -429,7 +426,18 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM tbl_Endereco WHERE EnderecoID = {id}";
+
+                string sqlQuery;
+
+                if(view == "Endereco")
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Endereco WHERE ClienteID = {id}";
+                }
+                else
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Endereco WHERE EnderecoID = {id}";
+                }
+                
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -446,6 +454,9 @@ namespace ClickServ2022.Repository
                     endereco.Cidade = reader["Cidade"].ToString();
                     endereco.Estado = reader["Estado"].ToString();
                     endereco.Observacao = reader["Observacao"].ToString();
+
+                    view = "Endereco";
+                    endereco.Equipamentos = GetAllEquipamentos(id, view);
                 }
                 con.Close();
             }
@@ -521,28 +532,47 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string comandoSQL = $"DELETE FROM tbl_Endereco WHERE EnderecoID = {id}";
-                SqlCommand cmd = new SqlCommand(comandoSQL, con);
-                cmd.CommandType = CommandType.Text;
+            string view = null;
+            Endereco endereco = GetEndereco(id, view);
+            var total = endereco.Equipamentos;
+            
+            //if(total == null)
+            //{
+                using (SqlConnection con = new SqlConnection(connectionString))
+                {
+                    string comandoSQL = $"DELETE FROM tbl_Endereco WHERE EnderecoID = {id}";
+                    SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                    cmd.CommandType = CommandType.Text;
+                    con.Open();
+                    cmd.ExecuteNonQuery();
+                    con.Close();
+                }
+            //} 
 
-                con.Open();
-                cmd.ExecuteNonQuery();
-                con.Close();
-            }
         }
         #endregion
 
         #region Equipamento
-        public IEnumerable<Equipamento> GetAllEquipamentos(int? id)
+        public IEnumerable<Equipamento> GetAllEquipamentos(int? id, string view)
         {
             string connectionString = Conexao();
             List<Equipamento> listEquipamento = new List<Equipamento>();
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Equipamento WHERE ClienteID = {id}", con);
+                string query = null;
+
+                if (view == "Endereco")
+                {
+                    query = $"SELECT * FROM tbl_Equipamento WHERE EnderecoID = {id}";
+                }
+                else
+                {
+                    query = $"SELECT * FROM tbl_Equipamento WHERE ClienteID = {id}";
+                }
+                
+
+                SqlCommand cmd = new SqlCommand(query, con);
                 cmd.CommandType = CommandType.Text;
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -554,6 +584,17 @@ namespace ClickServ2022.Repository
                     equipamento.Fabricante = reader["Fabricante"].ToString();
                     equipamento.Modelo = reader["Modelo"].ToString();
                     equipamento.NSerie = reader["NSerie"].ToString();
+
+                    //Criado para adicionar novo equipamento para um endereço específico 
+                    Endereco endereco = new Endereco();
+                    endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
+                    equipamento.Endereco = endereco;
+
+                    Cliente cliente = new Cliente();                  
+                    cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
+                    equipamento.Cliente = cliente;
+                    //Fim
+
                     listEquipamento.Add(equipamento);
                 }
                 con.Close();
@@ -562,7 +603,7 @@ namespace ClickServ2022.Repository
             return listEquipamento;
         }
 
-        public Equipamento GetEquipamento(int? id)
+        public Equipamento GetEquipamento(int? id, string view)
         {
 
             string connectionString = Conexao();
@@ -572,7 +613,19 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id}";
+
+                string sqlQuery = null;
+
+                if (view == "Endereco")
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EnderecoID = {id}";
+                }
+                else
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id}";
+                }
+
+                //string sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -600,14 +653,31 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO tbl_Equipamento " +
-                                    $"Values({equipamento.Cliente.Endereco.EnderecoID}, " +
-                                    $"'{equipamento.Cliente.ClienteID}', " +
-                                    $"'{equipamento.Tipo}', " +
-                                    $"'{equipamento.Fabricante}', " +
-                                    $"'{equipamento.Modelo}', " +
-                                    $"'{equipamento.NSerie}')";
-                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                //Para cadastro vindo do Cliente/Details
+                string sqlQuery;
+                if (equipamento.Endereco != null)
+                {
+                    sqlQuery = $"INSERT INTO tbl_Equipamento " +
+                                   $"Values({equipamento.Endereco.EnderecoID}, " +
+                                   $"'{equipamento.Cliente.ClienteID}', " +
+                                   $"'{equipamento.Tipo}', " +
+                                   $"'{equipamento.Fabricante}', " +
+                                   $"'{equipamento.Modelo}', " +
+                                   $"'{equipamento.NSerie}')";
+
+                }
+                else
+                {
+                    sqlQuery = $"INSERT INTO tbl_Equipamento " +
+                                       $"Values({equipamento.Cliente.Endereco.EnderecoID}, " +
+                                       $"'{equipamento.Cliente.ClienteID}', " +
+                                       $"'{equipamento.Tipo}', " +
+                                       $"'{equipamento.Fabricante}', " +
+                                       $"'{equipamento.Modelo}', " +
+                                       $"'{equipamento.NSerie}')";
+                }
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();

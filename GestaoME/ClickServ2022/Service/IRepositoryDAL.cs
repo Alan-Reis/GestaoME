@@ -14,6 +14,7 @@ namespace ClickServ2022.Service
         void AddCliente(Cliente cliente);
         void AddDados(Cliente cliente);
         void UpdateCliente(Cliente cliente);
+        //Cliente GetCliente(int? id, string view);
         Cliente GetCliente(int? id);
         void DeleteCliente(int? id);
         #endregion
@@ -30,15 +31,15 @@ namespace ClickServ2022.Service
         IEnumerable<Endereco> GetAllEnderecos(int? id);
         void AddEndereco(Endereco endereco);
         void UpdateEndereco(Endereco endereco);
-        Endereco GetEndereco(int? id);
+        Endereco GetEndereco(int? id, string view);
         void DeleteEndereco(int? id);
         #endregion
 
         #region Equipamento
-        IEnumerable<Equipamento> GetAllEquipamentos(int? id);
+        IEnumerable<Equipamento> GetAllEquipamentos(int? id, string view);
         void AddEquipamento(Equipamento equipamento);
         void UpdateEquipamento(Equipamento equipamento);
-        Equipamento GetEquipamento(int? id);
+        Equipamento GetEquipamento(int? id, string view);
         void DeleteEquipamento(int? id);
         #endregion
 

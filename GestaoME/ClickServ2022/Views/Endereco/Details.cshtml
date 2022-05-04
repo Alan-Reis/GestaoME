@@ -4,43 +4,34 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Endereco</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EnderecoID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EnderecoID)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Logradouro)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Logradouro)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Complemento)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Complemento)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Bairro)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Bairro)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Cidade)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Cidade)
         </dd>
-         <dt class="col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Estado)
         </dt>
         <dd class="col-sm-10">
@@ -54,7 +45,57 @@
         </dd>
     </dl>
 </div>
+
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EnderecoID }) |
-    @Html.ActionLink("Voltar", "Details","Cliente", new { id = Model.Cliente.ClienteID })
+    @Html.ActionLink("Editar", "Edit", new { id = Model.EnderecoID },new { @class = "btn btn-primary"})
+    @Html.ActionLink("Voltar", "Details","Cliente", new { id = Model.Cliente.ClienteID },new { @class = "btn btn-primary"})
 </div>
+
+
+</br>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Tipo
+            </th>
+            <th>
+                Fabricante
+            </th>
+            <th>
+                Modelo
+            </th>
+            <th>
+                Nº série
+            </th>
+            <th>
+                <div>
+                    @Html.ActionLink("Novo", "Create","Equipamento", new { id = Model.EnderecoID },new { @class = "btn btn-primary"})
+                </div>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Equipamentos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Tipo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fabricante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NSerie)
+                </td>
+                <td>
+                    @Html.ActionLink("Editar", "Edit", "Equipamento", new { id=item.EquipamentoID },new { @class = "btn btn-primary"})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
