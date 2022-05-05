@@ -14,8 +14,9 @@ namespace ClickServ2022.Models
         public string Complemento { get; set; }
         public string Bairro { get; set; }
         public string Cidade { get; set; }
-        public string Estado { get; set; }
-        //[Display(Name="Observação")]
+        [Display(Name ="UF")]
+        public string Uf { get; set; }
+        [Display(Name="Observação")]
         public string Observacao { get; set; }
         public Cliente Cliente { get; set; }
         public Equipamento Equipamento { get; set; }

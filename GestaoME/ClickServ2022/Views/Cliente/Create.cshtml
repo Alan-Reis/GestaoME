@@ -16,7 +16,7 @@
         <tr>
             <td>Nome:</td>
             <td>
-                <input asp-for="Nome" class="form-control" required/>
+                <input asp-for="Nome" class="form-control" required />
                 <span asp-validation-for="Nome" class="text-danger"></span>
             </td>
             <td>CPF:</td>
@@ -33,7 +33,7 @@
             </td>
             <td>Celular:</td>
             <td>
-                <input asp-for="Contato.Celular" class="form-control" required/>
+                <input asp-for="Contato.Celular" class="form-control" required />
                 <span asp-validation-for="Contato.Celular" class="text-danger"></span>
             </td>
             <td>E-mail:</td>
@@ -42,17 +42,20 @@
                 <span type="email" asp-validation-for="Contato.Email" class="text-danger"></span>
             </td>
         </tr>
-
         <tr>
-            <th>
-                <hr />
-                <h5>ENDEREÇO:</h5>
-            </th>
+            <td>
+                <h5>ENDEREÇO:</h5> 
+            </td>
+            <td>
+                <p class="font-weight-bold">
+                     @Html.ActionLink("Pesquisar por CEP", "Index", "CEP", new {view="Create"})
+                </p>
+            </td>
         </tr>
         <tr>
             <td>Logradouro:</td>
             <td>
-                <input asp-for="Endereco.Logradouro" class="form-control" required/>
+                <input asp-for="Endereco.Logradouro" class="form-control" required />
                 <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
             </td>
             <td>Complemento:</td>
@@ -74,8 +77,8 @@
             </td>
             <td>Estado:</td>
             <td>
-                <input asp-for="Endereco.Estado" class="form-control" />
-                <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
+                <input asp-for="Endereco.Uf" class="form-control" />
+                <span asp-validation-for="Endereco.Uf" class="text-danger"></span>
             </td>
             <td>Observação:</td>
             <td>
@@ -85,14 +88,13 @@
         </tr>
         <tr>
             <th>
-                <hr />
                 <h5>EQUIPAMENTO:</h5>
             </th>
         </tr>
         <tr>
             <td>Tipo:</td>
             <td>
-                <input asp-for="Equipamento.Tipo" class="form-control" required/>
+                <input asp-for="Equipamento.Tipo" class="form-control" required />
                 <span asp-validation-for="Equipamento.Tipo" class="text-danger"></span>
             </td>
             <td>Fabricante:</td>
@@ -116,7 +118,7 @@
     </table>
     </br>
     <div class="form-group">
-        <input type="submit" value="Criar" class="btn btn-primary" /> 
+        <input type="submit" value="Criar" class="btn btn-primary" />
         <a asp-action="Index" class="btn btn-primary">Voltar</a>
     </div>
 </form>

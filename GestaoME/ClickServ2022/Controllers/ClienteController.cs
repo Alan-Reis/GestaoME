@@ -93,8 +93,16 @@ namespace ClickServ2022.Controllers
             return View(cliente);
         }
 
-        public IActionResult Create()
+        public IActionResult Create(Endereco endereco)
         {
+            //Função par busca de CEP
+            if (endereco.Logradouro != null)
+            {
+                Cliente cliente = new Cliente();
+                cliente.Endereco = endereco;
+                
+                return View(cliente);
+            }
             return View();
         }
 
@@ -131,12 +139,7 @@ namespace ClickServ2022.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind] Cliente cliente)
         {
-            /*
-            if (id != cliente.ClienteID)
-            {
-                return NotFound();
-            }
-            */
+                    
             if (ModelState.IsValid)
             {
                 this.cliente.UpdateCliente(cliente);
@@ -170,9 +173,17 @@ namespace ClickServ2022.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AddDados(int? id)
+        public IActionResult AddDados(int? id, Endereco endereco)
         {
-            Cliente cliente = this.cliente.GetCliente(id);
+            Cliente cliente = new Cliente();
+
+            if (endereco.Logradouro != null)
+            {
+                cliente = this.cliente.GetCliente(endereco.EnderecoID);
+                cliente.Endereco = endereco;
+                return View(cliente);
+            }
+            cliente = this.cliente.GetCliente(id);
             return View(cliente);
         }
 
@@ -190,5 +201,6 @@ namespace ClickServ2022.Controllers
 
             return View(cliente);
         }
+
     }
 }

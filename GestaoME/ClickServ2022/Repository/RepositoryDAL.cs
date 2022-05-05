@@ -404,7 +404,7 @@ namespace ClickServ2022.Repository
                     endereco.Complemento = reader["Complemento"].ToString();
                     endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Cidade = reader["Cidade"].ToString();
-                    endereco.Estado = reader["Estado"].ToString();
+                    endereco.Uf = reader["Uf"].ToString();
                     endereco.Observacao = reader["Observacao"].ToString();
 
                     listEndereco.Add(endereco);
@@ -452,7 +452,7 @@ namespace ClickServ2022.Repository
                     endereco.Complemento = reader["Complemento"].ToString();
                     endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Cidade = reader["Cidade"].ToString();
-                    endereco.Estado = reader["Estado"].ToString();
+                    endereco.Uf = reader["Uf"].ToString();
                     endereco.Observacao = reader["Observacao"].ToString();
 
                     view = "Endereco";
@@ -493,7 +493,7 @@ namespace ClickServ2022.Repository
                                     $"'{endereco.Complemento}', " +
                                     $"'{endereco.Bairro}', " +
                                     $"'{endereco.Cidade}', " +
-                                    $"'{endereco.Estado}', " +
+                                    $"'{endereco.Uf}', " +
                                     $"'{endereco.Observacao}')";
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
@@ -516,7 +516,7 @@ namespace ClickServ2022.Repository
                                     $"Complemento = '{endereco.Complemento}', " +
                                     $"Bairro = '{endereco.Bairro}', " +
                                     $"Cidade = '{endereco.Cidade}', " +
-                                    $"Estado = '{endereco.Estado}', " +
+                                    $"Estado = '{endereco.Uf}', " +
                                     $"Observacao = '{endereco.Observacao}' " +
                                     $"WHERE EnderecoID = '{endereco.EnderecoID}'";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);

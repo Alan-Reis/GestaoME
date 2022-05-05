@@ -13,7 +13,7 @@ namespace ClickServ2022.Models
         public string Tipo { get; set; }
         public string Fabricante { get; set; }
         public string Modelo { get; set; }
-        //[Display(Name="Nº série")]
+        [Display(Name="Nº série")]
         public string NSerie { get; set; }
         public Cliente Cliente { get; set; }
         public Endereco Endereco { get; set; }

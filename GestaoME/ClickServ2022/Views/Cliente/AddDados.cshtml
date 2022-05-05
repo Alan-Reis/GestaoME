@@ -6,7 +6,7 @@
 
 <hr />
 <form asp-action="AddDados">
-    <div asp-validation-summary="ModelOnly" class="text-danger" ></div>
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <table>
         <tr>
             <td>
@@ -14,14 +14,19 @@
             </td>
         </tr>
         <tr>
-            <th>
+            <td>
                 <h5>ENDEREÇO:</h5>
-            </th>
+            </td>
+            <td>
+                <p class="font-weight-bold">
+                    @Html.ActionLink("Pesquisar por CEP", "Index", "CEP", new {id = Model.ClienteID })
+                </p>
+            </td>
         </tr>
         <tr>
             <td>Logradouro:</td>
             <td>
-                <input asp-for="Endereco.Logradouro" class="form-control" required/>
+                <input asp-for="Endereco.Logradouro" class="form-control" required />
                 <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
             </td>
             <td>Complemento:</td>
@@ -43,8 +48,8 @@
             </td>
             <td>Estado:</td>
             <td>
-                <input asp-for="Endereco.Estado" class="form-control" />
-                <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
+                <input asp-for="Endereco.Uf" class="form-control" />
+                <span asp-validation-for="Endereco.Uf" class="text-danger"></span>
             </td>
             <td>Observação:</td>
             <td>
@@ -61,7 +66,7 @@
         <tr>
             <td>Tipo:</td>
             <td>
-                <input asp-for="Equipamento.Tipo" class="form-control" required/>
+                <input asp-for="Equipamento.Tipo" class="form-control" required />
                 <span asp-validation-for="Equipamento.Tipo" class="text-danger"></span>
             </td>
             <td>Fabricante:</td>

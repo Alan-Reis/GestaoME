@@ -43,6 +43,9 @@ namespace ClickServ2022.Service
         void DeleteEquipamento(int? id);
         #endregion
 
-        
+        #region Equipamento
+
+
+        #endregion
     }
 }
