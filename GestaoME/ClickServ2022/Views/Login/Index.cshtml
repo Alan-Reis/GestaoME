@@ -3,32 +3,27 @@
 @{
     ViewData["Title"] = "Index";
 }
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+</head>
+<body id="corpo-login">
 
-<h1>Gestão ME</h1>
+    <img src="~/imagens/logo-novo.png" asp-append-version="true" id="logo-login">
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Index">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Usuario" class="control-label"></label>
-                <input asp-for="Usuario" class="form-control" />
-                <span asp-validation-for="Usuario" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Senha" class="control-label"></label>
-                <input asp-for="Senha" class="form-control" />
-                <span asp-validation-for="Senha" class="text-danger"></span>
-            </div>
-            <h5 style="color:red">@ViewBag.Falha</h5>
-            <div class="form-group">
-                <input type="submit" value="ENTRAR" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
-</div>
+    <section>
+        <input name="usuario" id="usuario-input" class="form-control" placeholder="USUÁRIO">
+        <input type="password" name="Senha" id="senha-input" class="form-control" placeholder="SENHA">
+        <input type="submit" value="ENTRAR" id="botao-login" class="btn btn-primary" />
+    </section>
 
+</body>
+
+</html>
 
 
 @section Scripts {
