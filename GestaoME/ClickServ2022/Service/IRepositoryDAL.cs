@@ -6,7 +6,7 @@ namespace ClickServ2022.Service
     public interface IRepositoryDAL
     {
         #region GestaoME
-        Login GetLogin(string usuario, string senha);
+    
         #endregion
 
         #region Cliente

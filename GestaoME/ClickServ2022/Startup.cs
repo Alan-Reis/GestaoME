@@ -34,7 +34,7 @@ namespace ClickServ2022
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            //cria a cada solicitação
+            //cria a cada solicitaï¿½ï¿½o
             services.AddTransient<IRepositoryDAL, RepositoryDAL>();
 
             services.AddMvc();
@@ -64,7 +64,7 @@ namespace ClickServ2022
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Login}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }
     }
