@@ -31,27 +31,7 @@ namespace ClickServ2022.Repository
         #endregion
 
         #region GestaoME
-        public Login GetLogin(string usuario, string senha)
-        {
-            string connectionString = ConexaoGestaoME();
-
-            Login login = new Login();
-
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string sqlQuery = $"SELECT * FROM tbl_login WHERE Usuario = '{usuario}' AND Senha = '{senha}'";
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    login.Usuario = reader["Usuario"].ToString();
-                }
-                con.Close();
-            }
-            return login;
-        }
+        
         #endregion
 
         #region Cliente
