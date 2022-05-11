@@ -108,8 +108,12 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Cliente cliente)
+        public IActionResult Create([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf)
         {
+            cliente.Endereco.Logradouro = logradouro;
+            cliente.Endereco.Bairro     = bairro;
+            cliente.Endereco.Cidade     = cidade;
+            cliente.Endereco.Uf         = uf;
 
             if (ModelState.IsValid)
             {
@@ -189,8 +193,12 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddDados([Bind] Cliente cliente)
+        public IActionResult AddDados([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf)
         {
+            cliente.Endereco.Logradouro = logradouro;
+            cliente.Endereco.Bairro = bairro;
+            cliente.Endereco.Cidade = cidade;
+            cliente.Endereco.Uf = uf;
 
             if (ModelState.IsValid)
             {

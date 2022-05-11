@@ -1,6 +1,7 @@
 ﻿using ClickServ2022.Models;
 using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,10 @@ namespace ClickServ2022.Controllers
         {
             string view = "Endereco";
             var cliente = this.equipamento.GetEquipamento(id, view);
+
+
+            ViewBag.Equipamento = this.equipamento.GetAllTipoEquipamento().Select(c => new SelectListItem()
+            { Text = c.Equipamento, Value = c.Equipamento }).ToList();
 
             Equipamento equipamento = new Equipamento();
             Endereco endereco = new Endereco();

@@ -63,24 +63,20 @@
 
         @if (Model.Count == 0)
         {
-            @Html.ActionLink("SIM", "Create",null,null,new { @class = "btn btn-primary"}) 
+            @Html.ActionLink("SIM", "Create",null,null,new { @class = "btn btn-primary"})
             @Html.ActionLink("NÃO", "Index",null,null,new { @class = "btn btn-danger"})
         }
         @foreach (var item in Model)
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Nome)
+                    @Html.ActionLink(item.Nome, "Details",  new { id=item.ClienteID})
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Endereco.Logradouro)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Endereco.Complemento)
-                </td>
-                <td>
-                    @Html.ActionLink("Detalhar", "Details", new { id=item.ClienteID}, new {@class = "btn btn-primary" })
-                    @Html.ActionLink("Deletar", "Delete", new { id=item.ClienteID}, new { @class = "btn btn-danger"})
                 </td>
             </tr>
         }
@@ -96,33 +92,33 @@
 <!--Código para gerar paginação-->
 <div>
     Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-    of @Model.PageCount
+    de @Model.PageCount
 
     @if (Model.HasPreviousPage)
     {
         @Html.ActionLink("Primeira", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
         @Html.Raw(" ")
         ;
-        @Html.ActionLink("< Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.ActionLink("Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
     }
     else
     {
         @:<<
         @Html.Raw(" ")
         ;
-        @:< Anterior
+        @: Anterior
     }
 
     @if (Model.HasNextPage)
     {
-        @Html.ActionLink("Próxima >", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.ActionLink("Próxima", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
         @Html.Raw(" ")
         ;
         @Html.ActionLink("Última", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
     }
     else
     {
-        @:Próxima >
+        @:Próxima 
         @Html.Raw(" ")
         @:>>
     }

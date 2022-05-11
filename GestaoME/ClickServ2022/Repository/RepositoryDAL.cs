@@ -723,5 +723,88 @@ namespace ClickServ2022.Repository
             }
         }
         #endregion
+
+        #region Atendimento
+        public void AddAtendimento(Atendimento atendimento)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"INSERT INTO tbl_Atendimento (EquipamentoID, Colaborador, Tipo, Defeito, Data, Periodo, Status, Observacao) " +
+                                    $"Values({atendimento.Equipamento.EquipamentoID}, " +
+                                    $"'{atendimento.Colaborador.Nome}', " +
+                                    $"'{atendimento.Tipo}', " +
+                                    $"'{atendimento.Defeito}', " +
+                                    $"'{atendimento.Data}', " +
+                                    $"'{atendimento.Periodo}', " +
+                                    $"'{atendimento.Status}', " +
+                                    $"'{atendimento.Observacao}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+        #endregion
+
+        #region Colaborador
+        public IEnumerable<Colaborador> GetAllColaborador()
+        {
+            string connectionString = Conexao();
+
+            List<Colaborador> listColaborador = new List<Colaborador>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Colaborador Where Funcao = 'Técnico em manutenção'", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Colaborador colaborador = new Colaborador();
+                    colaborador.Nome = reader["Nome"].ToString();
+
+                    listColaborador.Add(colaborador);
+                }
+                con.Close();
+            }
+
+            return listColaborador;
+        }
+        #endregion
+
+        #region Tipo de Equipamento
+        public IEnumerable<TipoEquipamento> GetAllTipoEquipamento()
+        {
+            string connectionString = Conexao();
+
+            List<TipoEquipamento> listTipoEquipamento = new List<TipoEquipamento>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_TipoEquipamento", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TipoEquipamento tipoEquipamento = new TipoEquipamento();
+                    tipoEquipamento.Equipamento = reader["Equipamento"].ToString();
+
+                    listTipoEquipamento.Add(tipoEquipamento);
+                }
+                con.Close();
+            }
+
+            return listTipoEquipamento;
+        }
+        #endregion
     }
 }

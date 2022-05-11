@@ -80,7 +80,7 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Tipo)
+                    @Html.ActionLink(item.Tipo, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Fabricante)
@@ -93,7 +93,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Editar", "Edit", "Equipamento", new { id=item.EquipamentoID },new { @class = "btn btn-primary"})
-                    @Html.ActionLink("Atender", "Create", "Atendimento", new { id=item.EquipamentoID },new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Atender", "Create", "Atendimento", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})
                 </td>
             </tr>
         }

@@ -43,9 +43,19 @@ namespace ClickServ2022.Service
         void DeleteEquipamento(int? id);
         #endregion
 
-        #region Equipamento
+        #region Atendimento
+        //IEnumerable<Atendimento> GetAllAtedimentos();
+        void AddAtendimento(Atendimento atendimento);
+        //void UpdateAtendimento(Atendimento atendimento);
+        //Atendimento GetAtendimento(int? id);
+        #endregion
 
+        #region Colaborador
+        IEnumerable<Colaborador> GetAllColaborador();
+        #endregion
 
+        #region Auxiliares
+        IEnumerable<TipoEquipamento> GetAllTipoEquipamento();
         #endregion
     }
 }

@@ -62,7 +62,7 @@
                 </td>
                 <td>
                     @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID },new { @class = "btn btn-primary"})
-                    @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID },new { @class = "btn btn-danger"})
+                    @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID },new { @class = "btn btn-danger " })
                 </td>
             </tr>
         }
@@ -94,16 +94,13 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Logradouro)
+                    @Html.ActionLink(item.Logradouro, "Details", "Endereco",  new { id=item.EnderecoID })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Complemento)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Cidade)
-                </td>
-                <td>
-                    @Html.ActionLink("Detalhar", "Details", "Endereco", new { id=item.EnderecoID },new { @class = "btn btn-primary"})
                 </td>
             </tr>
         }

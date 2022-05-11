@@ -24,15 +24,10 @@ namespace ClickServ2022.Controllers
 
             if (login.Usuario == null)
             {
-                return NotFound();
-            }
-
-            if (login.Usuario == null)
-            {
                 ViewBag.Falha = "Usuário ou senha incorreta";
                 return View();
             }
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("Index", "Home", login);
         }
     }
 }

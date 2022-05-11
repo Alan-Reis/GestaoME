@@ -21,9 +21,10 @@
             </div>
 
             <div class="form-group">
-                <label asp-for="Tipo" class="control-label"></label>
-                <input asp-for="Tipo" class="form-control" required/>
-                <span asp-validation-for="Tipo" class="text-danger"></span>
+               <p>Tipo</p>
+                <select asp-for="Tipo"
+                        asp-items="@ViewBag.Equipamento" class="form-control">
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="Fabricante" class="control-label"></label>
