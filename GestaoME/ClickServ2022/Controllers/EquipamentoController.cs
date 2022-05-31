@@ -33,14 +33,49 @@ namespace ClickServ2022.Controllers
             return View(equipamento);
         }
 
-        public IActionResult Create(int? id)
+        public JsonResult TipoEquipamento()
+        {
+            ViewBag.Equipamento = this.equipamento.GetAllTipoEquipamento().Select(c => new SelectListItem()
+            { Text = c.Equipamento, Value = c.Equipamento }).ToList();
+            
+            return Json(ViewBag.Equipamento, System.Web.Mvc.JsonRequestBehavior.AllowGet);
+        }
+        [HttpPost]
+        public JsonResult Fabricante(string tipo)
+        {
+            ViewBag.Fabricante = this.equipamento.GetAllFabricante(tipo);
+           
+            return Json(ViewBag.Fabricante, System.Web.Mvc.JsonRequestBehavior.AllowGet);
+        }
+
+        /*
+          [HttpPost]
+        public JsonResult Fabricante([FromBody]string tipo)
+        {
+            ViewBag.Fabricante = this.equipamento.GetAllFabricante(tipo);
+            return Json(ViewBag.Fabricante);
+        }
+         */
+        public IActionResult Create(int? id, string tipo, string fabricante)
         {
             string view = "Endereco";
             var cliente = this.equipamento.GetEquipamento(id, view);
 
-
             ViewBag.Equipamento = this.equipamento.GetAllTipoEquipamento().Select(c => new SelectListItem()
             { Text = c.Equipamento, Value = c.Equipamento }).ToList();
+            /*
+            if(tipo != null)
+            {
+                ViewBag.Fabricante = this.equipamento.GetAllFabricante(tipo).Select(c => new SelectListItem()
+                { Text = c.Nome, Value = c.Nome }).ToList();
+            }
+            
+            if(fabricante != null)
+            {
+                ViewBag.Modelo = this.equipamento.GetAllModelo().Select(c => new SelectListItem()
+                { Text = c.Nome, Value = c.Nome }).ToList();
+            }
+           */
 
             Equipamento equipamento = new Equipamento();
             Endereco endereco = new Endereco();
@@ -58,7 +93,7 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Equipamento equipamento)
+        public IActionResult Create([Bind] Equipamento equipamento, string tipo)
         {
             if (ModelState.IsValid)
             {

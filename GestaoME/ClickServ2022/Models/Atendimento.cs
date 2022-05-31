@@ -11,6 +11,8 @@ namespace ClickServ2022.Models
         public int AtendimentoID { get; set; }
         public string Tipo { get; set; } //Novo - Retorno - Garantia
         public string  Defeito { get; set; }
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Data { get; set; }
         public string Periodo { get; set; }
         public string Status { get; set; } //Ativo - Cancelado - Aguardando Aprovação - Aguardando Peça - Concluído

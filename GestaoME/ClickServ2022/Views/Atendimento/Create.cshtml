@@ -13,7 +13,7 @@
                 <input asp-for="Equipamento.EquipamentoID" class="form-control" type="hidden" />
             </div>
             <div class="form-group">
-                 <p>Tipo de atedimento</p>
+                <p>Tipo de atedimento</p>
                 <select name="Tipo" class="form-control">
                     <option>Novo</option>
                     <option>Retorno</option>
@@ -40,7 +40,7 @@
                 <span asp-validation-for="Periodo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                 <p>Status do atedimento</p>
+                <p>Status do atedimento</p>
                 <select name="Status" class="form-control">
                     <option>Ativo</option>
                     <option>Aguardando Aprovação</option>
@@ -62,15 +62,14 @@
                 </select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Salvar" class="btn btn-primary" />
+                @Html.ActionLink("Voltar", "Index", "Home", null, new { @class = "btn btn-primary"})
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{

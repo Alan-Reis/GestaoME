@@ -18,9 +18,8 @@ namespace ClickServ2022.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index(Login login)
+        public IActionResult Index()
         {
-            ViewBag.Usuario = login.Usuario;
             return View();
         }
 

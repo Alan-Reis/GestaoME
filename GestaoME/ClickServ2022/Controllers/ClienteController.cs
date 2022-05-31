@@ -95,7 +95,6 @@ namespace ClickServ2022.Controllers
 
         public IActionResult Create(Endereco endereco)
         {
-            //Função par busca de CEP
             if (endereco.Logradouro != null)
             {
                 Cliente cliente = new Cliente();
@@ -110,6 +109,7 @@ namespace ClickServ2022.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf)
         {
+            //Função para setar os valores do CEP
             cliente.Endereco.Logradouro = logradouro;
             cliente.Endereco.Bairro     = bairro;
             cliente.Endereco.Cidade     = cidade;

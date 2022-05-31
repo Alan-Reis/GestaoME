@@ -38,7 +38,7 @@ namespace ClickServ2022.Controllers
             Equipamento equipamento = new Equipamento();
             equipamento.EquipamentoID = (int)id;
             atendimento.Equipamento = equipamento;
-            atendimento.Data = DateTime.Now;
+            atendimento.Data = DateTime.Now.Date;
 
             if (atendimento == null)
             {
@@ -56,7 +56,8 @@ namespace ClickServ2022.Controllers
             {
                 this.atendimento.AddAtendimento(atendimento);
                 //Erro ao redirecionar, precida informar  id do Cliente
-                return RedirectToAction("Details", "Endereco", new { id = atendimento.Equipamento.EquipamentoID });
+                return RedirectToAction("Index", "Home");
+                //return RedirectToAction("Details", "Endereco", new { id = atendimento.Equipamento.EquipamentoID });
             }
 
             return View(atendimento);

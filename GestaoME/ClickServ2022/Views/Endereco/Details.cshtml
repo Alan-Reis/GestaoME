@@ -94,6 +94,7 @@
                 <td>
                     @Html.ActionLink("Editar", "Edit", "Equipamento", new { id=item.EquipamentoID },new { @class = "btn btn-primary"})
                     @Html.ActionLink("Atender", "Create", "Atendimento", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Gerar O.S", "Create", "OrdemServico", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})
                 </td>
             </tr>
         }

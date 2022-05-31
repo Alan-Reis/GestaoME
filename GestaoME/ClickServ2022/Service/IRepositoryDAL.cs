@@ -54,8 +54,17 @@ namespace ClickServ2022.Service
         IEnumerable<Colaborador> GetAllColaborador();
         #endregion
 
+        #region Ordem de Serviço
+        void AddOrdemServico(OrdemServico ordemservico);
+        IEnumerable<OrdemServico> GetAllOrdemServico();
+        OrdemServico GetOrdemServico(int? os);
+
+        #endregion
+
         #region Auxiliares
-        IEnumerable<TipoEquipamento> GetAllTipoEquipamento();
+        List<TipoEquipamento> GetAllTipoEquipamento();
+        List<Fabricante> GetAllFabricante(string equipamento);
+        List<Modelo> GetAllModelo();
         #endregion
     }
 }
