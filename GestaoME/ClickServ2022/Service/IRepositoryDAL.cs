@@ -44,7 +44,7 @@ namespace ClickServ2022.Service
         #endregion
 
         #region Atendimento
-        //IEnumerable<Atendimento> GetAllAtedimentos();
+        IEnumerable<Atendimento> GetAllAtedimentos();
         void AddAtendimento(Atendimento atendimento);
         //void UpdateAtendimento(Atendimento atendimento);
         //Atendimento GetAtendimento(int? id);
@@ -64,7 +64,8 @@ namespace ClickServ2022.Service
         #region Auxiliares
         List<TipoEquipamento> GetAllTipoEquipamento();
         List<Fabricante> GetAllFabricante(string equipamento);
-        List<Modelo> GetAllModelo();
+        List<Modelo> GetAllModelo(string model);
+        IEnumerable<Evento> GetAllEventos();
         #endregion
     }
 }

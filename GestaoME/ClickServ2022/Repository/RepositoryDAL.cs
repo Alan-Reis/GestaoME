@@ -705,6 +705,49 @@ namespace ClickServ2022.Repository
         #endregion
 
         #region Atendimento
+
+        public IEnumerable<Atendimento> GetAllAtedimentos()
+        {
+            string connectionString = Conexao();
+
+            List<Atendimento> listAtendimento = new List<Atendimento>();
+
+            Equipamento equipamento = new Equipamento();
+            Colaborador colaborador = new Colaborador();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Atendimento A INNER JOIN tbl_Equipamento E ON A.EquipamentoID = E.EquipamentoID", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Atendimento atendimento = new Atendimento();
+                    atendimento.AtendimentoID = Convert.ToInt32(reader["AtendimentoID"]);
+
+                    equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
+                    equipamento.Tipo = reader["Tipo"].ToString();
+                    atendimento.Equipamento = equipamento;
+                    atendimento.Categoria = reader["Categoria"].ToString();
+                    atendimento.Defeito = reader["Defeito"].ToString();
+                    atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    atendimento.Periodo = reader["Periodo"].ToString();
+                    atendimento.Observacao = reader["Observacao"].ToString();
+
+
+                    //colaborador.Nome = reader["Nome"].ToString();
+                    //ordemServico.Colaborador = colaborador;
+
+                    listAtendimento.Add(atendimento);
+                }
+                con.Close();
+            }
+
+            return listAtendimento;
+        }
         public void AddAtendimento(Atendimento atendimento)
         {
             string connectionString = Conexao();
@@ -714,10 +757,10 @@ namespace ClickServ2022.Repository
 
                 var Data = atendimento.Data.ToString("yyyy/MM/dd");
 
-                string comandoSQL = $"INSERT INTO tbl_Atendimento (EquipamentoID, Colaborador, Tipo, Defeito, Data, Periodo, Status, Observacao) " +
+                string comandoSQL = $"INSERT INTO tbl_Atendimento (EquipamentoID, Colaborador, Categoria, Defeito, Data, Periodo, Status, Observacao) " +
                                     $"Values({atendimento.Equipamento.EquipamentoID}, " +
                                     $"'{atendimento.Colaborador.Nome}', " +
-                                    $"'{atendimento.Tipo}', " +
+                                    $"'{atendimento.Categoria}', " +
                                     $"'{atendimento.Defeito}', " +
                                     $"'{Data}', " +
                                     $"'{atendimento.Periodo}', " +
@@ -861,6 +904,47 @@ namespace ClickServ2022.Repository
         }
         #endregion
 
+        /*public List<Equipamento> GetAllTipoEquipamento()
+        {
+            string connectionString = Conexao();
+
+            List<Equipamento> listTipoEquipamento = new List<Equipamento>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                    SqlCommand cmd = new SqlCommand(" SELECT TP.Equipamento, F.NomeFabricante, M.NomeModelo FROM tbl_TipoEquipamento TP" +
+                                                    " INNER JOIN tbl_Fabricante F" +
+                                                    " ON TP.TipoID = F.TipoID" +
+                                                    " INNER JOIN tbl_Modelo M" +
+                                                    " ON F.FabricanteID = M.FabricanteID", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Equipamento equipamento = new Equipamento();
+                    TipoEquipamento tipoEquipamento = new TipoEquipamento();
+                    Fabricante fabricante = new Fabricante();
+                    Modelo modelo = new Modelo();
+                                        
+                    tipoEquipamento.Equipamento = reader["Equipamento"].ToString();
+                    equipamento.Tipo = tipoEquipamento.Equipamento;
+
+                    fabricante.NomeFabricante = reader["NomeFabricante"].ToString();
+                    equipamento.Fabricante = fabricante.NomeFabricante;
+
+                    modelo.NomeModelo = reader["NomeModelo"].ToString();
+                    equipamento.Modelo = modelo.NomeModelo;
+
+                    listTipoEquipamento.Add(equipamento);
+                }
+                con.Close();
+            }
+
+            return listTipoEquipamento;
+        }*/
         #region Tipo de Equipamento
         public List<TipoEquipamento> GetAllTipoEquipamento()
         {
@@ -913,7 +997,7 @@ namespace ClickServ2022.Repository
                     Fabricante fabricante = new Fabricante();
                     fabricante.TipoID = Convert.ToInt32(reader["TipoID"].ToString());
                     fabricante.FabricanteID = Convert.ToInt32(reader["FabricanteID"].ToString());
-                    fabricante.Nome = reader["Nome"].ToString();
+                    fabricante.NomeFabricante = reader["NomeFabricante"].ToString();
 
                     listFabricante.Add(fabricante);
                 }
@@ -925,15 +1009,24 @@ namespace ClickServ2022.Repository
         #endregion
 
         #region Modelos
-        public List<Modelo> GetAllModelo()
+        public List<Modelo> GetAllModelo(string model)
         {
             string connectionString = Conexao();
 
             List<Modelo> listModelo = new List<Modelo>();
 
+            
+
+
+
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Modelo", con);
+                SqlCommand cmd = new SqlCommand($" SELECT F.NomeFabricante, M.NomeModelo FROM tbl_Fabricante F" +
+                                                $" INNER JOIN tbl_Modelo M" +
+                                                $" ON F.FabricanteID = M.FabricanteID" +
+                                                $" WHERE F.NomeFabricante = '{ model }'", con);
+
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -941,9 +1034,7 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     Modelo modelo = new Modelo();
-                    modelo.ModeloID = Convert.ToInt32(reader["ModeloID"].ToString());
-                    modelo.FabricanteID = Convert.ToInt32(reader["FabricanteID"].ToString());
-                    modelo.Nome = reader["Nome"].ToString();
+                    modelo.NomeModelo = reader["NomeModelo"].ToString();
 
                     listModelo.Add(modelo);
                 }
@@ -951,6 +1042,44 @@ namespace ClickServ2022.Repository
             }
 
             return listModelo;
+        }
+        #endregion
+
+        #region Evento
+        public IEnumerable<Evento> GetAllEventos()
+        {
+            string connectionString = Conexao();
+
+            List<Evento> listEvento = new List<Evento>();
+ 
+
+            Equipamento equipamento = new Equipamento();
+            Atendimento atendimento = new Atendimento();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT E.Tipo, A.Data FROM tbl_Atendimento A INNER JOIN tbl_Equipamento E ON A.EquipamentoID = E.EquipamentoID", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Evento evento = new Evento();
+
+                    equipamento.Tipo = reader["Tipo"].ToString();
+                    atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
+
+                    evento.Title = equipamento.Tipo;
+                    evento.StartDate = atendimento.Data.ToString("yyyy-MM-dd");
+
+                    listEvento.Add(evento);
+                }
+                con.Close();
+            }
+
+            return listEvento;
         }
         #endregion
     }

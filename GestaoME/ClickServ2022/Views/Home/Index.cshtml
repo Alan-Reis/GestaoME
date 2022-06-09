@@ -1,8 +1,90 @@
-﻿@{
+﻿@model IEnumerable<ClickServ2022.Models.Evento>
+
+@{
     ViewData["Title"] = "Home Page";
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Bem-Vindo @ViewBag.Usuario!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="text-center">
+                <h1 class="display-4">ClickServ2022</h1>
+
+                <h4>Atendimentos</h4>
+                <table id="todoTable">
+
+                    @foreach (var item in Model)
+                    {
+                        <div class="text-center">
+                        <tr>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Title)
+                            </td>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+                        </tr>
+                </div>
+                    }
+            </table>
+        </div>
+    </div>
+    <div class="col-sm">
+        <div class="calendarContainer">
+            <div id="calendar"></div>
+        </div>
+    </div>
 </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.css">
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.js"></script>
+
+
+
+<script>
+
+    //Função que coleta os dados da tabela
+
+    function loadData() {
+        let eventsArr = [];
+
+        //Pega os valores da tabela id="todoTable"
+        let todoTable = document.getElementById("todoTable");
+        let trElem = todoTable.getElementsByTagName("tr");
+
+        for (let tr of trElem) {
+            let tdElems = tr.getElementsByTagName("td");
+            let eventObj = {
+                title: tdElems[0].innerText,
+                start: tdElems[1].innerText,
+            }
+
+                console.log(eventObj);
+                eventsArr.push(eventObj);
+        }
+
+        return eventsArr;
+    }
+
+    let eventsArr = loadData();
+    let calendar = initCalendar();
+
+
+    function initCalendar() {
+       console.log("teste");
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+
+            events: eventsArr,
+
+        });
+        calendar.render();
+
+        });
+    }
+</script>
+

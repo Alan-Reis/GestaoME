@@ -29,6 +29,8 @@ namespace ClickServ2022.Controllers
         {
             OrdemServico ordemServico = this.ordemservico.GetOrdemServico(os);
             
+            //Se tiver a ordem de serviço digitado no campo Ordem de Serviço entra no IF e 
+            //retorna para a função enviar() da página Create.
             if(ordemServico.OrdemServicoID == os)
             {
                 return Json(1);

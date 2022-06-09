@@ -29,7 +29,7 @@ namespace ClickServ2022.Controllers
             {
                 return NotFound();
             }
-            
+
             //Popular um SelectList para os técnico
             ViewBag.Tecnico = this.atendimento.GetAllColaborador().Select(c => new SelectListItem()
             { Text = c.Nome, Value = c.Nome }).ToList();
@@ -44,7 +44,7 @@ namespace ClickServ2022.Controllers
             {
                 return NotFound();
             }
-            
+
             return View(atendimento);
         }
 
@@ -61,6 +61,16 @@ namespace ClickServ2022.Controllers
             }
 
             return View(atendimento);
+        }
+
+        public JsonResult Atendimentos()
+        {
+            List<Evento> listEvento = new List<Evento>();
+            listEvento = this.atendimento.GetAllEventos().ToList();
+
+            ViewData["events"] = listEvento;
+
+            return Json(listEvento);
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public int FabricanteID { get; set; }
         public int TipoID { get; set; }
-        public string Nome { get; set; }
+        public string NomeFabricante { get; set; }
 
     }
 }

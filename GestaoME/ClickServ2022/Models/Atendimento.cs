@@ -9,7 +9,7 @@ namespace ClickServ2022.Models
     public class Atendimento
     {
         public int AtendimentoID { get; set; }
-        public string Tipo { get; set; } //Novo - Retorno - Garantia
+        public string Categoria { get; set; } //Novo - Retorno - Garantia
         public string  Defeito { get; set; }
         [DataType(DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]

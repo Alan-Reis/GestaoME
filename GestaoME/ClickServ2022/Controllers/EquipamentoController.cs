@@ -33,49 +33,35 @@ namespace ClickServ2022.Controllers
             return View(equipamento);
         }
 
-        public JsonResult TipoEquipamento()
+       
+        public JsonResult Equipamento()
         {
-            ViewBag.Equipamento = this.equipamento.GetAllTipoEquipamento().Select(c => new SelectListItem()
-            { Text = c.Equipamento, Value = c.Equipamento }).ToList();
-            
-            return Json(ViewBag.Equipamento, System.Web.Mvc.JsonRequestBehavior.AllowGet);
-        }
-        [HttpPost]
-        public JsonResult Fabricante(string tipo)
-        {
-            ViewBag.Fabricante = this.equipamento.GetAllFabricante(tipo);
-           
-            return Json(ViewBag.Fabricante, System.Web.Mvc.JsonRequestBehavior.AllowGet);
+            ViewBag.Equipamento = this.equipamento.GetAllTipoEquipamento();
+
+            return Json(ViewBag.Equipamento);
         }
 
-        /*
-          [HttpPost]
-        public JsonResult Fabricante([FromBody]string tipo)
+        [HttpPost]
+        public JsonResult Fabricante(string fabri)
         {
-            ViewBag.Fabricante = this.equipamento.GetAllFabricante(tipo);
+            ViewBag.Fabricante = this.equipamento.GetAllFabricante(fabri);
+           
             return Json(ViewBag.Fabricante);
         }
-         */
+
+        public JsonResult Modelo(string model)
+        {
+            ViewBag.Modelo = this.equipamento.GetAllModelo(model);
+
+            return Json(ViewBag.Modelo);
+        }
+
+
         public IActionResult Create(int? id, string tipo, string fabricante)
         {
+            
             string view = "Endereco";
             var cliente = this.equipamento.GetEquipamento(id, view);
-
-            ViewBag.Equipamento = this.equipamento.GetAllTipoEquipamento().Select(c => new SelectListItem()
-            { Text = c.Equipamento, Value = c.Equipamento }).ToList();
-            /*
-            if(tipo != null)
-            {
-                ViewBag.Fabricante = this.equipamento.GetAllFabricante(tipo).Select(c => new SelectListItem()
-                { Text = c.Nome, Value = c.Nome }).ToList();
-            }
-            
-            if(fabricante != null)
-            {
-                ViewBag.Modelo = this.equipamento.GetAllModelo().Select(c => new SelectListItem()
-                { Text = c.Nome, Value = c.Nome }).ToList();
-            }
-           */
 
             Equipamento equipamento = new Equipamento();
             Endereco endereco = new Endereco();
