@@ -17,5 +17,8 @@ namespace ClickServ2022.Models
         public string NSerie { get; set; }
         public Cliente Cliente { get; set; }
         public Endereco Endereco { get; set; }
+        public OrdemServico OrdemServico { get; set; }
+
+        public IEnumerable<OrdemServico> OrdemServicos;
     }
 }

@@ -4,24 +4,10 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
-
 <div>
-    <h4>Equipamento</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cliente.ClienteID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cliente.ClienteID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EquipamentoID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EquipamentoID)
-        </dd>
+    
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Tipo)
         </dt>
@@ -49,6 +35,62 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EquipamentoID }) |
-    @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID})
+    @Html.ActionLink("Editar", "Edit", new { id = Model.EquipamentoID },new { @class = "btn btn-primary"})
+    @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID},new { @class = "btn btn-primary"})
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Ordem de Servico
+            </th>
+            <th>
+                Data
+            </th>
+            <th>
+                Valor
+            </th>
+             <th>
+                Defeito
+            </th>
+            <th>
+                Relatorio
+            </th>
+            <th>
+                Colaborador
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            
+        }
+        @foreach (var item in Model.OrdemServicos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrdemServicoID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                 <td>
+                    @Html.DisplayFor(modelItem => item.Defeito)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Relatorio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Colaborador)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

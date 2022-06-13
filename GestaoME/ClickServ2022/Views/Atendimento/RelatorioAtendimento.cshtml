@@ -1,0 +1,98 @@
+﻿@model IEnumerable<ClickServ2022.Models.RelatorioAtendimento>
+
+@{
+    ViewData["Title"] = "RelatorioAtendimento";
+}
+
+<h1>Relatório de Atendimento</h1>
+<form asp-action="RelatorioAtendimento">
+    <div class="form-group">
+        Filtrar atendimento <input type="date" name="data">
+        <input type="submit" value="Buscar" class="btn btn-primary" />
+    </div>
+</form>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <th rowspan="2">Contato:</th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cliente.Nome)
+
+                    </td>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contato.Celular)
+                            @Html.DisplayFor(modelItem => item.Contato.Telefone)
+                        </td>
+                    </tr>
+                    <th rowspan="2">Endereço:</th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Endereco.Logradouro)
+                        @Html.DisplayFor(modelItem => item.Endereco.Complemento)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Endereco.Bairro) -
+                        @Html.DisplayFor(modelItem => item.Endereco.Cidade)
+                    </td>
+                </tr>
+                <tr>
+                    <th>Informações do Equipamento:</th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Equipamento.Tipo)
+                        @Html.DisplayFor(modelItem => item.Equipamento.Fabricante)
+                        @Html.DisplayFor(modelItem => item.Atendimento.Defeito)
+                    </td>
+                    <th>Data:</th>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Atendimento.Data,  "{0:dd/MM/yyyy}", new {maxlength = 10})
+                        @Html.DisplayFor(modelItem => item.Atendimento.Periodo)
+                        @Html.DisplayFor(modelItem => item.Atendimento.Colaborador)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        --------------------------------------------------
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<script>
+    function selectDate(data){
+
+        //var select = document.getElementById("data");
+        //var opcaoTexto = select.options[select.selectedIndex].text;
+        
+        var dataPesquisa = 'data='+data
+                
+        fetch('/Atendimento/RelatorioAtendimento', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: dataPesquisa
+        })
+         .then(T => T.json())
+         .then(fabricante => {
+             console.log(fabricante);
+       
+    })
+    }
+</script>

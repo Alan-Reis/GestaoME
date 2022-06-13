@@ -44,7 +44,7 @@ namespace ClickServ2022.Service
         #endregion
 
         #region Atendimento
-        IEnumerable<Atendimento> GetAllAtedimentos();
+        //IEnumerable<Atendimento>GetAllAtedimentos(string data);
         void AddAtendimento(Atendimento atendimento);
         //void UpdateAtendimento(Atendimento atendimento);
         //Atendimento GetAtendimento(int? id);
@@ -56,7 +56,7 @@ namespace ClickServ2022.Service
 
         #region Ordem de Serviço
         void AddOrdemServico(OrdemServico ordemservico);
-        IEnumerable<OrdemServico> GetAllOrdemServico();
+        IEnumerable<OrdemServico> GetAllOrdemServico(int? id);
         OrdemServico GetOrdemServico(int? os);
 
         #endregion
@@ -66,6 +66,10 @@ namespace ClickServ2022.Service
         List<Fabricante> GetAllFabricante(string equipamento);
         List<Modelo> GetAllModelo(string model);
         IEnumerable<Evento> GetAllEventos();
+        #endregion
+
+        #region Relatórios
+        IEnumerable<RelatorioAtendimento> RelatorioAtendimento(string data);
         #endregion
     }
 }

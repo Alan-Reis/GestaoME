@@ -55,12 +55,27 @@ namespace ClickServ2022.Controllers
             if (ModelState.IsValid)
             {
                 this.atendimento.AddAtendimento(atendimento);
-                //Erro ao redirecionar, precida informar  id do Cliente
                 return RedirectToAction("Index", "Home");
-                //return RedirectToAction("Details", "Endereco", new { id = atendimento.Equipamento.EquipamentoID });
             }
-
             return View(atendimento);
+        }
+
+        [HttpPost]
+        public IActionResult RelatorioAtendimento(string data)
+        {            
+            List<RelatorioAtendimento> atendimentoList = new List<RelatorioAtendimento>();
+            atendimentoList = atendimento.RelatorioAtendimento(data).ToList();
+
+            return View(atendimentoList);
+        }
+
+        public IActionResult RelatorioAtendimento()
+        {
+            string data = DateTime.Now.ToString("yyyy-MM-dd");
+            List<RelatorioAtendimento> atendimentoList = new List<RelatorioAtendimento>();
+            atendimentoList = atendimento.RelatorioAtendimento(data).ToList();
+
+            return View(atendimentoList);
         }
 
         public JsonResult Atendimentos()

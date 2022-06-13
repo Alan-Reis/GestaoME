@@ -24,8 +24,6 @@ namespace ClickServ2022.Controllers
             List<Evento> listEvento = new List<Evento>();
             listEvento = this.home.GetAllEventos().ToList();
 
-            ViewData["events"] = listEvento;
-
             return View(listEvento);
         }
 

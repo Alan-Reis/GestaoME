@@ -20,6 +20,6 @@ namespace ClickServ2022.Models
         [Display(Name ="Relatório")]
         public string Relatorio { get; set; }
         public Equipamento Equipamento { get; set; }
-        public Colaborador Colaborador { get; set; }
+        public string Colaborador { get; set; }
     }
 }
