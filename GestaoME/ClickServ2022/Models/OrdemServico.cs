@@ -13,7 +13,7 @@ namespace ClickServ2022.Models
         [Display(Name ="Ordem de Serviço")]
         public int OrdemServicoID { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Data { get; set; }
         public string Valor { get; set; }
         public string Defeito { get; set; }

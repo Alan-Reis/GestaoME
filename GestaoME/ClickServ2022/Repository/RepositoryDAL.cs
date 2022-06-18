@@ -42,51 +42,28 @@ namespace ClickServ2022.Repository
 
             List<Cliente> listPessoa = new List<Cliente>();
 
-
+            string stringQuery;
             //IF realizado para consulta por nome ou condomínio
-            if (nome != null)
+            if(nome != null)
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Cliente C " +
-                                                    $"INNER JOIN tbl_Endereco E " +
-                                                    $"ON C.ClienteID = E.ClienteID " +
-                                                    $"WHERE {coluna} LIKE '%{nome}%' ORDER BY Nome DESC", con);
+                stringQuery = $"SELECT * FROM tbl_Cliente C " +
+                              $"INNER JOIN tbl_Endereco E " +
+                              $"ON C.ClienteID = E.ClienteID " +
+                              $"WHERE {coluna} LIKE '%{nome}%' ORDER BY Nome DESC";
 
-                    cmd.CommandType = CommandType.Text;
+            }
+            else
+            {
+                stringQuery = $"SELECT * FROM tbl_Cliente C " +
+                              $"INNER JOIN tbl_Endereco E " +
+                              $"ON C.ClienteID = E.ClienteID";
 
-                    con.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Cliente cliente = new Cliente();
-                        Endereco endereco = new Endereco();
-
-                        cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
-                        cliente.Nome = reader["Nome"].ToString();
-
-
-                        endereco.Logradouro = reader["Logradouro"].ToString();
-                        endereco.Complemento = reader["Complemento"].ToString();
-
-                        cliente.Endereco = endereco;
-
-                        listPessoa.Add(cliente);
-                    }
-                    con.Close();
-                }
-                return listPessoa;
             }
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Cliente C " +
-                                                   $"INNER JOIN tbl_Endereco E " +
-                                                   $"ON C.ClienteID = E.ClienteID", con);
-
+                SqlCommand cmd = new SqlCommand(stringQuery, con);
                 cmd.CommandType = CommandType.Text;
-
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
@@ -496,7 +473,7 @@ namespace ClickServ2022.Repository
                                     $"Complemento = '{endereco.Complemento}', " +
                                     $"Bairro = '{endereco.Bairro}', " +
                                     $"Cidade = '{endereco.Cidade}', " +
-                                    $"Estado = '{endereco.Uf}', " +
+                                    $"Uf = '{endereco.Uf}', " +
                                     $"Observacao = '{endereco.Observacao}' " +
                                     $"WHERE EnderecoID = '{endereco.EnderecoID}'";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
@@ -621,7 +598,8 @@ namespace ClickServ2022.Repository
                     equipamento.Modelo = reader["Modelo"].ToString();
                     equipamento.NSerie = reader["NSerie"].ToString();
 
-                    equipamento.OrdemServicos = GetAllOrdemServico(id);
+                    //Utilizado para pegar criar a lista no Details dos equipamentos 
+                    equipamento.OrdemServicos = GetAllOrdemServico(id, view);
                 }
                 con.Close();
             }
@@ -807,7 +785,6 @@ namespace ClickServ2022.Repository
         #endregion
 
         #region Ordem de Serviço
-
         public OrdemServico GetOrdemServico(int? os)
         {
             string connectionString = Conexao();
@@ -839,18 +816,33 @@ namespace ClickServ2022.Repository
             return ordemServico;
         }
 
-        public IEnumerable<OrdemServico> GetAllOrdemServico(int? id)
+        public IEnumerable<OrdemServico> GetAllOrdemServico(int? id, string view)
         {
             string connectionString = Conexao();
 
             List<OrdemServico> listOrdemServico = new List<OrdemServico>();
-
             Equipamento equipamento = new Equipamento();
-            Colaborador colaborador = new Colaborador();
+            string stringQuery;
+
+            if (view == "OS")
+            {
+                if(id != 0000)
+                {
+                    stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE OrdemServicoID = {id}";
+                }
+                else
+                {
+                    stringQuery = $"SELECT * FROM tbl_OrdemServico";
+                }
+            }
+            else
+            {
+                stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE EquipamentoID = {id}";
+            }
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_OrdemServico Where EquipamentoID = {id}", con);
+                SqlCommand cmd = new SqlCommand(stringQuery, con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -868,9 +860,7 @@ namespace ClickServ2022.Repository
                     ordemServico.Valor = reader["Valor"].ToString();
                     ordemServico.Defeito = reader["Defeito"].ToString();
                     ordemServico.Relatorio = reader["Relatorio"].ToString();
-
-                    //colaborador.Nome = reader["Nome"].ToString();
-                    //ordemServico.Colaborador = colaborador;
+                    ordemServico.Colaborador = reader["Colaborador"].ToString();
 
                     listOrdemServico.Add(ordemServico);
                 }
@@ -1083,7 +1073,7 @@ namespace ClickServ2022.Repository
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 
-                string selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade," +
+                string selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade, A.AtendimentoID," +
                                   " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Categoria, A.Colaborador, Eq.Tipo, Eq.Fabricante " +
                                   " FROM tbl_Atendimento A " +
                                   " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
@@ -1123,6 +1113,7 @@ namespace ClickServ2022.Repository
                     endereco.Uf = reader["Uf"].ToString();
                     endereco.Complemento = reader["Complemento"].ToString();
 
+                    atendimento.AtendimentoID = Convert.ToInt32(reader["AtendimentoID"].ToString());
                     atendimento.Defeito = reader["Defeito"].ToString();
                     atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
                     atendimento.Periodo = reader["Periodo"].ToString();

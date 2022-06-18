@@ -71,3 +71,19 @@ body {
 }
 
 
+/*Stilo para a tabela dos atendimento realizado para mudar a cor quando selecionar a linha*/
+
+    /**Cores**/
+    #minhaTabela tr:nth-child(odd) {
+        background-color: #eee;
+    }
+
+    /**Cor quando passar por cima**/
+    #minhaTabela tr:hover td {
+        background-color: #feffb7;
+    }
+
+    /**Cor quando selecionado**/
+    #minhaTabela tr.selecionado td {
+        background-color: #aff7ff;
+    }

@@ -23,19 +23,19 @@
            <div class="form-group">
                 <p>Tipo</p>
                 <select asp-for="Tipo" id="equip" onchange="loadFabricante()">
-                    <option value="" selected="selected">Selecione</option>
+                    <option value="@ViewBag.Tipo" selected="selected">@ViewBag.Tipo</option>
                 </select>
             </div>
             <div class="form-group">
                 <p>Fabricante</p>
                  <select asp-for="Fabricante" id="fabri"  onchange="loadModelo()">
-                <option value="" selected="selected">Selecione</option>
+                <option value="@ViewBag.Fabricante" selected="selected">@ViewBag.Fabricante</option>
                 </select>
             </div>
             <div class="form-group">
                 <p>Modelo</p>
                  <select asp-for="Modelo" id="model">
-                 <option value="" selected="selected">Selecione</option>
+                 <option value="@ViewBag.Modelo" selected="selected">@ViewBag.Modelo</option>
                 </select>
             </div>
             <div class="form-group">

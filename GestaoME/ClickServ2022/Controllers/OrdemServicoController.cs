@@ -21,7 +21,20 @@ namespace ClickServ2022.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            string view = "OS";
+            int os = 0000;
+            List<OrdemServico> ordemServicos = new List<OrdemServico>();
+            ordemServicos = this.ordemservico.GetAllOrdemServico(os, view).ToList();
+            return View(ordemServicos);
+        }
+
+        [HttpPost]
+        public IActionResult Index(int? os)
+        {
+            string view = "OS";
+            List<OrdemServico> ordemServicos = new List<OrdemServico>();
+            ordemServicos = this.ordemservico.GetAllOrdemServico(os, view).ToList();
+            return View(ordemServicos);
         }
 
         [HttpPost]

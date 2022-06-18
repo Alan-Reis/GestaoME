@@ -100,6 +100,10 @@ namespace ClickServ2022.Controllers
 
             Equipamento equipamento = this.equipamento.GetEquipamento(id, view);
 
+            ViewBag.Tipo = equipamento.Tipo;
+            ViewBag.Fabricante = equipamento.Fabricante;
+            ViewBag.Modelo = equipamento.Modelo;
+
 
             view = "Endereco";
             int cliente = equipamento.Cliente.ClienteID;
