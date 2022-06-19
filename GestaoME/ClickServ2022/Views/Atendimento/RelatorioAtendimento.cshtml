@@ -37,7 +37,7 @@ Informe o WhatsApp: <input type="text" id="phone" />
 
 <table class="table" id="minhaTabela">
     <thead>
-        <tr>
+        <tr id="trBlock">
             <th>
                 Nome
             </th>
@@ -134,6 +134,13 @@ Informe o WhatsApp: <input type="text" id="phone" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
 
 <script>
+
+var linhaBlock = document.getElementById("trBlock");
+    linhaBlock.addEventListener("click", function() {
+        alert("Linha não permitida para seleção!");
+        location.reload();
+});
+
 function imprimir(){
 
     var tabela = document.getElementById("minhaTabela");
@@ -213,12 +220,11 @@ function imprimir(){
   }
    document.write(dadosImpressao);
 });
-
 }
 </script>
+
 <script>
 function exportarPDF(){
-
     var tabela = document.getElementById("minhaTabela");
     var linhas = tabela.getElementsByTagName("tr");
 

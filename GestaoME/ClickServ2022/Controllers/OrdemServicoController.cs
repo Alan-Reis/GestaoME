@@ -3,6 +3,7 @@ using ClickServ2022.Models;
 using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,22 +20,34 @@ namespace ClickServ2022.Controllers
             ordemservico = _ordemservico;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int? pagina)
         {
             string view = "OS";
             int os = 0000;
             List<OrdemServico> ordemServicos = new List<OrdemServico>();
             ordemServicos = this.ordemservico.GetAllOrdemServico(os, view).ToList();
-            return View(ordemServicos);
+
+            //paginação
+            int paginaTamanho = 4;
+            int paginaNumero = (pagina ?? 1);
+            //fim
+
+            return View(ordemServicos.ToPagedList(paginaNumero, paginaTamanho));
         }
 
         [HttpPost]
-        public IActionResult Index(int? os)
+        public IActionResult Index(int? pagina, int? os)
         {
             string view = "OS";
             List<OrdemServico> ordemServicos = new List<OrdemServico>();
             ordemServicos = this.ordemservico.GetAllOrdemServico(os, view).ToList();
-            return View(ordemServicos);
+
+            //paginação
+            int paginaTamanho = 4;
+            int paginaNumero = (pagina ?? 1);
+            //fim
+
+            return View(ordemServicos.ToPagedList(paginaNumero, paginaTamanho));
         }
 
         [HttpPost]
