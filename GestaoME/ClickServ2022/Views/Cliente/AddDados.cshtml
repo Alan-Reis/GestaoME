@@ -140,13 +140,13 @@
        <tr>
             <td>Tipo:</td>
             <td>
-               <select asp-for="Equipamento.Tipo" id="equip" onchange="loadFabricante()">
+               <select asp-for="Equipamento.Tipo" id="equip" onclick="loadFabricante()">
                     <option value="" selected="selected">Selecione</option>
                 </select>
             </td>
             <td>Fabricante:</td>
             <td>
-                 <select asp-for="Equipamento.Fabricante" id="fabri"  onchange="loadModelo()">
+                 <select asp-for="Equipamento.Fabricante" id="fabri"  onclick="loadModelo()">
                 <option value="" selected="selected">Selecione</option>
                 </select>
             </td>

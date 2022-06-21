@@ -167,13 +167,13 @@
         <tr>
             <td>Tipo:</td>
             <td>
-               <select asp-for="Equipamento.Tipo" id="equip" onchange="loadFabricante()" class="form-control">
+               <select asp-for="Equipamento.Tipo" id="equip" onclick="loadFabricante()" class="form-control">
                     <option value="" selected="selected">Selecione</option>
                 </select>
             </td>
             <td>Fabricante:</td>
             <td>
-                 <select asp-for="Equipamento.Fabricante" id="fabri"  onchange="loadModelo()" class="form-control">
+                 <select asp-for="Equipamento.Fabricante" id="fabri"  onclick="loadModelo()" class="form-control">
                 <option value="" selected="selected">Selecione</option>
                 </select>
             </td>
@@ -209,8 +209,7 @@ window.onload =
     })
     .then(T => T.json())
     .then(tipo => {
-       for (let objJSON of tipo) {
-        console.log(objJSON);            
+       for (let objJSON of tipo) {          
         //popular select
         const 
         tiposSelect = document.getElementById("equip");
@@ -274,8 +273,7 @@ function loadModelo(){
     .then(T => T.json())
     .then(modelo => {
 
-        for (let objJSON of modelo) {
-            console.log(objJSON);           
+        for (let objJSON of modelo) {         
             //popular select
             const modelosSelect = document.getElementById("model");
             
@@ -298,6 +296,7 @@ function clearFabricante(){
     while(fabri.length){
         fabri.remove(0);
     }
+
 }
 
 function clearModel(){

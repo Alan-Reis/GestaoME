@@ -337,6 +337,33 @@ namespace ClickServ2022.Repository
         }
         #endregion
 
+        #region Contato Auxiliar
+
+        public void AddContatoAuxiliar(ContatoAuxiliar contato)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"INSERT INTO tbl_Contato (ContatoAuxID, ClienteID, Nome, Celular, Telefone, Atribuicao) " +
+                                    $"Values({contato.ContatoAuxID}, " +
+                                    $"'{contato.Cliente.ClienteID}', " +
+                                    $"'{contato.Nome}', " +
+                                    $"'{contato.Celular}', " +
+                                    $"'{contato.Telefone}', " +
+                                    $"'{contato.Atribuicao}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        #endregion
+
         #region Endereco
         public IEnumerable<Endereco> GetAllEnderecos(int? id)
         {

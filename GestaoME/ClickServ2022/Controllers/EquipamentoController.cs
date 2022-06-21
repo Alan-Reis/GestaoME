@@ -26,6 +26,10 @@ namespace ClickServ2022.Controllers
 
             Equipamento equipamento = this.equipamento.GetEquipamento(id, view);
 
+            ViewBag.Tipo = equipamento.Tipo;
+            ViewBag.Fabricante = equipamento.Fabricante;
+            ViewBag.Modelo = equipamento.Modelo;
+
             if (equipamento == null)
             {
                 return NotFound();
@@ -89,47 +93,14 @@ namespace ClickServ2022.Controllers
             return View(equipamento);
         }
 
-        public IActionResult Edit(int? id, string view)
-        {
-            
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Equipamento equipamento = this.equipamento.GetEquipamento(id, view);
-
-            ViewBag.Tipo = equipamento.Tipo;
-            ViewBag.Fabricante = equipamento.Fabricante;
-            ViewBag.Modelo = equipamento.Modelo;
-
-
-            view = "Endereco";
-            int cliente = equipamento.Cliente.ClienteID;
-            Endereco endereco = this.equipamento.GetEndereco(cliente, view);
-            equipamento.Endereco = endereco;
-
-            if (equipamento == null)
-            {
-                return NotFound();
-            }
-
-            return View(equipamento);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind] Equipamento equipamento)
+        public IActionResult Edit([Bind] Equipamento equipamento)
         {
             string view = "Endereco";
             int cliente = equipamento.Cliente.ClienteID;
             Endereco endereco = this.equipamento.GetEndereco(cliente, view);
-
-            if (id != equipamento.EquipamentoID)
-            {
-                return NotFound();
-            }
+                    
             if (ModelState.IsValid)
             {
                 this.equipamento.UpdateEquipamento(equipamento);

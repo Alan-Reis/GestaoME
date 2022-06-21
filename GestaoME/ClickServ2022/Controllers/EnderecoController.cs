@@ -60,32 +60,12 @@ namespace ClickServ2022.Controllers
                 return RedirectToAction("Details", "Cliente", new { id = endereco.Cliente.ClienteID });
             }
             return View(endereco);
-        }
-        public IActionResult Edit(int? id, string view)
-        {
-            if(id == null)
-            {
-                return NotFound();
-            }
-
-            Endereco endereco = this.endereco.GetEndereco(id, view);
-
-            if(endereco == null)
-            {
-                return NotFound();
-            }
-
-            return View(endereco);
-        }
+        }     
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind]Endereco endereco)
+        public IActionResult Edit([Bind]Endereco endereco)
         {
-            if(id != endereco.EnderecoID)
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
                 this.endereco.UpdateEndereco(endereco);

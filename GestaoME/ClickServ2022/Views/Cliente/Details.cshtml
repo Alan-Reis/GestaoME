@@ -5,28 +5,33 @@
     ViewData["Title"] = "Details";
 }
 
+</br>
 <div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CPF)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CPF)
-        </dd>
-    </dl>
+     <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+           
+            <input asp-for="ClienteID" class="form-control" type="hidden" />
+
+            <div class="row">
+            <div class="col">
+                <input asp-for="Nome" class="form-control" placeholder="Nome" required id="nome"/>
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="col">
+                <input asp-for="CPF" class="form-control" placeholder="CPF" id="cpf"/>
+                <span asp-validation-for="CPF" class="text-danger"></span>
+            </div>
+            <div class="col">
+                <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
+                <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
+                 @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
+            </div>
+            </div>
+        </form>
 </div>
 
-<div>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
-    @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
-</div>
 
+</br>
 </br>
 <table class="table">
     <thead>
@@ -61,15 +66,13 @@
                     @Html.DisplayFor(modelItem => item.Email)
                 </td>
                 <td>
-                    @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID },new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID },new { @class = "btn btn-warning"})
                     @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID },new { @class = "btn btn-danger " })
                 </td>
             </tr>
         }
     </tbody>
 </table>
-
-
 
 </br>
 <table class="table">
@@ -107,4 +110,20 @@
     </tbody>
 </table>
 
+<script>
+document.getElementById("salvar").disabled = true;
+document.getElementById("nome").disabled = true;
+document.getElementById("cpf").disabled = true;
 
+function desabilitar(){
+document.getElementById("salvar").disabled = true;
+document.getElementById("nome").disabled = true;
+document.getElementById("cpf").disabled = true;
+}
+
+function habilitar(){
+    document.getElementById("salvar").disabled = false;
+    document.getElementById("nome").disabled = false;
+document.getElementById("cpf").disabled = false;
+}
+</script>

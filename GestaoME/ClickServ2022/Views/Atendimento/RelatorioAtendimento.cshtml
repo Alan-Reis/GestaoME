@@ -5,393 +5,394 @@
 }
 
 <style>
-      /**Cores**/
-    #minhaTabela tr:nth-child(odd) {
-        background-color: #eee;
-    }
-
-    /**Cor quando passar por cima**/
-    #minhaTabela tr:hover td {
-        background-color: #feffb7;
-    }
-
     /**Cor quando selecionado**/
     #minhaTabela tr.selecionado td {
         background-color: #aff7ff;
     }
 </style>
 
-
-<h1>Relatório de Atendimento</h1>
 <form asp-action="RelatorioAtendimento">
-    <div class="form-group">
-        Filtrar atendimento <input type="date" name="data">
-        <input type="submit" value="Buscar" class="btn btn-primary" />
+    <div class="row">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Filtrar atendimento </span>
+            <input type="date" name="data">
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+        </div>
     </div>
 </form>
 
-Informe o WhatsApp: <input type="text" id="phone" />
-<button id="EnviarWhatsApp">Enviar</button>
-<button id="expPDF" onclick="exportarPDF();">PDF</button>
-<button id="imprimir" onclick="imprimir();">Imprimir</button>
-
-<table class="table" id="minhaTabela">
-    <thead>
-        <tr id="trBlock">
-            <th>
-                Nome
-            </th>
-            <th>
-                Celular
-            </th>
-            <th>
-                Telefone
-            </th>
-            <th>
-                Logradouro
-            </th>
-            <th>
-                Complemento
-            </th>
-            <th>
-                Bairro
-            </th>
-            <th>
-                Cidade
-            </th>
-            <th>
-                Tipo
-            </th>
-            <th>
-                Fabricante
-            </th>
-            <th>
-                Defeito
-            </th>
-            <th>
-                Data
-            </th>
-            <th>
-                Período
-            </th>
-            <th>
-                Colaborador
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @if (Model != null)
-        {
-            @foreach (var item in Model)
+<div class="row">
+    <div class="input-group mb-3">
+        <span class="input-group-text" id="basic-addon1">Informe WhatsApp</span>
+        <input type="text" id="phone" class="" />
+        <button id="EnviarWhatsApp" class="btn btn-primary">Enviar</button>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button id="expPDF" onclick="exportarPDF();" class="btn btn-primary">PDF</button>
+            <button id="imprimir" onclick="imprimir();" class="btn btn-primary">Imprimir</button>
+        </div>
+    </div>
+</div>
+<br />
+<div class="row">
+    <table class="table table-hover" id="minhaTabela">
+        <thead>
+            <tr id="trBlock" class="table-primary table-sm">
+                <th>
+                    Nome
+                </th>
+                <th>
+                    Celular
+                </th>
+                <th>
+                    Telefone
+                </th>
+                <th>
+                    Logradouro
+                </th>
+                <th>
+                    Complemento
+                </th>
+                <th>
+                    Bairro
+                </th>
+                <th>
+                    Cidade
+                </th>
+                <th>
+                    Tipo
+                </th>
+                <th>
+                    Fabricante
+                </th>
+                <th>
+                    Defeito
+                </th>
+                <th>
+                    Data
+                </th>
+                <th>
+                    Período
+                </th>
+                <th>
+                    Colaborador
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
             {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Cliente.Nome)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Contato.Celular)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Contato.Telefone)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Endereco.Logradouro)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Endereco.Complemento)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Endereco.Bairro)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Endereco.Cidade)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Equipamento.Tipo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Equipamento.Fabricante)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Atendimento.Defeito)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Atendimento.Data)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Atendimento.Periodo)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Atendimento.Colaborador)
-                    </td>
-                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Cliente.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contato.Celular)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Contato.Telefone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Endereco.Logradouro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Endereco.Complemento)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Endereco.Bairro)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Endereco.Cidade)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Equipamento.Tipo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Equipamento.Fabricante)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atendimento.Defeito)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atendimento.Data)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atendimento.Periodo)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Atendimento.Colaborador)
+                        </td>
+                    </tr>
+                }
             }
-        }
-    </tbody>
-</table>
-
+        </tbody>
+    </table>
+</div>
 <!--PDF-->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
 
 <script>
 
-var linhaBlock = document.getElementById("trBlock");
-    linhaBlock.addEventListener("click", function() {
-        alert("Linha não permitida para seleção!");
-        location.reload();
-});
+    var linhaBlock = document.getElementById("trBlock");
+        linhaBlock.addEventListener("click", function() {
+            alert("Linha não permitida para seleção!");
+            location.reload();
+    });
 
-function imprimir(){
+    function imprimir(){
 
-    var tabela = document.getElementById("minhaTabela");
-    var linhas = tabela.getElementsByTagName("tr");
+        var tabela = document.getElementById("minhaTabela");
+        var linhas = tabela.getElementsByTagName("tr");
 
-    for(var i = 0; i < linhas.length; i++){
-	    var linha = linhas[i];
-        linha.addEventListener("click", function(){
-  	    //Adicionar ao atual
-        selLinha(this, true); //Selecione quantos quiser
-	    });
-}
-
-    function selLinha(linha, multiplos){
-	    if(!multiplos){
-  	        var linhas = linha.parentElement.getElementsByTagName("tr");
         for(var i = 0; i < linhas.length; i++){
-            var linha_ = linhas[i];
-            linha_.classList.remove("selecionado");    
+            var linha = linhas[i];
+            linha.addEventListener("click", function(){
+            //Adicionar ao atual
+            selLinha(this, true); //Selecione quantos quiser
+            });
+    }
+
+        function selLinha(linha, multiplos){
+            if(!multiplos){
+                var linhas = linha.parentElement.getElementsByTagName("tr");
+            for(var i = 0; i < linhas.length; i++){
+                var linha_ = linhas[i];
+                linha_.classList.remove("selecionado");
+                }
             }
+            linha.classList.toggle("selecionado");
         }
-        linha.classList.toggle("selecionado");
+
+         var btnImprimir = document.getElementById("imprimir");
+
+        btnImprimir.addEventListener("click", function(){
+        var selecionados = tabela.getElementsByClassName("selecionado");
+        //Verificar se eestá selecionado
+        if(selecionados.length < 1){
+        alert("Selecione pelo menos uma linha");
+        return false;
+        }
+
+        var dadosImpressao = "";
+
+      for(var i = 0; i < selecionados.length; i++){
+        var selecionado = selecionados[i];
+        selecionado = selecionado.getElementsByTagName("td");
+
+        //Edição realizada por mim
+           var enter = "<br/>";
+
+           //Contato
+           var nome = 'Contato: '+ selecionado[0].innerHTML.trim();
+           var celular = selecionado[1].innerHTML.trim();
+           var telefone = selecionado[2].innerHTML.trim();
+
+           var contato = nome  + ' ' + celular + ' ' + telefone + enter;
+
+           //Endereço
+           var logradouro = 'Endereço: '+ selecionado[3].innerHTML.trim();
+           var complemento = selecionado[4].innerHTML.trim();
+           var bairro = selecionado[5].innerHTML.trim();
+           var cidade = selecionado[6].innerHTML.trim();
+
+           var endereco = logradouro + ' ' + bairro + ' ' + complemento + ' - ' + cidade + enter;
+
+           //Equipamento
+           var tipo = 'Equipamento: '+ selecionado[7].innerHTML.trim();
+           var fabricante = selecionado[8].innerHTML.trim();
+           var defeito = selecionado[9].innerHTML.trim();
+
+           var equipamento = tipo + ' ' + fabricante + enter + defeito;
+
+           //Data
+           var data = 'Data: '+ selecionado[10].innerHTML.trim();
+           var periodo = selecionado[11].innerHTML.trim();
+           var colaborador = selecionado[12].innerHTML.trim();
+
+           var agenda = data + ' - ' + periodo + ' ' + colaborador + enter;
+
+           mensagem = contato+endereco+equipamento+agenda + enter;
+            //Fim edição
+
+           dadosImpressao += mensagem;
+      }
+       document.write(dadosImpressao);
+    });
     }
+</script>
 
-     var btnImprimir = document.getElementById("imprimir");
+<script>
+    function exportarPDF(){
+        var tabela = document.getElementById("minhaTabela");
+        var linhas = tabela.getElementsByTagName("tr");
 
-    btnImprimir.addEventListener("click", function(){
-	var selecionados = tabela.getElementsByClassName("selecionado");
-    //Verificar se eestá selecionado
-    if(selecionados.length < 1){
-  	alert("Selecione pelo menos uma linha");
-    return false;
-    }
-  
-    var dadosImpressao = "";
+        for(var i = 0; i < linhas.length; i++){
+            var linha = linhas[i];
+            linha.addEventListener("click", function(){
+            //Adicionar ao atual
+            selLinha(this, true); //Selecione quantos quiser
+            });
+        }
 
-  for(var i = 0; i < selecionados.length; i++){
-  	var selecionado = selecionados[i];
-    selecionado = selecionado.getElementsByTagName("td");
+        function selLinha(linha, multiplos){
+            if(!multiplos){
+                var linhas = linha.parentElement.getElementsByTagName("tr");
+            for(var i = 0; i < linhas.length; i++){
+                var linha_ = linhas[i];
+                linha_.classList.remove("selecionado");
+                }
+            }
+            linha.classList.toggle("selecionado");
+        }
 
-    //Edição realizada por mim
-       var enter = "<br/>";
+        //Exemplo de como capturar os dados
+        var btnExpPDF = document.getElementById("expPDF");
 
-       //Contato
-       var nome = 'Contato: '+ selecionado[0].innerHTML.trim();
-       var celular = selecionado[1].innerHTML.trim();
-       var telefone = selecionado[2].innerHTML.trim();
+        btnExpPDF.addEventListener("click", function(){
+        var selecionados = tabela.getElementsByClassName("selecionado");
+        //Verificar se eestá selecionado
+        if(selecionados.length < 1){
+        alert("Selecione pelo menos uma linha");
+        return false;
+      }
 
-       var contato = nome  + ' ' + celular + ' ' + telefone + enter;
+      var dadosPDF = "";
 
-       //Endereço
-       var logradouro = 'Endereço: '+ selecionado[3].innerHTML.trim();
-       var complemento = selecionado[4].innerHTML.trim();
-       var bairro = selecionado[5].innerHTML.trim();
-       var cidade = selecionado[6].innerHTML.trim();
+      for(var i = 0; i < selecionados.length; i++){
+        var selecionado = selecionados[i];
+        selecionado = selecionado.getElementsByTagName("td");
 
-       var endereco = logradouro + ' ' + bairro + ' ' + complemento + ' - ' + cidade + enter;
+        //Edição realizada por mim
+           var enter = "\n";
 
-       //Equipamento
-       var tipo = 'Equipamento: '+ selecionado[7].innerHTML.trim();
-       var fabricante = selecionado[8].innerHTML.trim();
-       var defeito = selecionado[9].innerHTML.trim();
+           //Contato
+           var nome = 'Contato: '+ selecionado[0].innerHTML.trim();
+           var celular = selecionado[1].innerHTML.trim();
+           var telefone = selecionado[2].innerHTML.trim();
 
-       var equipamento = tipo + ' ' + fabricante + enter + defeito;
+           var contato = nome  + ' ' + celular + ' ' + telefone + enter;
 
-       //Data
-       var data = 'Data: '+ selecionado[10].innerHTML.trim();
-       var periodo = selecionado[11].innerHTML.trim();
-       var colaborador = selecionado[12].innerHTML.trim();
+           //Endereço
+           var logradouro = 'Endereço: '+ selecionado[3].innerHTML.trim();
+           var complemento = selecionado[4].innerHTML.trim();
+           var bairro = selecionado[5].innerHTML.trim();
+           var cidade = selecionado[6].innerHTML.trim();
 
-       var agenda = data + ' - ' + periodo + ' ' + colaborador + enter;  
-       
-       mensagem = contato+endereco+equipamento+agenda + enter;
+           var endereco = logradouro + ' ' + bairro + ' ' + complemento + ' - ' + cidade + enter;
+
+           //Equipamento
+           var tipo = 'Equipamento: '+ selecionado[7].innerHTML.trim();
+           var fabricante = selecionado[8].innerHTML.trim();
+           var defeito = selecionado[9].innerHTML.trim();
+
+           var equipamento = tipo + ' ' + fabricante + enter + defeito;
+
+           //Data
+           var data = 'Data: '+ selecionado[10].innerHTML.trim();
+           var periodo = selecionado[11].innerHTML.trim();
+           var colaborador = selecionado[12].innerHTML.trim();
+
+           var agenda = data + ' - ' + periodo + ' ' + colaborador + enter;
+
+           mensagem = contato+endereco+equipamento+agenda + enter;
+
         //Fim edição
-       
-       dadosImpressao += mensagem;
-  }
-   document.write(dadosImpressao);
-});
-}
+
+        dadosPDF += mensagem;
+      }
+        var doc = new jsPDF();
+        doc.text(10, 10, dadosPDF);
+        doc.save('Atendimentos.pdf');
+    });
+
+    }
 </script>
 
 <script>
-function exportarPDF(){
-    var tabela = document.getElementById("minhaTabela");
-    var linhas = tabela.getElementsByTagName("tr");
+    //Função que enviar msg para o WhatsApp
+        var tabela = document.getElementById("minhaTabela");
+        var linhas = tabela.getElementsByTagName("tr");
 
-    for(var i = 0; i < linhas.length; i++){
-	    var linha = linhas[i];
-        linha.addEventListener("click", function(){
-  	    //Adicionar ao atual
-        selLinha(this, true); //Selecione quantos quiser
-	    });
+        for(var i = 0; i < linhas.length; i++){
+            var linha = linhas[i];
+            linha.addEventListener("click", function(){
+            //Adicionar ao atual
+            selLinha(this, true); //Selecione quantos quiser
+            });
     }
 
-    function selLinha(linha, multiplos){
-	    if(!multiplos){
-  	        var linhas = linha.parentElement.getElementsByTagName("tr");
-        for(var i = 0; i < linhas.length; i++){
-            var linha_ = linhas[i];
-            linha_.classList.remove("selecionado");    
+        function selLinha(linha, multiplos){
+            if(!multiplos){
+                var linhas = linha.parentElement.getElementsByTagName("tr");
+            for(var i = 0; i < linhas.length; i++){
+                var linha_ = linhas[i];
+                linha_.classList.remove("selecionado");
             }
+            }
+            linha.classList.toggle("selecionado");
         }
-        linha.classList.toggle("selecionado");
-    }
 
-    //Exemplo de como capturar os dados
-    var btnExpPDF = document.getElementById("expPDF");
+        //Exemplo de como capturar os dados
+        var btnEnviarWhatsApp = document.getElementById("EnviarWhatsApp");
 
-    btnExpPDF.addEventListener("click", function(){
-	var selecionados = tabela.getElementsByClassName("selecionado");
-    //Verificar se eestá selecionado
-    if(selecionados.length < 1){
-  	alert("Selecione pelo menos uma linha");
-    return false;
-  }
-  
-  var dadosPDF = "";
+        btnEnviarWhatsApp.addEventListener("click", function(){
+        var selecionados = tabela.getElementsByClassName("selecionado");
+        //Verificar se eestá selecionado
+        if(selecionados.length < 1){
+        alert("Selecione pelo menos uma linha");
+        return false;
+      }
 
-  for(var i = 0; i < selecionados.length; i++){
-  	var selecionado = selecionados[i];
-    selecionado = selecionado.getElementsByTagName("td");
+      var dadosWhatsApp = "";
 
-    //Edição realizada por mim
-       var enter = "\n";
+      for(var i = 0; i < selecionados.length; i++){
+        var selecionado = selecionados[i];
+        selecionado = selecionado.getElementsByTagName("td");
 
-       //Contato
-       var nome = 'Contato: '+ selecionado[0].innerHTML.trim();
-       var celular = selecionado[1].innerHTML.trim();
-       var telefone = selecionado[2].innerHTML.trim();
+        //Edição realizada por mim
+           var enter = '%0A'
 
-       var contato = nome  + ' ' + celular + ' ' + telefone + enter;
+           //Contato
+           var nome = '*Contato:* '+ selecionado[0].innerHTML.trim();
+           var celular = selecionado[1].innerHTML.trim();
+           var telefone = selecionado[2].innerHTML.trim();
 
-       //Endereço
-       var logradouro = 'Endereço: '+ selecionado[3].innerHTML.trim();
-       var complemento = selecionado[4].innerHTML.trim();
-       var bairro = selecionado[5].innerHTML.trim();
-       var cidade = selecionado[6].innerHTML.trim();
-      
-       var endereco = logradouro + ' ' + bairro + ' ' + complemento + ' - ' + cidade + enter;
+           var contato = nome + enter + celular + enter + telefone + enter;
 
-       //Equipamento
-       var tipo = 'Equipamento: '+ selecionado[7].innerHTML.trim();
-       var fabricante = selecionado[8].innerHTML.trim();
-       var defeito = selecionado[9].innerHTML.trim();
+           //Endereço
+           var logradouro = '*Endereço:* '+ selecionado[3].innerHTML.trim();
+           var complemento = selecionado[4].innerHTML.trim();
+           var bairro = selecionado[5].innerHTML.trim();
+           var cidade = selecionado[6].innerHTML.trim();
 
-       var equipamento = tipo + ' ' + fabricante + enter + defeito;
+           var endereco = logradouro + ' ' + bairro + enter + complemento + ' - ' + cidade + enter;
 
-       //Data
-       var data = 'Data: '+ selecionado[10].innerHTML.trim();
-       var periodo = selecionado[11].innerHTML.trim();
-       var colaborador = selecionado[12].innerHTML.trim();
+           //Equipamento
+           var tipo = '*Equipamento:* '+ selecionado[7].innerHTML.trim();
+           var fabricante = selecionado[8].innerHTML.trim();
+           var defeito = selecionado[9].innerHTML.trim();
 
-       var agenda = data + ' - ' + periodo + ' ' + colaborador + enter;
+           var equipamento = tipo + ' ' + fabricante + enter + defeito + enter;
 
-       mensagem = contato+endereco+equipamento+agenda + enter;
- 
-    //Fim edição
-    
-    dadosPDF += mensagem;
-  }
-    var doc = new jsPDF();
-    doc.text(10, 10, dadosPDF);
-    doc.save('Atendimentos.pdf'); 
-});
+           //Data
+           var data = '*Data:* '+ selecionado[10].innerHTML.trim();
+           var periodo = selecionado[11].innerHTML.trim();
+           var colaborador = selecionado[12].innerHTML.trim();
 
-}
-</script>
+           var agenda = data + ' - ' + periodo + enter + colaborador;
 
-<script>
-//Função que enviar msg para o WhatsApp
-    var tabela = document.getElementById("minhaTabela");
-    var linhas = tabela.getElementsByTagName("tr");
+           mensagem = contato+endereco+equipamento+agenda+enter+enter+enter;
+        //Fim edição
 
-    for(var i = 0; i < linhas.length; i++){
-	    var linha = linhas[i];
-        linha.addEventListener("click", function(){
-  	    //Adicionar ao atual
-        selLinha(this, true); //Selecione quantos quiser
-	    });
-}
+        dadosWhatsApp += mensagem;
 
-    function selLinha(linha, multiplos){
-	    if(!multiplos){
-  	        var linhas = linha.parentElement.getElementsByTagName("tr");
-        for(var i = 0; i < linhas.length; i++){
-            var linha_ = linhas[i];
-            linha_.classList.remove("selecionado");    
-        }
-        }
-        linha.classList.toggle("selecionado");
-    }
+      }
+      window.open('https://api.whatsapp.com/send?phone='+phone+'&text='+dadosWhatsApp)
 
-    //Exemplo de como capturar os dados
-    var btnEnviarWhatsApp = document.getElementById("EnviarWhatsApp");
-
-    btnEnviarWhatsApp.addEventListener("click", function(){
-	var selecionados = tabela.getElementsByClassName("selecionado");
-    //Verificar se eestá selecionado
-    if(selecionados.length < 1){
-  	alert("Selecione pelo menos uma linha");
-    return false;
-  }
-  
-  var dadosWhatsApp = "";
-
-  for(var i = 0; i < selecionados.length; i++){
-  	var selecionado = selecionados[i];
-    selecionado = selecionado.getElementsByTagName("td");
-
-    //Edição realizada por mim
-       var enter = '%0A'
-
-       //Contato
-       var nome = '*Contato:* '+ selecionado[0].innerHTML.trim();
-       var celular = selecionado[1].innerHTML.trim();
-       var telefone = selecionado[2].innerHTML.trim();
-
-       var contato = nome + enter + celular + enter + telefone + enter;
-
-       //Endereço
-       var logradouro = '*Endereço:* '+ selecionado[3].innerHTML.trim();
-       var complemento = selecionado[4].innerHTML.trim();
-       var bairro = selecionado[5].innerHTML.trim();
-       var cidade = selecionado[6].innerHTML.trim();
-
-       var endereco = logradouro + ' ' + bairro + enter + complemento + ' - ' + cidade + enter;
-
-       //Equipamento
-       var tipo = '*Equipamento:* '+ selecionado[7].innerHTML.trim();
-       var fabricante = selecionado[8].innerHTML.trim();
-       var defeito = selecionado[9].innerHTML.trim();
-
-       var equipamento = tipo + ' ' + fabricante + enter + defeito + enter;
-
-       //Data
-       var data = '*Data:* '+ selecionado[10].innerHTML.trim();
-       var periodo = selecionado[11].innerHTML.trim();
-       var colaborador = selecionado[12].innerHTML.trim();
-
-       var agenda = data + ' - ' + periodo + enter + colaborador;
-
-       mensagem = contato+endereco+equipamento+agenda+enter+enter+enter;       
-    //Fim edição
-    
-    dadosWhatsApp += mensagem;
-
-  }
-  window.open('https://api.whatsapp.com/send?phone='+phone+'&text='+dadosWhatsApp)
- 
-});
+    });
 </script>
 
 @section Scripts {

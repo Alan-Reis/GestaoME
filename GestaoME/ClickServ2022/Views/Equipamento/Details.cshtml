@@ -4,46 +4,49 @@
     ViewData["Title"] = "Details";
 }
 
-<div>
-    <hr />
-    <dl class="row">
-    
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Tipo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Tipo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Fabricante)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Fabricante)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Modelo)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Modelo)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NSerie)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NSerie)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Editar", "Edit", new { id = Model.EquipamentoID },new { @class = "btn btn-primary"})
-    @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID},new { @class = "btn btn-primary"})
-</div>
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
+    </div>
+    <div class="form-group">
+        <input asp-for="EquipamentoID" class="form-control" type="hidden" />
+    </div>
 
-<table class="table">
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <select asp-for="Tipo" class="form-control" id="equip" onclick="loadFabricante()">
+                <option value="@ViewBag.Tipo" selected="selected">@ViewBag.Tipo</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <select asp-for="Fabricante" class="form-control" id="fabri" onclick="loadModelo()">
+                <option value="@ViewBag.Fabricante" selected="selected">@ViewBag.Fabricante</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <select asp-for="Modelo" class="form-control" id="model">
+                <option value="@ViewBag.Modelo" selected="selected">@ViewBag.Modelo</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <input asp-for="NSerie" class="form-control" class="form-control" id="serie"/>
+            <span asp-validation-for="NSerie" class="text-danger"></span>
+        </div>
+        <div class="form-group col">
+            <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
+            <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
+            @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID},new { @class = "btn btn-primary"})
+        </div>
+    </div>
+</form>
+
+</br>
+<table class="table  table-hover">
     <thead>
-        <tr>
+        <tr class="table-primary table-sm"">
             <th>
-                Ordem de Servico
+                O.S
             </th>
             <th>
                 Data
@@ -51,7 +54,7 @@
             <th>
                 Valor
             </th>
-             <th>
+            <th>
                 Defeito
             </th>
             <th>
@@ -77,7 +80,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Valor)
                 </td>
-                 <td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Defeito)
                 </td>
                 <td>
@@ -90,3 +93,137 @@
         }
     </tbody>
 </table>
+
+<script>
+    window.onload =
+     function loadEquipamento(){
+        fetch('/Equipamento/Equipamento', {
+            method: 'GET',
+            headers: {'Content-Type':'application/json;charset=UTF-8'},
+        })
+        .then(T => T.json())
+        .then(tipo => {
+           for (let objJSON of tipo) {
+            console.log(objJSON);
+            //popular select
+            const
+            tiposSelect = document.getElementById("equip");
+
+            const tiposList = {
+                tipo: objJSON.equipamento
+            };
+
+            for(tipo in tiposList) {
+                option = new Option(tiposList[tipo], tiposList[tipo]);
+                tiposSelect.options[tiposSelect.options.length] = option;
+            }
+            //fim select
+            }
+        })
+    }
+
+    function loadFabricante(){
+        clearFabricante();
+        clearModel();
+        var select = document.getElementById("equip");
+        var opcaoTexto = select.options[select.selectedIndex].text;
+        var fabri = 'fabri='+opcaoTexto
+
+        fetch('/Equipamento/Fabricante', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: fabri
+        })
+        .then(T => T.json())
+        .then(fabricante => {
+
+            for (let objJSON of fabricante) {
+                //popular select
+                const fabricantesSelect = document.getElementById("fabri");
+
+                const fabricantesList = {
+                    tipo: objJSON.nomeFabricante
+                };
+
+            for(fabri in fabricantesList) {
+                option = new Option(fabricantesList[fabri], fabricantesList[fabri]);
+                fabricantesSelect.options[fabricantesSelect.options.length] = option;
+            }
+                //fim select
+            }
+        })
+    }
+
+    function loadModelo(){
+        clearModel();
+        var select = document.getElementById("fabri");
+        var opcaoTexto = select.options[select.selectedIndex].text;
+        var model = 'model='+opcaoTexto
+
+        fetch('/Equipamento/Modelo', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: model
+        })
+        .then(T => T.json())
+        .then(modelo => {
+
+            for (let objJSON of modelo) {
+                console.log(objJSON);
+                //popular select
+                const modelosSelect = document.getElementById("model");
+
+                const modelosList = {
+                    tipo: objJSON.nomeModelo
+                };
+
+            for(model in modelosList) {
+                option = new Option(modelosList[model], modelosList[model]);
+                modelosSelect.options[modelosSelect.options.length] = option;
+            }
+               //fim select
+            }
+        })
+    }
+
+    function clearFabricante(){
+        var fabri = document.getElementById("fabri");
+
+        while(fabri.length){
+            fabri.remove(0);
+        }
+    }
+
+    function clearModel(){
+         var model = document.getElementById("model");
+
+        while(model.length){
+            model.remove(0);
+        }
+    }
+</script>
+
+<script>
+document.getElementById("salvar").disabled = true;
+document.getElementById("equip").disabled = true;
+document.getElementById("fabri").disabled = true;
+document.getElementById("model").disabled = true;
+document.getElementById("serie").disabled = true;
+
+function desabilitar(){
+document.getElementById("salvar").disabled = true;
+document.getElementById("equip").disabled = true;
+document.getElementById("fabri").disabled = true;
+document.getElementById("model").disabled = true;
+document.getElementById("serie").disabled = true;
+}
+
+function habilitar(){
+document.getElementById("salvar").disabled = false;
+document.getElementById("equip").disabled = false;
+document.getElementById("fabri").disabled = false;
+document.getElementById("model").disabled = false;
+document.getElementById("serie").disabled = false;
+
+}
+</script>

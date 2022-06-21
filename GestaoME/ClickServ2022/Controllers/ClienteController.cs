@@ -124,21 +124,6 @@ namespace ClickServ2022.Controllers
             return View(cliente);
         }
 
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            Cliente cliente = this.cliente.GetCliente(id);
-
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-            return View(cliente);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit([Bind] Cliente cliente)

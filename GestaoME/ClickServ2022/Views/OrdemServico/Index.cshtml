@@ -2,13 +2,16 @@
 
 <form asp-action="Index">
     <div class="form-group">
-        Filtrar Ordem de Serviço <input type="number" name="os">
-        <input type="submit" value="Buscar" class="btn btn-primary" />
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Filtrar Ordem de Serviço</span>
+            <input type="number" name="os">
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+        </div>
     </div>
 </form>
-<table class="table">
+<table class="table table-hover">
     <thead>
-        <tr>
+        <tr class="table-primary table-sm">
             <th>
                 Ordem de Serviço
             </th>
@@ -87,7 +90,7 @@
     }
     else
     {
-        @:Próxima 
+        @:Próxima
         @Html.Raw(" ")
         @:>>
     }
