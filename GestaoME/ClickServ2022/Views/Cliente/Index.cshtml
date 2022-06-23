@@ -4,11 +4,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h4>CLIENTES</h4>
+<div class="container p-3 my-3 border">
+<div class="row m-1">
+    @Html.ActionLink("Novo Cliente", "Create",null,null,new { @class = "btn btn-primary"})
+</div>
 
-<p>
-    @Html.ActionLink("Novo", "Create",null,null,new { @class = "btn btn-primary"})
-</p>
+<br />
 
 <form asp-action="Index">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -42,22 +43,13 @@
         </tr>
     </table>
 </form>
+</div>
 
-<table class="table table-hover">
-    <thead>
-        <tr class="table-primary table-sm">
-            <th>
-                <h5>Nome</h5>
-            </th>
-            <th>
-                <h5>Logradouro</h5>
-            </th>
-            <th>
-                <h5>Complemento</h5>
-            </th>
-            <th></th>
-        </tr>
-    </thead>
+  <div class="container mt-1">
+      <h4 class="bg-primary text-white text-center">CLIENTES</h4>
+  </div>
+
+    <table class="table table-hover">
     <tbody>
 
         <h5 style="color:red">@ViewBag.Erro</h5>

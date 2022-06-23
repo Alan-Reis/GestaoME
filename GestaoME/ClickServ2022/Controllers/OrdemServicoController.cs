@@ -36,8 +36,9 @@ namespace ClickServ2022.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(int? pagina, int? os)
+        public IActionResult Index(int? pagina, int? os, Equipamento equipamento)
         {
+           
             string view = "OS";
             List<OrdemServico> ordemServicos = new List<OrdemServico>();
             ordemServicos = this.ordemservico.GetAllOrdemServico(os, view).ToList();

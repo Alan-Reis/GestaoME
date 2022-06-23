@@ -5,167 +5,147 @@
 }
 
 
-    <!-- Adicionando JQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
-            crossorigin="anonymous"></script>
+<!-- Adicionando JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
 
-    <!-- Adicionando Javascript -->
-    <script>
+<!-- Adicionando Javascript -->
+<script>
 
-        $(document).ready(function() {
+    $(document).ready(function() {
 
-            function limpa_formulário_cep() {
-                // Limpa valores do formulário de cep.
-                $("#logradouro").val("");
-                $("#bairro").val("");
-                $("#cidade").val("");
-                $("#uf").val("");
-            }
+        function limpa_formulário_cep() {
+            // Limpa valores do formulário de cep.
+            $("#logradouro").val("");
+            $("#bairro").val("");
+            $("#cidade").val("");
+            $("#uf").val("");
+        }
 
-            //Quando o campo cep perde o foco.
-            $("#cep").blur(function() {
+        //Quando o campo cep perde o foco.
+        $("#cep").blur(function() {
 
-                //Nova variável "cep" somente com dígitos.
-                var cep = $(this).val().replace(/\D/g, '');
+            //Nova variável "cep" somente com dígitos.
+            var cep = $(this).val().replace(/\D/g, '');
 
-                //Verifica se campo cep possui valor informado.
-                if (cep != "") {
+            //Verifica se campo cep possui valor informado.
+            if (cep != "") {
 
-                    //Expressão regular para validar o CEP.
-                    var validacep = /^[0-9]{8}$/;
+                //Expressão regular para validar o CEP.
+                var validacep = /^[0-9]{8}$/;
 
-                    //Valida o formato do CEP.
-                    if(validacep.test(cep)) {
+                //Valida o formato do CEP.
+                if(validacep.test(cep)) {
 
-                        //Preenche os campos com "..." enquanto consulta webservice.
-                        $("#logradouro").val("...");
-                        $("#bairro").val("...");
-                        $("#cidade").val("...");
-                        $("#uf").val("...");
+                    //Preenche os campos com "..." enquanto consulta webservice.
+                    $("#logradouro").val("...");
+                    $("#bairro").val("...");
+                    $("#cidade").val("...");
+                    $("#uf").val("...");
 
 
-                        //Consulta o webservice viacep.com.br/
-                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+                    //Consulta o webservice viacep.com.br/
+                    $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
 
-                            if (!("erro" in dados)) {
-                                //Atualiza os campos com os valores da consulta.
-                                $("#logradouro").val(dados.logradouro);
-                                $("#bairro").val(dados.bairro);
-                                $("#cidade").val(dados.localidade);
-                                $("#uf").val(dados.uf);
+                        if (!("erro" in dados)) {
+                            //Atualiza os campos com os valores da consulta.
+                            $("#logradouro").val(dados.logradouro);
+                            $("#bairro").val(dados.bairro);
+                            $("#cidade").val(dados.localidade);
+                            $("#uf").val(dados.uf);
 
-                            } //end if.
-                            else {
-                                //CEP pesquisado não foi encontrado.
-                                limpa_formulário_cep();
-                                alert("CEP não encontrado.");
-                            }
-                        });
-                    } //end if.
-                    else {
-                        //cep é inválido.
-                        limpa_formulário_cep();
-                        alert("Formato de CEP inválido.");
-                    }
+                        } //end if.
+                        else {
+                            //CEP pesquisado não foi encontrado.
+                            limpa_formulário_cep();
+                            alert("CEP não encontrado.");
+                        }
+                    });
                 } //end if.
                 else {
-                    //cep sem valor, limpa formulário.
+                    //cep é inválido.
                     limpa_formulário_cep();
+                    alert("Formato de CEP inválido.");
                 }
-            });
+            } //end if.
+            else {
+                //cep sem valor, limpa formulário.
+                limpa_formulário_cep();
+            }
         });
+    });
 
-    </script>
+</script>
 
 <hr />
 <form asp-action="AddDados">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <table>
-        <tr>
-            <td>
-                <input asp-for="ClienteID" class="form-control" type="hidden" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h5>ENDEREÇO:</h5>
-            </td>
-           <td>
-                <p class="font-weight-bold">
-                      Pesquisa por CEP:<input name="cep" type="text" id="cep" value="" size="10" maxlength="9" class="form-control" />
-                </p>
-            </td>
-        </tr>
-         <tr>
-            <td>Logradouro:</td>
-            <td>
-                <input asp-for="Endereco.Logradouro" name="logradouro" id="logradouro" class="form-control" />
-                <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
-            </td>
-            <td>Complemento:</td>
-            <td>
-                <input asp-for="Endereco.Complemento"  class="form-control" />
-                <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
-            </td>
-            <td>Bairro:</td>
-            <td>
-                <input asp-for="Endereco.Bairro"  name="bairro" type="text" id="bairro" class="form-control" />
-                <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
-            </td>
-        </tr>
-        <tr>
-            <td>Cidade:</td>
-            <td>
-                <input asp-for="Endereco.Cidade"  name="cidade" id="cidade" class="form-control" />
-                <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
-            </td>
-            <td>Estado:</td>
-            <td>
-                <input asp-for="Endereco.Uf"  name="uf" id="uf" class="form-control" />
-                <span asp-validation-for="Endereco.Uf" class="text-danger"></span>
-            </td>
-            <td>Observação:</td>
-            <td>
-                <input asp-for="Endereco.Observacao" class="form-control" />
-                <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
-            </td>
-        </tr>
-        <tr>
-            <th>
-                <hr />
-                <h5>EQUIPAMENTO:</h5>
-            </th>
-        </tr>
-       <tr>
-            <td>Tipo:</td>
-            <td>
-               <select asp-for="Equipamento.Tipo" id="equip" onclick="loadFabricante()">
-                    <option value="" selected="selected">Selecione</option>
-                </select>
-            </td>
-            <td>Fabricante:</td>
-            <td>
-                 <select asp-for="Equipamento.Fabricante" id="fabri"  onclick="loadModelo()">
+
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="validationTooltipUsernamePrepend">Buscar endereço por CEP</span>
+                <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Logradouro" name="logradouro" id="logradouro" class="form-control" placeholder="Logradouro" required />
+            <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Bairro" name="bairro" type="text" id="bairro" class="form-control" placeholder="Bairro" />
+            <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-3">
+            <input asp-for="Endereco.Cidade" name="cidade" id="cidade" class="form-control" placeholder="Cidade" />
+            <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-1">
+            <input asp-for="Endereco.Uf" name="uf" id="uf" class="form-control" placeholder="UF" />
+            <span asp-validation-for="Endereco.Uf" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Complemento" class="form-control" placeholder="Complemento" />
+            <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Observacao" class="form-control" placeholder="Observação" />
+            <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="container mt-1">
+        <h4 class="bg-primary text-white text-center">Informações do equipamento</h4>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <select asp-for="Equipamento.Tipo" id="equip" onclick="loadFabricante()" class="form-control" required>
                 <option value="" selected="selected">Selecione</option>
-                </select>
-            </td>
-        </tr>
-        <tr>
-            <td>Modelo:</td>
-            <td>
-                 <select asp-for="Equipamento.Modelo" id="model">
-                 <option value="" selected="selected">Selecione</option>
-                </select>
-            </td>
-            <td>Nº série:</td>
-            <td>
-                <input asp-for="Equipamento.NSerie" class="form-control" />
-                <span asp-validation-for="Equipamento.NSerie" class="text-danger"></span>
-            </td>
-        </tr>
-    </table>
-    </br>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <select asp-for="Equipamento.Fabricante" id="fabri" onclick="loadModelo()" class="form-control">
+                <option value="" selected="selected">Selecione</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <select asp-for="Equipamento.Modelo" id="model" class="form-control">
+                <option value="" selected="selected">Selecione</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <input asp-for="Equipamento.NSerie" class="form-control" />
+            <span asp-validation-for="Equipamento.NSerie" class="text-danger"></span>
+        </div>
+    </div>
     <div class="form-group">
         <input type="submit" value="Criar" class="btn btn-primary" />
         @Html.ActionLink("Voltar", "Details", new { id = Model.ClienteID }, new { @class = "btn btn-primary"})
@@ -174,112 +154,112 @@
 
 
 <script>
-window.onload = 
- function loadEquipamento(){
-    fetch('/Equipamento/Equipamento', {
-        method: 'GET',
-        headers: {'Content-Type':'application/json;charset=UTF-8'}, 
-    })
-    .then(T => T.json())
-    .then(tipo => {
-       for (let objJSON of tipo) {
-        console.log(objJSON);            
-        //popular select
-        const 
-        tiposSelect = document.getElementById("equip");
-        
-        const tiposList = {
-            tipo: objJSON.equipamento
-        };
-        
-        for(tipo in tiposList) {
-            option = new Option(tiposList[tipo], tiposList[tipo]);
-            tiposSelect.options[tiposSelect.options.length] = option;
-        }
-        //fim select
-        }
-    })
-}
-
-function loadFabricante(){
-    clearFabricante();
-    clearModel();
-    var select = document.getElementById("equip");
-    var opcaoTexto = select.options[select.selectedIndex].text;
-    var fabri = 'fabri='+opcaoTexto
-
-    fetch('/Equipamento/Fabricante', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}, 
-        body: fabri
-    })
-    .then(T => T.json())
-    .then(fabricante => {
-
-        for (let objJSON of fabricante) {         
+    window.onload =
+     function loadEquipamento(){
+        fetch('/Equipamento/Equipamento', {
+            method: 'GET',
+            headers: {'Content-Type':'application/json;charset=UTF-8'},
+        })
+        .then(T => T.json())
+        .then(tipo => {
+           for (let objJSON of tipo) {
+            console.log(objJSON);
             //popular select
-            const fabricantesSelect = document.getElementById("fabri");
-            
-            const fabricantesList = {
-                tipo: objJSON.nomeFabricante
+            const
+            tiposSelect = document.getElementById("equip");
+
+            const tiposList = {
+                tipo: objJSON.equipamento
             };
-                    
-        for(fabri in fabricantesList) {
-            option = new Option(fabricantesList[fabri], fabricantesList[fabri]);
-            fabricantesSelect.options[fabricantesSelect.options.length] = option;
-        }
+
+            for(tipo in tiposList) {
+                option = new Option(tiposList[tipo], tiposList[tipo]);
+                tiposSelect.options[tiposSelect.options.length] = option;
+            }
             //fim select
-        }
-    })
-}
-
-function loadModelo(){
-    clearModel();
-    var select = document.getElementById("fabri");
-    var opcaoTexto = select.options[select.selectedIndex].text;
-    var model = 'model='+opcaoTexto
-
-    fetch('/Equipamento/Modelo', {
-        method: 'POST',
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}, 
-        body: model
-    })
-    .then(T => T.json())
-    .then(modelo => {
-
-        for (let objJSON of modelo) {
-            console.log(objJSON);           
-            //popular select
-            const modelosSelect = document.getElementById("model");
-            
-            const modelosList = {
-                tipo: objJSON.nomeModelo
-            };
-                    
-        for(model in modelosList) {
-            option = new Option(modelosList[model], modelosList[model]);
-            modelosSelect.options[modelosSelect.options.length] = option;
-        }
-           //fim select
-        }
-    })
-}
-
-function clearFabricante(){
-    var fabri = document.getElementById("fabri");
-
-    while(fabri.length){
-        fabri.remove(0);
+            }
+        })
     }
-}
 
-function clearModel(){
-     var model = document.getElementById("model");
+    function loadFabricante(){
+        clearFabricante();
+        clearModel();
+        var select = document.getElementById("equip");
+        var opcaoTexto = select.options[select.selectedIndex].text;
+        var fabri = 'fabri='+opcaoTexto
 
-    while(model.length){
-        model.remove(0);
+        fetch('/Equipamento/Fabricante', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: fabri
+        })
+        .then(T => T.json())
+        .then(fabricante => {
+
+            for (let objJSON of fabricante) {
+                //popular select
+                const fabricantesSelect = document.getElementById("fabri");
+
+                const fabricantesList = {
+                    tipo: objJSON.nomeFabricante
+                };
+
+            for(fabri in fabricantesList) {
+                option = new Option(fabricantesList[fabri], fabricantesList[fabri]);
+                fabricantesSelect.options[fabricantesSelect.options.length] = option;
+            }
+                //fim select
+            }
+        })
     }
-}
+
+    function loadModelo(){
+        clearModel();
+        var select = document.getElementById("fabri");
+        var opcaoTexto = select.options[select.selectedIndex].text;
+        var model = 'model='+opcaoTexto
+
+        fetch('/Equipamento/Modelo', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: model
+        })
+        .then(T => T.json())
+        .then(modelo => {
+
+            for (let objJSON of modelo) {
+                console.log(objJSON);
+                //popular select
+                const modelosSelect = document.getElementById("model");
+
+                const modelosList = {
+                    tipo: objJSON.nomeModelo
+                };
+
+            for(model in modelosList) {
+                option = new Option(modelosList[model], modelosList[model]);
+                modelosSelect.options[modelosSelect.options.length] = option;
+            }
+               //fim select
+            }
+        })
+    }
+
+    function clearFabricante(){
+        var fabri = document.getElementById("fabri");
+
+        while(fabri.length){
+            fabri.remove(0);
+        }
+    }
+
+    function clearModel(){
+         var model = document.getElementById("model");
+
+        while(model.length){
+            model.remove(0);
+        }
+    }
 </script>
 
 

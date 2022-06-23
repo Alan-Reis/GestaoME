@@ -606,7 +606,7 @@ namespace ClickServ2022.Repository
                 }
                 else
                 {
-                    sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id}";
+                    sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id} ";
                 }
 
                 //string sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id}";
@@ -627,6 +627,7 @@ namespace ClickServ2022.Repository
 
                     //Utilizado para pegar criar a lista no Details dos equipamentos 
                     equipamento.OrdemServicos = GetAllOrdemServico(id, view);
+
                 }
                 con.Close();
             }

@@ -5,125 +5,181 @@
     ViewData["Title"] = "Details";
 }
 
-</br>
-<div>
-     <form asp-action="Edit">
+<style>
+
+    * {
+        box-sizing: border-box
+    }
+
+    /* Style the tab */
+    .tab {
+        float: left;
+        border: 1px solid #ccc;
+        background-color: #f1f1f1;
+        width: 30%;
+        height: 300px;
+    }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+            display: block;
+            background-color: inherit;
+            color: black;
+            padding: 22px 16px;
+            width: 100%;
+            border: none;
+            outline: none;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+            /* Change background color of buttons on hover */
+            .tab button:hover {
+                background-color: #ddd;
+            }
+
+            /* Create an active/current "tab button" class */
+            .tab button.active {
+                background-color: #ccc;
+            }
+
+    /* Style the tab content */
+    .tabcontent {
+        float: left;
+        padding: 0px 12px;
+        border: 1px solid #ccc;
+        width: 70%;
+        border-left: none;
+        height: 300px;
+    }
+
+</style>
+
+<div class="container p-3 my-3 border">
+    <div>
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-           
             <input asp-for="ClienteID" class="form-control" type="hidden" />
 
             <div class="row">
-            <div class="col">
-                <input asp-for="Nome" class="form-control" placeholder="Nome" required id="nome"/>
-                <span asp-validation-for="Nome" class="text-danger"></span>
-            </div>
-            <div class="col">
-                <input asp-for="CPF" class="form-control" placeholder="CPF" id="cpf"/>
-                <span asp-validation-for="CPF" class="text-danger"></span>
-            </div>
-            <div class="col">
-                <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
-                <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
-                 @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
-            </div>
+                <div class="col">
+                    <input asp-for="Nome" class="form-control" placeholder="Nome" required id="nome" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input asp-for="CPF" class="form-control" placeholder="CPF" id="cpf" />
+                    <span asp-validation-for="CPF" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
+                    <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
+                    @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
+                </div>
             </div>
         </form>
+    </div>
 </div>
 
+</br>
+<div class="tab">
+    <button class="tablinks" onclick="openDados(event, 'Contato')" id="defaultOpen">CONTATO</button>
+    <button class="tablinks" onclick="openDados(event, 'Endereco')">ENDEREÇO</button>
+</div>
 
-</br>
-</br>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Celular
-            </th>
-            <th>
-                Telefone
-            </th>
-            <th>
-                E-mail
-            </th>
-            <th>
-                <div>
-                    @Html.ActionLink("Novo", "Create","Contato", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
-                </div>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Contatos)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Celular)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID },new { @class = "btn btn-warning"})
-                    @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID },new { @class = "btn btn-danger " })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="Contato" class="tabcontent">
+    <div>
+        @Html.ActionLink("Novo Contato", "Create","Contato", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+    </div>
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.Contatos)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Celular)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID },new { @class = "btn btn-warning"})
+                        @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID },new { @class = "btn btn-danger " })
+                    </td>
+                </tr>
 
-</br>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Logradouro
-            </th>
-            <th>
-                Complemento
-            </th>
-            <th>
-                Cidade
-            </th>
-            <th>
-                @Html.ActionLink("Novo", "AddDados", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Enderecos)
-        {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Logradouro, "Details", "Endereco",  new { id=item.EnderecoID })
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Complemento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Cidade)
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div id="Endereco" class="tabcontent">
+    <div>
+        @Html.ActionLink("Novo Endereço", "AddDados", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+    </div>
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.Enderecos)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Logradouro, "Details", "Endereco",  new { id=item.EnderecoID })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Complemento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cidade)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
 
 <script>
-document.getElementById("salvar").disabled = true;
-document.getElementById("nome").disabled = true;
-document.getElementById("cpf").disabled = true;
+    function openDados(evt, cityName) {
+      // Declare all variables
+      var i, tabcontent, tablinks;
 
-function desabilitar(){
-document.getElementById("salvar").disabled = true;
-document.getElementById("nome").disabled = true;
-document.getElementById("cpf").disabled = true;
-}
+      // Obter todos os elementos com class="tabcontent" e escondê-los
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
 
-function habilitar(){
-    document.getElementById("salvar").disabled = false;
-    document.getElementById("nome").disabled = false;
-document.getElementById("cpf").disabled = false;
-}
+    // Pega todos os elementos com class="tablinks" e remove a classe "active"
+      tablinks = document.getElementsByClassName("tablinks");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+
+      // Mostre a guia atual e adicione uma classe "ativa" ao link que abriu a guia
+      document.getElementById(cityName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    // Pega o elemento com id="defaultOpen" e clica nele
+    document.getElementById("defaultOpen").click();
+</script>
+
+<script>
+    document.getElementById("salvar").disabled = true;
+    document.getElementById("nome").disabled = true;
+    document.getElementById("cpf").disabled = true;
+
+    function desabilitar(){
+    document.getElementById("salvar").disabled = true;
+    document.getElementById("nome").disabled = true;
+    document.getElementById("cpf").disabled = true;
+    }
+
+    function habilitar(){
+        document.getElementById("salvar").disabled = false;
+        document.getElementById("nome").disabled = false;
+    document.getElementById("cpf").disabled = false;
+    }
 </script>
