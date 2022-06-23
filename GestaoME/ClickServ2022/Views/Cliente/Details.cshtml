@@ -106,8 +106,8 @@
                         @Html.DisplayFor(modelItem => item.Email)
                     </td>
                     <td>
-                        @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID },new { @class = "btn btn-warning"})
-                        @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID },new { @class = "btn btn-danger " })
+                        <button class="btn btn-warning edit" data-id="@item.ContatoID"><i class="glyphicon glyphicon-edit"></i>Editar</button>
+                        <button class="btn btn-danger delete" data-id="@item.ContatoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
                     </td>
                 </tr>
 
@@ -115,6 +115,32 @@
         </tbody>
     </table>
 </div>
+
+<div class="modal" id="modal"></div>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+<script>
+        $(".edit").click(function () {
+        var id = $(this).attr("data-id");
+
+        $("#modal").load("/Contato/Edit/" + id, function () {
+            $("#modal").modal();
+        })
+    });
+
+        $(".delete").click(function () {
+        var id = $(this).attr("data-id");
+
+        $("#modal").load("/Contato/Delete/" + id, function () {
+            $("#modal").modal();
+        })
+    });
+</script>
+
+
 
 <div id="Endereco" class="tabcontent">
     <div>

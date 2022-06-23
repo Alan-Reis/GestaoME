@@ -4,6 +4,21 @@
     ViewData["Title"] = "Delete";
 }
 
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm())
+        {
+            <div class="modal-header">
+                <h4 class="modal-title">Excluir contato</h4>
+            </div>
+             
+            @Html.AntiForgeryToken()
+ 
+        <div class="modal-body">
+
+
+
 <h3 style="color:red">Deseja excluir contato?</h3>
 
 <form asp-action="Delete">
@@ -41,3 +56,10 @@
     </dl>
 
 </div>
+
+
+        </div>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+
