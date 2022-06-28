@@ -104,5 +104,43 @@ namespace ClickServ2022.Controllers
 
             return View(ordemservico);
         }
+
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Popular um SelectList para os técnico
+            ViewBag.Tecnico = this.ordemservico.GetAllColaborador().Select(c => new SelectListItem()
+            { Text = c.Nome, Value = c.Nome }).ToList();
+
+            OrdemServico ordemServico = this.ordemservico.GetOrdemServico(id);
+
+            if (ordemservico == null)
+            {
+                return NotFound();
+            }
+            return View(ordemServico);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind] OrdemServico ordemServico)
+        {
+            if (id != ordemServico.OrdemServicoID)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                this.ordemservico.UpdateOrdemServico(ordemServico);
+                return RedirectToAction("Details", "Equipamento", new { id = ordemServico.Equipamento.EquipamentoID });
+            }
+            return View(ordemServico);
+        }
+
     }
 }

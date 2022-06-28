@@ -1,0 +1,77 @@
+﻿@model ClickServ2022.Models.OrdemServico
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm())
+        {
+            <div class="modal-header">
+                <h4 class="modal-title">Editar contato</h4>
+            </div>
+
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+
+
+
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input asp-for="Equipamento.EquipamentoID" class="form-control" type="hidden" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <label asp-for="OrdemServicoID" class="control-label"></label>
+                            <input asp-for="OrdemServicoID" class="form-control" required />
+                            <span asp-validation-for="OrdemServicoID" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Data" class="control-label"></label>
+                            <input asp-for="Data" class="form-control" />
+                            <span asp-validation-for="Data" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Valor" class="control-label"></label>
+                            <input asp-for="Valor" class="form-control" required />
+                            <span asp-validation-for="Valor" class="text-danger"></span>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Defeito" class="control-label"></label>
+                        <input asp-for="Defeito" class="form-control" />
+                        <span asp-validation-for="Defeito" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Relatorio" class="control-label"></label>
+                        <input asp-for="Relatorio" class="form-control" />
+                        <span asp-validation-for="Relatorio" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="Colaborador"
+                            asp-items="@ViewBag.Tecnico" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                        @Html.ActionLink("Cancelar", "Details","Equipamento", new { id = Model.Equipamento.EquipamentoID },new { @class = "btn btn-primary"})
+                    </div>
+                </form>
+
+
+
+
+            </div>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

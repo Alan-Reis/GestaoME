@@ -12,7 +12,6 @@ namespace ClickServ2022.Models
         public string Categoria { get; set; } //Novo - Retorno - Garantia
         public string  Defeito { get; set; }
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Data { get; set; }
         public string Periodo { get; set; }
         public string Status { get; set; } //Ativo - Cancelado - Aguardando Aprovação - Aguardando Peça - Concluído

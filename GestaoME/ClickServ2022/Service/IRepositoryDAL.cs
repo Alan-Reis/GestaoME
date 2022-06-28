@@ -58,7 +58,7 @@ namespace ClickServ2022.Service
         void AddOrdemServico(OrdemServico ordemservico);
         IEnumerable<OrdemServico> GetAllOrdemServico(int? id, string view);
         OrdemServico GetOrdemServico(int? os);
-
+        void UpdateOrdemServico(OrdemServico ordemServico);
         #endregion
 
         #region Auxiliares

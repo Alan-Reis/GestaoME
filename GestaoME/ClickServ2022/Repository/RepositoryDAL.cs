@@ -187,7 +187,7 @@ namespace ClickServ2022.Repository
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-
+ 
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -835,8 +835,8 @@ namespace ClickServ2022.Repository
 
                     ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
                     ordemServico.Valor = reader["Valor"].ToString();
-                    ordemServico.Defeito = reader["Valor"].ToString();
-                    ordemServico.Relatorio = reader["Valor"].ToString();
+                    ordemServico.Defeito = reader["Defeito"].ToString();
+                    ordemServico.Relatorio = reader["Relatorio"].ToString();
                     ordemServico.Colaborador = reader["Colaborador"].ToString();
                 }
                 con.Close();
@@ -899,6 +899,9 @@ namespace ClickServ2022.Repository
         }
         public void AddOrdemServico(OrdemServico ordemservico)
         {
+            //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
+            string valor = ordemservico.Valor.Replace(',', '.');
+
             string connectionString = Conexao();
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -909,7 +912,7 @@ namespace ClickServ2022.Repository
                                     $"Values({ordemservico.OrdemServicoID}, " +
                                     $"{ordemservico.Equipamento.EquipamentoID}, " +
                                     $"'{Data}', " +
-                                    $"{ordemservico.Valor}, " +
+                                    $"{valor}, " +
                                     $"'{ordemservico.Defeito}', " +
                                     $"'{ordemservico.Relatorio}', " +
                                     $"'{ordemservico.Colaborador}')";
@@ -922,6 +925,30 @@ namespace ClickServ2022.Repository
                 con.Close();
             }
         }
+
+        public void UpdateOrdemServico(OrdemServico ordemServico)
+        {
+            string connectionString = Conexao();
+
+            //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
+            string valor = ordemServico.Valor.Replace(',', '.');
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"UPDATE tbl_OrdemServico " +
+                                    $"SET Data = '{ordemServico.Data}', Valor = {valor}, Defeito = '{ordemServico.Defeito}', Relatorio = '{ordemServico.Relatorio}', Colaborador = '{ordemServico.Colaborador}' " +
+                                    $"WHERE OrdemServicoID = {ordemServico.OrdemServicoID}";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+        }
+        
         #endregion
 
         #region Colaborador
