@@ -5,6 +5,9 @@
     ViewData["Title"] = "Details";
 }
 
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
 <style>
 
     * {
@@ -117,31 +120,6 @@
 </div>
 
 <div class="modal" id="modal"></div>
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-
-<script>
-        $(".edit").click(function () {
-        var id = $(this).attr("data-id");
-
-        $("#modal").load("/Contato/Edit/" + id, function () {
-            $("#modal").modal();
-        })
-    });
-
-        $(".delete").click(function () {
-        var id = $(this).attr("data-id");
-
-        $("#modal").load("/Contato/Delete/" + id, function () {
-            $("#modal").modal();
-        })
-    });
-</script>
-
-
-
 <div id="Endereco" class="tabcontent">
     <div>
         @Html.ActionLink("Novo Endereço", "AddDados", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
@@ -166,46 +144,13 @@
     </table>
 </div>
 
-<script>
-    function openDados(evt, cityName) {
-      // Declare all variables
-      var i, tabcontent, tablinks;
 
-      // Obter todos os elementos com class="tabcontent" e escondê-los
-      tabcontent = document.getElementsByClassName("tabcontent");
-      for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-      }
+@section Scripts{
 
-    // Pega todos os elementos com class="tablinks" e remove a classe "active"
-      tablinks = document.getElementsByClassName("tablinks");
-      for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-      }
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="~/js/habilitar-botao-cliente.js"></script>
+<script src="~/js/nav-dados-cliente.js"></script>
+<script src="~/js/modal-contato.js"></script>
 
-      // Mostre a guia atual e adicione uma classe "ativa" ao link que abriu a guia
-      document.getElementById(cityName).style.display = "block";
-      evt.currentTarget.className += " active";
-    }
-
-    // Pega o elemento com id="defaultOpen" e clica nele
-    document.getElementById("defaultOpen").click();
-</script>
-
-<script>
-    document.getElementById("salvar").disabled = true;
-    document.getElementById("nome").disabled = true;
-    document.getElementById("cpf").disabled = true;
-
-    function desabilitar(){
-    document.getElementById("salvar").disabled = true;
-    document.getElementById("nome").disabled = true;
-    document.getElementById("cpf").disabled = true;
-    }
-
-    function habilitar(){
-        document.getElementById("salvar").disabled = false;
-        document.getElementById("nome").disabled = false;
-    document.getElementById("cpf").disabled = false;
-    }
-</script>
+}

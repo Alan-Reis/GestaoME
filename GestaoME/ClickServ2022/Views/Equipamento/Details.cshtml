@@ -4,6 +4,8 @@
     ViewData["Title"] = "Details";
 }
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
 <form asp-action="Edit">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
@@ -30,7 +32,7 @@
             </select>
         </div>
         <div class="form-group col-md-2">
-            <input asp-for="NSerie" class="form-control" class="form-control" id="serie"/>
+            <input asp-for="NSerie" class="form-control" class="form-control" id="serie" />
             <span asp-validation-for="NSerie" class="text-danger"></span>
         </div>
         <div class="form-group col">
@@ -45,7 +47,7 @@
 
 <table class="table  table-hover">
     <thead>
-        <tr class="table-primary table-sm"">
+        <tr class="table-primary table-sm" ">
             <th>
                 O.S
             </th>
@@ -71,189 +73,42 @@
     <tbody>
         @foreach (var item in Model.OrdemServicos)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.OrdemServicoID)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Data)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Valor)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Defeito)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Relatorio)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Colaborador)
-                </td>
-                 <td>
-                        <button class="btn btn-warning edit" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-edit"></i>Editar</button>
-                        <button class="btn btn-danger delete" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
-                    </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrdemServicoID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Data)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Valor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Defeito)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Relatorio)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Colaborador)
+            </td>
+            <td>
+                <button class="btn btn-warning edit" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-edit"></i>Editar</button>
+                <button class="btn btn-danger delete" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
 
 <div class="modal" id="modal"></div>
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<script>
-        $(".edit").click(function () {
-        var id = $(this).attr("data-id");
-
-        $("#modal").load("/OrdemServico/Edit/" + id, function () {
-            $("#modal").modal();
-        })
-    });
-
-        $(".delete").click(function () {
-        var id = $(this).attr("data-id");
-
-        $("#modal").load("/OrdemServico/Delete/" + id, function () {
-            $("#modal").modal();
-        })
-    });
-</script>
+<script src="~/js/select-equipamento.js"></script>
+<script src="~/js/habilitar-botao-equipamento.js"></script>
+<script src="~/js/modal-equipamento.js"></script>
 
 
 
-<script>
-    window.onload =
-     function loadEquipamento(){
-        fetch('/Equipamento/Equipamento', {
-            method: 'GET',
-            headers: {'Content-Type':'application/json;charset=UTF-8'},
-        })
-        .then(T => T.json())
-        .then(tipo => {
-           for (let objJSON of tipo) {
-            //popular select
-            const
-            tiposSelect = document.getElementById("equip");
-
-            const tiposList = {
-                tipo: objJSON.equipamento
-            };
-
-            for(tipo in tiposList) {
-                option = new Option(tiposList[tipo], tiposList[tipo]);
-                tiposSelect.options[tiposSelect.options.length] = option;
-            }
-            //fim select
-            }
-        })
-    }
-
-    function loadFabricante(){
-        clearFabricante();
-        clearModel();
-        var select = document.getElementById("equip");
-        var opcaoTexto = select.options[select.selectedIndex].text;
-        var fabri = 'fabri='+opcaoTexto
-
-        fetch('/Equipamento/Fabricante', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: fabri
-        })
-        .then(T => T.json())
-        .then(fabricante => {
-
-            for (let objJSON of fabricante) {
-                //popular select
-                const fabricantesSelect = document.getElementById("fabri");
-
-                const fabricantesList = {
-                    tipo: objJSON.nomeFabricante
-                };
-
-            for(fabri in fabricantesList) {
-                option = new Option(fabricantesList[fabri], fabricantesList[fabri]);
-                fabricantesSelect.options[fabricantesSelect.options.length] = option;
-            }
-                //fim select
-            }
-        })
-    }
-
-    function loadModelo(){
-        clearModel();
-        var select = document.getElementById("fabri");
-        var opcaoTexto = select.options[select.selectedIndex].text;
-        var model = 'model='+opcaoTexto
-
-        fetch('/Equipamento/Modelo', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
-            body: model
-        })
-        .then(T => T.json())
-        .then(modelo => {
-
-            for (let objJSON of modelo) {
-                console.log(objJSON);
-                //popular select
-                const modelosSelect = document.getElementById("model");
-
-                const modelosList = {
-                    tipo: objJSON.nomeModelo
-                };
-
-            for(model in modelosList) {
-                option = new Option(modelosList[model], modelosList[model]);
-                modelosSelect.options[modelosSelect.options.length] = option;
-            }
-               //fim select
-            }
-        })
-    }
-
-    function clearFabricante(){
-        var fabri = document.getElementById("fabri");
-
-        while(fabri.length){
-            fabri.remove(0);
-        }
-    }
-
-    function clearModel(){
-         var model = document.getElementById("model");
-
-        while(model.length){
-            model.remove(0);
-        }
-    }
-</script>
-
-<script>
-document.getElementById("salvar").disabled = true;
-document.getElementById("equip").disabled = true;
-document.getElementById("fabri").disabled = true;
-document.getElementById("model").disabled = true;
-document.getElementById("serie").disabled = true;
-
-function desabilitar(){
-document.getElementById("salvar").disabled = true;
-document.getElementById("equip").disabled = true;
-document.getElementById("fabri").disabled = true;
-document.getElementById("model").disabled = true;
-document.getElementById("serie").disabled = true;
-}
-
-function habilitar(){
-document.getElementById("salvar").disabled = false;
-document.getElementById("equip").disabled = false;
-document.getElementById("fabri").disabled = false;
-document.getElementById("model").disabled = false;
-document.getElementById("serie").disabled = false;
-
-}
-</script>
