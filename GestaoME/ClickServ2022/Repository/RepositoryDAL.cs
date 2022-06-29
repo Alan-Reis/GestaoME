@@ -573,7 +573,7 @@ namespace ClickServ2022.Repository
                     Endereco endereco = new Endereco();
                     endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
                     equipamento.Endereco = endereco;
-
+                    
                     Cliente cliente = new Cliente();
                     cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
                     equipamento.Cliente = cliente;
@@ -948,7 +948,22 @@ namespace ClickServ2022.Repository
             }
 
         }
-        
+
+        public void DeleteOrdemServico(int? id)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"DELETE FROM tbl_OrdemServico WHERE OrdemServicoID = {id}";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
         #endregion
 
         #region Colaborador

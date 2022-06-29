@@ -142,5 +142,31 @@ namespace ClickServ2022.Controllers
             return View(ordemServico);
         }
 
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            OrdemServico ordemServico = this.ordemservico.GetOrdemServico(id);
+
+            if (ordemServico == null)
+            {
+                return NotFound();
+            }
+            return View(ordemServico);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int? id)
+        {
+            OrdemServico ordemServico = this.ordemservico.GetOrdemServico(id);
+
+            this.ordemservico.DeleteOrdemServico(id);
+            return RedirectToAction("Index", "Cliente");
+        }
+
     }
 }
