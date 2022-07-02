@@ -31,73 +31,54 @@ namespace ClickServ2022.Repository
         #endregion
 
         #region GestaoME
-        public Login GetLogin(string usuario, string senha)
-        {
-            string connectionString = ConexaoGestaoME();
 
-            Login login = new Login();
-
-            using (SqlConnection con = new SqlConnection(connectionString))
-            {
-                string sqlQuery = $"SELECT * FROM tbl_login WHERE Usuario = '{usuario}' AND Senha = '{senha}'";
-                SqlCommand cmd = new SqlCommand(sqlQuery, con);
-                con.Open();
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
-                {
-                    login.Usuario = reader["Usuario"].ToString();  
-                }
-                con.Close();
-            }
-            return login;
-        }
         #endregion
 
         #region Cliente
-        public IEnumerable<Cliente> GetAllClientes(string nome)
+        public IEnumerable<Cliente> GetAllClientes(string coluna, string nome)
         {
-           
+
             string connectionString = Conexao();
 
             List<Cliente> listPessoa = new List<Cliente>();
 
+            string stringQuery;
+            //IF realizado para consulta por nome ou condomínio
             if(nome != null)
             {
-                using (SqlConnection con = new SqlConnection(connectionString))
-                {
-                    SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_Cliente WHERE Nome LIKE '%{nome}%' ORDER BY Nome DESC", con);
-                    cmd.CommandType = CommandType.Text;
+                stringQuery = $"SELECT * FROM tbl_Cliente C " +
+                              $"INNER JOIN tbl_Endereco E " +
+                              $"ON C.ClienteID = E.ClienteID " +
+                              $"WHERE {coluna} LIKE '%{nome}%' ORDER BY Nome DESC";
 
-                    con.Open();
-                    SqlDataReader reader = cmd.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        Cliente cliente = new Cliente();
-                        cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
-                        cliente.Nome = reader["Nome"].ToString();
-                        cliente.CPF = reader["CPF"].ToString();
-                        listPessoa.Add(cliente);
-                    }
-                    con.Close();
-                }
-                return listPessoa;
+            }
+            else
+            {
+                stringQuery = $"SELECT * FROM tbl_Cliente C " +
+                              $"INNER JOIN tbl_Endereco E " +
+                              $"ON C.ClienteID = E.ClienteID";
+
             }
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-
-                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Cliente ORDER BY ClienteID DESC", con);
+                SqlCommand cmd = new SqlCommand(stringQuery, con);
                 cmd.CommandType = CommandType.Text;
-
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
                 while (reader.Read())
                 {
                     Cliente cliente = new Cliente();
+                    Endereco endereco = new Endereco();
+
                     cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
                     cliente.Nome = reader["Nome"].ToString();
-                    cliente.CPF = reader["CPF"].ToString();
+
+                    endereco.Logradouro = reader["Logradouro"].ToString();
+                    endereco.Complemento = reader["Complemento"].ToString();
+
+                    cliente.Endereco = endereco;
+
                     listPessoa.Add(cliente);
                 }
                 con.Close();
@@ -105,9 +86,9 @@ namespace ClickServ2022.Repository
 
             return listPessoa;
         }
-       
+
         public Cliente GetCliente(int? id)
-        { 
+        {
             string connectionString = Conexao();
             Cliente cliente = new Cliente();
 
@@ -125,7 +106,8 @@ namespace ClickServ2022.Repository
                     cliente.CPF = reader["CPF"].ToString();
 
                     cliente.Enderecos = GetAllEnderecos(id);
-                    cliente.Equipamentos = GetAllEquipamentos(id);
+                    string view = null;
+                    cliente.Equipamentos = GetAllEquipamentos(id, view);
                     cliente.Contatos = GetAllContatos(id);
                 }
                 con.Close();
@@ -165,7 +147,6 @@ namespace ClickServ2022.Repository
 
                 //Pega o último ClienteID inserido no banco de dados
                 cliente.ClienteID = GetClienteLast();
-
                 AddDados(cliente);
 
                 con.Close();
@@ -174,14 +155,18 @@ namespace ClickServ2022.Repository
 
         public void AddDados(Cliente cliente)
         {
-            
+
             string connectionString = Conexao();
 
-            cliente.Contato.Cliente = cliente;
-            cliente.Endereco.Cliente = cliente;
-           
+            //Para cadastro completo de cliente. Quando o cadastro é feito para adicionar um novo
+            //endereço e equipamento o Contato vem nulo e daria erro se não estivesse esse if.
+            if (cliente.Contato != null)
+            {
+                cliente.Contato.Cliente = cliente;
+                AddContato(cliente.Contato);
+            }
 
-            AddContato(cliente.Contato);
+            cliente.Endereco.Cliente = cliente;
             AddEndereco(cliente.Endereco);
 
             //Pega endereçoID para salvar na FK da tbl Equipamento
@@ -202,7 +187,7 @@ namespace ClickServ2022.Repository
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-
+ 
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -216,9 +201,9 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string delContato = $"DELETE FROM Contato WHERE ClienteID = {id}";
-                string delEndereco = $"DELETE FROM Endereco WHERE ClienteID = {id}";
-                string delEquipamento = $"DELETE FROM Equipamento WHERE ClienteID = {id}";
+                string delContato = $"DELETE FROM tbl_Contato WHERE ClienteID = {id}";
+                string delEndereco = $"DELETE FROM tbl_Endereco WHERE ClienteID = {id}";
+                string delEquipamento = $"DELETE FROM tbl_Equipamento WHERE ClienteID = {id}";
                 string comandoSQL = $"DELETE FROM tbl_Cliente WHERE ClienteID = {id}";
                 SqlCommand cmd = new SqlCommand(delContato + delEndereco + delEquipamento + comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
@@ -239,7 +224,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM Contato WHERE ClienteID = " + id, con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Contato WHERE ClienteID = " + id, con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -271,7 +256,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM Contato WHERE ContatoID = {id}";
+                string sqlQuery = $"SELECT * FROM tbl_Contato WHERE ContatoID = {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -299,7 +284,7 @@ namespace ClickServ2022.Repository
             using (SqlConnection con = new SqlConnection(connectionString))
             {
 
-                string comandoSQL = $"UPDATE Contato SET " +
+                string comandoSQL = $"UPDATE tbl_Contato SET " +
                                     $"Celular   =   '{contato.Celular}', " +
                                     $"Telefone  =   '{contato.Telefone}', " +
                                     $"Email     =   '{contato.Email}'" +
@@ -320,7 +305,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO Contato (ClienteID, Celular, Telefone, Email) " +
+                string comandoSQL = $"INSERT INTO tbl_Contato (ClienteID, Celular, Telefone, Email) " +
                                     $"Values({contato.Cliente.ClienteID}, " +
                                     $"'{contato.Celular}', " +
                                     $"'{contato.Telefone}', " +
@@ -341,7 +326,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"DELETE FROM Contato WHERE ContatoID = {id}";
+                string comandoSQL = $"DELETE FROM tbl_Contato WHERE ContatoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 
@@ -352,6 +337,33 @@ namespace ClickServ2022.Repository
         }
         #endregion
 
+        #region Contato Auxiliar
+
+        public void AddContatoAuxiliar(ContatoAuxiliar contato)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"INSERT INTO tbl_Contato (ContatoAuxID, ClienteID, Nome, Celular, Telefone, Atribuicao) " +
+                                    $"Values({contato.ContatoAuxID}, " +
+                                    $"'{contato.Cliente.ClienteID}', " +
+                                    $"'{contato.Nome}', " +
+                                    $"'{contato.Celular}', " +
+                                    $"'{contato.Telefone}', " +
+                                    $"'{contato.Atribuicao}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        #endregion
+
         #region Endereco
         public IEnumerable<Endereco> GetAllEnderecos(int? id)
         {
@@ -360,16 +372,12 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Endereco E" +
-                                                $" INNER JOIN Equipamento Eq" +
-                                                $" ON E.EnderecoID = Eq.EnderecoID" +
-                                                $" AND E.ClienteID = Eq.ClienteID" +
-                                                $" WHERE E.ClienteID = {id} ", con);
+                SqlCommand cmd = new SqlCommand($" SELECT * FROM tbl_Endereco E WHERE E.ClienteID = {id} ", con);
 
                 cmd.CommandType = CommandType.Text;
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
-                            
+
                 while (reader.Read())
                 {
                     Endereco endereco = new Endereco();
@@ -380,25 +388,19 @@ namespace ClickServ2022.Repository
                     endereco.Complemento = reader["Complemento"].ToString();
                     endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Cidade = reader["Cidade"].ToString();
-                    endereco.Estado = reader["Estado"].ToString();
+                    endereco.Uf = reader["Uf"].ToString();
                     endereco.Observacao = reader["Observacao"].ToString();
-
-                    equipamento.Tipo = reader["Tipo"].ToString();
-                    equipamento.Fabricante = reader["Fabricante"].ToString();
-                    equipamento.Modelo = reader["Modelo"].ToString();
-                    equipamento.NSerie = reader["NSerie"].ToString();
-
-                    endereco.Equipamento = equipamento;
 
                     listEndereco.Add(endereco);
                 }
-            
+
+
                 con.Close();
             }
             return listEndereco;
         }
 
-        public Endereco GetEndereco(int? id)
+        public Endereco GetEndereco(int? id, string view)
         {
 
             string connectionString = Conexao();
@@ -408,7 +410,18 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM Endereco WHERE EnderecoID = {id}";
+
+                string sqlQuery;
+
+                if (view == "Endereco")
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Endereco WHERE ClienteID = {id}";
+                }
+                else
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Endereco WHERE EnderecoID = {id}";
+                }
+
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -423,8 +436,11 @@ namespace ClickServ2022.Repository
                     endereco.Complemento = reader["Complemento"].ToString();
                     endereco.Bairro = reader["Bairro"].ToString();
                     endereco.Cidade = reader["Cidade"].ToString();
-                    endereco.Estado = reader["Estado"].ToString();
+                    endereco.Uf = reader["Uf"].ToString();
                     endereco.Observacao = reader["Observacao"].ToString();
+
+                    view = "Endereco";
+                    endereco.Equipamentos = GetAllEquipamentos(id, view);
                 }
                 con.Close();
             }
@@ -439,7 +455,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $" SELECT TOP 1 EnderecoID FROM Endereco ORDER BY EnderecoID DESC ";
+                string sqlQuery = $" SELECT TOP 1 EnderecoID FROM tbl_Endereco ORDER BY EnderecoID DESC ";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -455,13 +471,13 @@ namespace ClickServ2022.Repository
             string connectionString = Conexao();
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO Endereco " +
+                string comandoSQL = $"INSERT INTO tbl_Endereco " +
                                     $"Values({endereco.Cliente.ClienteID}, " +
                                     $"'{endereco.Logradouro}', " +
                                     $"'{endereco.Complemento}', " +
                                     $"'{endereco.Bairro}', " +
                                     $"'{endereco.Cidade}', " +
-                                    $"'{endereco.Estado}', " +
+                                    $"'{endereco.Uf}', " +
                                     $"'{endereco.Observacao}')";
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
@@ -479,12 +495,12 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"UPDATE Endereco SET " +
+                string comandoSQL = $"UPDATE tbl_Endereco SET " +
                                     $"Logradouro = '{endereco.Logradouro}', " +
                                     $"Complemento = '{endereco.Complemento}', " +
                                     $"Bairro = '{endereco.Bairro}', " +
                                     $"Cidade = '{endereco.Cidade}', " +
-                                    $"Estado = '{endereco.Estado}', " +
+                                    $"Uf = '{endereco.Uf}', " +
                                     $"Observacao = '{endereco.Observacao}' " +
                                     $"WHERE EnderecoID = '{endereco.EnderecoID}'";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
@@ -500,28 +516,47 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
+            string view = null;
+            Endereco endereco = GetEndereco(id, view);
+            var total = endereco.Equipamentos;
+
+            //if(total == null)
+            //{
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"DELETE FROM Endereco WHERE EnderecoID = {id}";
+                string comandoSQL = $"DELETE FROM tbl_Endereco WHERE EnderecoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
             }
+            //} 
+
         }
         #endregion
 
         #region Equipamento
-        public IEnumerable<Equipamento> GetAllEquipamentos(int? id)
+        public IEnumerable<Equipamento> GetAllEquipamentos(int? id, string view)
         {
             string connectionString = Conexao();
             List<Equipamento> listEquipamento = new List<Equipamento>();
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand($"SELECT * FROM Equipamento WHERE ClienteID = {id}", con);
+                string query = null;
+
+                if (view == "Endereco")
+                {
+                    query = $"SELECT * FROM tbl_Equipamento WHERE EnderecoID = {id}";
+                }
+                else
+                {
+                    query = $"SELECT * FROM tbl_Equipamento WHERE ClienteID = {id}";
+                }
+
+
+                SqlCommand cmd = new SqlCommand(query, con);
                 cmd.CommandType = CommandType.Text;
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -533,6 +568,17 @@ namespace ClickServ2022.Repository
                     equipamento.Fabricante = reader["Fabricante"].ToString();
                     equipamento.Modelo = reader["Modelo"].ToString();
                     equipamento.NSerie = reader["NSerie"].ToString();
+
+                    //Criado para adicionar novo equipamento para um endereço específico 
+                    Endereco endereco = new Endereco();
+                    endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
+                    equipamento.Endereco = endereco;
+                    
+                    Cliente cliente = new Cliente();
+                    cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
+                    equipamento.Cliente = cliente;
+                    //Fim
+
                     listEquipamento.Add(equipamento);
                 }
                 con.Close();
@@ -541,7 +587,7 @@ namespace ClickServ2022.Repository
             return listEquipamento;
         }
 
-        public Equipamento GetEquipamento(int? id)
+        public Equipamento GetEquipamento(int? id, string view)
         {
 
             string connectionString = Conexao();
@@ -551,7 +597,19 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string sqlQuery = $"SELECT * FROM Equipamento WHERE EquipamentoID = {id}";
+
+                string sqlQuery = null;
+
+                if (view == "Endereco")
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EnderecoID = {id}";
+                }
+                else
+                {
+                    sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id} ";
+                }
+
+                //string sqlQuery = $"SELECT * FROM tbl_Equipamento WHERE EquipamentoID = {id}";
                 SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 con.Open();
                 SqlDataReader reader = cmd.ExecuteReader();
@@ -566,6 +624,10 @@ namespace ClickServ2022.Repository
                     equipamento.Fabricante = reader["Fabricante"].ToString();
                     equipamento.Modelo = reader["Modelo"].ToString();
                     equipamento.NSerie = reader["NSerie"].ToString();
+
+                    //Utilizado para pegar criar a lista no Details dos equipamentos 
+                    equipamento.OrdemServicos = GetAllOrdemServico(id, view);
+
                 }
                 con.Close();
             }
@@ -579,14 +641,31 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"INSERT INTO Equipamento " +
-                                    $"Values({equipamento.Cliente.Endereco.EnderecoID}, " +
-                                    $"'{equipamento.Cliente.ClienteID}', " +
-                                    $"'{equipamento.Tipo}', " +
-                                    $"'{equipamento.Fabricante}', " +
-                                    $"'{equipamento.Modelo}', " +
-                                    $"'{equipamento.NSerie}')";
-                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                //Para cadastro vindo do Cliente/Details
+                string sqlQuery;
+                if (equipamento.Endereco != null)
+                {
+                    sqlQuery = $"INSERT INTO tbl_Equipamento " +
+                                   $"Values({equipamento.Endereco.EnderecoID}, " +
+                                   $"'{equipamento.Cliente.ClienteID}', " +
+                                   $"'{equipamento.Tipo}', " +
+                                   $"'{equipamento.Fabricante}', " +
+                                   $"'{equipamento.Modelo}', " +
+                                   $"'{equipamento.NSerie}')";
+
+                }
+                else
+                {
+                    sqlQuery = $"INSERT INTO tbl_Equipamento " +
+                                       $"Values({equipamento.Cliente.Endereco.EnderecoID}, " +
+                                       $"'{equipamento.Cliente.ClienteID}', " +
+                                       $"'{equipamento.Tipo}', " +
+                                       $"'{equipamento.Fabricante}', " +
+                                       $"'{equipamento.Modelo}', " +
+                                       $"'{equipamento.NSerie}')";
+                }
+
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -601,7 +680,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"UPDATE Equipamento SET " +
+                string comandoSQL = $"UPDATE tbl_Equipamento SET " +
                                     $"Tipo =       '{equipamento.Tipo}', " +
                                     $"Fabricante = '{equipamento.Fabricante}', " +
                                     $"Modelo =     '{equipamento.Modelo}', " +
@@ -622,7 +701,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                string comandoSQL = $"DELETE FROM Equipamento WHERE EquipamentoID = {id}";
+                string comandoSQL = $"DELETE FROM tbl_Equipamento WHERE EquipamentoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 
@@ -631,6 +710,504 @@ namespace ClickServ2022.Repository
                 con.Close();
             }
         }
+        #endregion
+
+        #region Atendimento
+
+        public IEnumerable<Atendimento> GetAllAtedimentos(string data)
+        {
+            string connectionString = Conexao();
+
+            List<Atendimento> listAtendimento = new List<Atendimento>();
+
+            Equipamento equipamento = new Equipamento();
+            Colaborador colaborador = new Colaborador();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string selectQuery;
+
+                if (data == null)
+                {
+                   selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade," +
+                                 " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Categoria, Eq.Tipo " +
+                                 " FROM tbl_Atendimento A " +
+                                 " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
+                                 " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
+                                 " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
+                                 " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID" +
+                                 $" WHERE A.Data = '{ data }'";
+
+                }
+                else
+                {
+                    selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade," +
+                                " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Categoria, Eq.Tipo " +
+                                " FROM tbl_Atendimento A " +
+                                " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
+                                " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
+                                " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
+                                " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID";
+                              
+                }
+
+                SqlCommand cmd = new SqlCommand(selectQuery, con);
+
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Atendimento atendimento = new Atendimento();
+                    atendimento.AtendimentoID = Convert.ToInt32(reader["AtendimentoID"]);
+
+                    equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
+                    equipamento.Tipo = reader["Tipo"].ToString();
+                    atendimento.Equipamento = equipamento;
+                    atendimento.Categoria = reader["Categoria"].ToString();
+                    atendimento.Defeito = reader["Defeito"].ToString();
+                    atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    atendimento.Periodo = reader["Periodo"].ToString();
+                    atendimento.Observacao = reader["Observacao"].ToString();
+
+
+                    //colaborador.Nome = reader["Nome"].ToString();
+                    //ordemServico.Colaborador = colaborador;
+
+                    listAtendimento.Add(atendimento);
+                }
+                con.Close();
+            }
+
+            return listAtendimento;
+        }
+        public void AddAtendimento(Atendimento atendimento)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                var Data = atendimento.Data.ToString("yyyy/MM/dd");
+
+                string comandoSQL = $"INSERT INTO tbl_Atendimento (EquipamentoID, Colaborador, Categoria, Defeito, Data, Periodo, Status, Observacao) " +
+                                    $"Values({atendimento.Equipamento.EquipamentoID}, " +
+                                    $"'{atendimento.Colaborador}', " +
+                                    $"'{atendimento.Categoria}', " +
+                                    $"'{atendimento.Defeito}', " +
+                                    $"'{Data}', " +
+                                    $"'{atendimento.Periodo}', " +
+                                    $"'{atendimento.Status}', " +
+                                    $"'{atendimento.Observacao}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+        #endregion
+
+        #region Ordem de Serviço
+        public OrdemServico GetOrdemServico(int? os)
+        {
+            string connectionString = Conexao();
+            OrdemServico ordemServico = new OrdemServico();
+            Equipamento equipamento = new Equipamento();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM tbl_OrdemServico WHERE OrdemServicoID = {os}";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                { 
+                    ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
+
+                    equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
+                    ordemServico.Equipamento = equipamento;
+
+                    ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    ordemServico.Valor = reader["Valor"].ToString();
+                    ordemServico.Defeito = reader["Defeito"].ToString();
+                    ordemServico.Relatorio = reader["Relatorio"].ToString();
+                    ordemServico.Colaborador = reader["Colaborador"].ToString();
+                }
+                con.Close();
+            }
+            return ordemServico;
+        }
+
+        public IEnumerable<OrdemServico> GetAllOrdemServico(int? id, string view)
+        {
+            string connectionString = Conexao();
+
+            List<OrdemServico> listOrdemServico = new List<OrdemServico>();
+            Equipamento equipamento = new Equipamento();
+            string stringQuery;
+
+            if (view == "OS")
+            {
+                if(id != 0000)
+                {
+                    stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE OrdemServicoID = {id}";
+                }
+                else
+                {
+                    stringQuery = $"SELECT * FROM tbl_OrdemServico";
+                }
+            }
+            else
+            {
+                stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE EquipamentoID = {id}";
+            }
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand(stringQuery, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    OrdemServico ordemServico = new OrdemServico();
+                    ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
+
+                    equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
+                    ordemServico.Equipamento = equipamento;
+                    
+                    ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    ordemServico.Valor = reader["Valor"].ToString();
+                    ordemServico.Defeito = reader["Defeito"].ToString();
+                    ordemServico.Relatorio = reader["Relatorio"].ToString();
+                    ordemServico.Colaborador = reader["Colaborador"].ToString();
+
+                    listOrdemServico.Add(ordemServico);
+                }
+                con.Close();
+            }
+
+            return listOrdemServico;
+        }
+        public void AddOrdemServico(OrdemServico ordemservico)
+        {
+            //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
+            string valor = ordemservico.Valor.Replace(',', '.');
+
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                var Data = ordemservico.Data.ToString("yyyy/MM/dd");
+
+                string comandoSQL = $"INSERT INTO tbl_OrdemServico (OrdemServicoID, EquipamentoID, Data, Valor, Defeito, Relatorio, Colaborador) " +
+                                    $"Values({ordemservico.OrdemServicoID}, " +
+                                    $"{ordemservico.Equipamento.EquipamentoID}, " +
+                                    $"'{Data}', " +
+                                    $"{valor}, " +
+                                    $"'{ordemservico.Defeito}', " +
+                                    $"'{ordemservico.Relatorio}', " +
+                                    $"'{ordemservico.Colaborador}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+                
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public void UpdateOrdemServico(OrdemServico ordemServico)
+        {
+            string connectionString = Conexao();
+
+            //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
+            string valor = ordemServico.Valor.Replace(',', '.');
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"UPDATE tbl_OrdemServico " +
+                                    $"SET Data = '{ordemServico.Data}', Valor = {valor}, Defeito = '{ordemServico.Defeito}', Relatorio = '{ordemServico.Relatorio}', Colaborador = '{ordemServico.Colaborador}' " +
+                                    $"WHERE OrdemServicoID = {ordemServico.OrdemServicoID}";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+        }
+
+        public void DeleteOrdemServico(int? id)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"DELETE FROM tbl_OrdemServico WHERE OrdemServicoID = {id}";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+        #endregion
+
+        #region Colaborador
+        public IEnumerable<Colaborador> GetAllColaborador()
+        {
+            string connectionString = Conexao();
+
+            List<Colaborador> listColaborador = new List<Colaborador>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Colaborador Where Funcao = 'Técnico em manutenção'", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Colaborador colaborador = new Colaborador();
+                    colaborador.Nome = reader["Nome"].ToString();
+
+                    listColaborador.Add(colaborador);
+                }
+                con.Close();
+            }
+
+            return listColaborador;
+        }
+        #endregion
+
+        #region Tipo de Equipamento
+        public List<TipoEquipamento> GetAllTipoEquipamento()
+        {
+            string connectionString = Conexao();
+
+            List<TipoEquipamento> listTipoEquipamento = new List<TipoEquipamento>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_TipoEquipamento", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    TipoEquipamento tipoEquipamento = new TipoEquipamento();
+
+                    tipoEquipamento.TipoID = Convert.ToInt32(reader["TipoID"].ToString());
+                    tipoEquipamento.Equipamento = reader["Equipamento"].ToString();
+
+                    listTipoEquipamento.Add(tipoEquipamento);
+                }
+                con.Close();
+            }
+
+            return listTipoEquipamento;
+        }
+        #endregion
+
+        #region Fabricante
+        public List<Fabricante> GetAllFabricante(string equipamento)
+        {
+            string connectionString = Conexao();
+
+            List<Fabricante> listFabricante = new List<Fabricante>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_TipoEquipamento te" +
+                                                $" INNER JOIN tbl_Fabricante f" +
+                                                $" ON te.TipoID = f.TipoID" +
+                                                $" WHERE te.Equipamento = '{equipamento}'", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Fabricante fabricante = new Fabricante();
+                    fabricante.TipoID = Convert.ToInt32(reader["TipoID"].ToString());
+                    fabricante.FabricanteID = Convert.ToInt32(reader["FabricanteID"].ToString());
+                    fabricante.NomeFabricante = reader["NomeFabricante"].ToString();
+
+                    listFabricante.Add(fabricante);
+                }
+                con.Close();
+            }
+
+            return listFabricante;
+        }
+        #endregion
+
+        #region Modelos
+        public List<Modelo> GetAllModelo(string model)
+        {
+            string connectionString = Conexao();
+
+            List<Modelo> listModelo = new List<Modelo>();
+
+            
+
+
+
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand($" SELECT F.NomeFabricante, M.NomeModelo FROM tbl_Fabricante F" +
+                                                $" INNER JOIN tbl_Modelo M" +
+                                                $" ON F.FabricanteID = M.FabricanteID" +
+                                                $" WHERE F.NomeFabricante = '{ model }'", con);
+
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Modelo modelo = new Modelo();
+                    modelo.NomeModelo = reader["NomeModelo"].ToString();
+
+                    listModelo.Add(modelo);
+                }
+                con.Close();
+            }
+
+            return listModelo;
+        }
+        #endregion
+
+        #region Evento
+        public IEnumerable<Evento> GetAllEventos()
+        {
+            string connectionString = Conexao();
+
+            List<Evento> listEvento = new List<Evento>();
+            Equipamento equipamento = new Equipamento();
+            Atendimento atendimento = new Atendimento();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string dataAtual = DateTime.Now.ToString("yyyy-MM-dd");
+
+                SqlCommand cmd = new SqlCommand($"SELECT E.Tipo, A.Data FROM tbl_Atendimento A INNER JOIN tbl_Equipamento E ON A.EquipamentoID = E.EquipamentoID WHERE A.Data >= '{ dataAtual }'", con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Evento evento = new Evento();
+
+                    equipamento.Tipo = reader["Tipo"].ToString();
+                    atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
+
+                    evento.Title = equipamento.Tipo;
+                    evento.StartDate = atendimento.Data.ToString("yyyy-MM-dd");
+
+                    listEvento.Add(evento);
+                }
+                con.Close();
+            }
+
+            return listEvento;
+        }
+        #endregion
+
+        #region Relatório Antedimento
+
+        public IEnumerable<RelatorioAtendimento> RelatorioAtendimento(string data)
+        {
+            string connectionString = Conexao();
+
+            List<RelatorioAtendimento> relatorioAtendimento = new List<RelatorioAtendimento>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                
+                string selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade, A.AtendimentoID," +
+                                  " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Categoria, A.Colaborador, Eq.Tipo, Eq.Fabricante " +
+                                  " FROM tbl_Atendimento A " +
+                                  " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
+                                  " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
+                                  " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
+                                  " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID" +
+                                  $" WHERE A.Data = '{ data }'" +
+                                  $" ORDER BY A.Data DESC";
+
+
+                SqlCommand cmd = new SqlCommand(selectQuery, con);
+
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    RelatorioAtendimento relatorio = new RelatorioAtendimento();
+
+                    Cliente cliente = new Cliente();
+                    Contato contato = new Contato();
+                    Endereco endereco = new Endereco();
+                    Equipamento equipamento = new Equipamento();
+                    Atendimento atendimento = new Atendimento();
+                    Colaborador colaborador = new Colaborador();
+
+                    cliente.Nome = reader["Nome"].ToString();
+
+                    contato.Celular = reader["Celular"].ToString();
+                    contato.Telefone = reader["Telefone"].ToString();
+
+                    endereco.Logradouro = reader["Logradouro"].ToString();
+                    endereco.Bairro = reader["Bairro"].ToString();
+                    endereco.Cidade = reader["Cidade"].ToString();
+                    endereco.Uf = reader["Uf"].ToString();
+                    endereco.Complemento = reader["Complemento"].ToString();
+
+                    atendimento.AtendimentoID = Convert.ToInt32(reader["AtendimentoID"].ToString());
+                    atendimento.Defeito = reader["Defeito"].ToString();
+                    atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    atendimento.Periodo = reader["Periodo"].ToString();
+                    atendimento.Observacao = reader["Observacao"].ToString();
+                    atendimento.Categoria = reader["Categoria"].ToString();
+                    atendimento.Colaborador = reader["Colaborador"].ToString();
+                    
+                    equipamento.Tipo = reader["Tipo"].ToString();
+                    equipamento.Fabricante = reader["Fabricante"].ToString();
+
+                    relatorio.Cliente       = cliente;
+                    relatorio.Contato       = contato;
+                    relatorio.Endereco      = endereco;
+                    relatorio.Atendimento   = atendimento;
+                    relatorio.Equipamento   = equipamento;
+                                                           
+                    relatorioAtendimento.Add(relatorio);
+                }
+                con.Close();
+            }
+
+            return relatorioAtendimento;
+        }
+
         #endregion
     }
 }

@@ -4,18 +4,13 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Contato</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Cliente.ClienteID" class="control-label"></label>
-                <input asp-for="Cliente.ClienteID" class="form-control" />
-                <span asp-validation-for="Cliente.ClienteID" class="text-danger"></span>
+                 <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
             </div>
             <div class="form-group">
                 <label asp-for="Telefone" class="control-label"></label>
@@ -23,8 +18,8 @@
                 <span asp-validation-for="Telefone" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Celular" class="control-label"></label>
-                <input asp-for="Celular" class="form-control" />
+                <label asp-for="Celular" class="control-label" ></label>
+                <input asp-for="Celular" class="form-control" required/>
                 <span asp-validation-for="Celular" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -33,16 +28,12 @@
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Criar" class="btn btn-primary" />
+                 @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID}, new  { @class = "btn btn-primary"})
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID})
-</div>
-
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

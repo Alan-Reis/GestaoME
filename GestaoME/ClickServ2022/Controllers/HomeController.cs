@@ -1,4 +1,5 @@
 ﻿using ClickServ2022.Models;
+using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -11,16 +12,19 @@ namespace ClickServ2022.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly IRepositoryDAL home;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(IRepositoryDAL _home)
         {
-            _logger = logger;
+            home = _home;
         }
 
         public IActionResult Index()
         {
-            return View();
+            List<Evento> listEvento = new List<Evento>();
+            listEvento = this.home.GetAllEventos().ToList();
+
+            return View(listEvento);
         }
 
         public IActionResult Privacy()

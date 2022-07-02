@@ -4,121 +4,111 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-<h4>Cliente</h4>
-<hr />
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <table>
-                <tr>
-                     <td>Nome:</td>
-                    <td>
-                       <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
-                    </td>
-                       <td>CPF:</td>
-                    <td>
-                       <input asp-for="CPF" class="form-control" />
-                <span asp-validation-for="CPF" class="text-danger"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Telefone:</td>
-                    <td>
-                        <input asp-for="Contato.Telefone" class="form-control" />
-                        <span asp-validation-for="Contato.Telefone" class="text-danger"></span>
-                    </td>
-                    <td>Celular:</td>
-                    <td>
-                        <input asp-for="Contato.Celular" class="form-control" />
-                        <span asp-validation-for="Contato.Celular" class="text-danger"></span>
-                    </td>
-                    <td>E-mail:</td>
-                    <td>
-                        <input asp-for="Contato.Email" class="form-control" />
-                        <span asp-validation-for="Contato.Email" class="text-danger"></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>Endereço</th>
-                </tr>
-                <tr>
-                    <td>Logradouro:</td>
-                    <td>
-                        <input asp-for="Endereco.Logradouro" class="form-control" />
-                        <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
-                    </td>
-                    <td>Complemento:</td>
-                    <td>
-                        <input asp-for="Endereco.Complemento" class="form-control" />
-                        <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
-                    </td>
-                    <td>Bairro:</td>
-                    <td>
-                        <input asp-for="Endereco.Bairro" class="form-control" />
-                        <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Cidade:</td>
-                    <td>
-                        <input asp-for="Endereco.Cidade" class="form-control" />
-                        <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
-                    </td>
-                    <td>Estado:</td>
-                    <td>
-                        <input asp-for="Endereco.Estado" class="form-control" />
-                        <span asp-validation-for="Endereco.Estado" class="text-danger"></span>
-                    </td>
-                    <td>Observação:</td>
-                    <td>
-                        <input asp-for="Endereco.Observacao" class="form-control" />
-                        <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th>Equipamento</th>
-                </tr>
-                <tr>
-                    <td>Tipo:</td>
-                    <td>
-                        <input asp-for="Equipamento.Tipo" class="form-control" />
-                        <span asp-validation-for="Equipamento.Tipo" class="text-danger"></span>
-                    </td>
-                    <td>Fabricante:</td>
-                    <td>
-                        <input asp-for="Equipamento.Fabricante" class="form-control" />
-                        <span asp-validation-for="Equipamento.Fabricante" class="text-danger"></span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Modelo:</td>
-                    <td>
-                        <input asp-for="Equipamento.Modelo" class="form-control" />
-                        <span asp-validation-for="Equipamento.Modelo" class="text-danger"></span>
-                    </td>
-                    <td>N. série:</td>
-                    <td>
-                        <input asp-for="Equipamento.NSerie" class="form-control" />
-                        <span asp-validation-for="Equipamento.NSerie" class="text-danger"></span>
-                    </td>
-                </tr>
-            </table>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" /> |
-                <a asp-action="Index">Voltar</a>
-            </div>
-        </form>
-
-        <div>
-            <a asp-action="Index">Voltar</a>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Nome" class="form-control" required placeholder="Nome" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
         </div>
+        <div class="form-group col-md-2">
+            <input maxlength="11" asp-for="CPF" class="form-control" placeholder="CPF" />
+            <span asp-validation-for="CPF" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <input asp-for="Contato.Telefone" class="form-control" placeholder="Telefone" />
+            <span asp-validation-for="Contato.Telefone" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-2">
+            <input asp-for="Contato.Celular" class="form-control" placeholder="Celular" required />
+            <span asp-validation-for="Contato.Celular" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <input asp-for="Contato.Email" class="form-control" placeholder="E-mail" />
+            <span type="email" asp-validation-for="Contato.Email" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="validationTooltipUsernamePrepend">Buscar endereço por CEP</span>
+                <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Logradouro" name="logradouro" id="logradouro" class="form-control" placeholder="Logradouro" required />
+            <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Bairro" name="bairro" type="text" id="bairro" class="form-control" placeholder="Bairro" />
+            <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-3">
+            <input asp-for="Endereco.Cidade" name="cidade" id="cidade" class="form-control" placeholder="Cidade" />
+            <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-1">
+            <input asp-for="Endereco.Uf" name="uf" id="uf" class="form-control" placeholder="UF" />
+            <span asp-validation-for="Endereco.Uf" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Complemento" class="form-control" placeholder="Complemento" />
+            <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <input asp-for="Endereco.Observacao" class="form-control" placeholder="Observação" />
+            <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
+        </div>
+    </div>
 
-        @section Scripts {
+    <div class="container mt-1">
+        <h4 class="bg-primary text-white text-center">Informações do equipamento</h4>
+    </div>
+
+    <div class="form-row">
+        <div class="form-group col-md-2">
+            <select asp-for="Equipamento.Tipo" id="equip" onclick="loadFabricante()" class="form-control" required>
+                <option value="" selected="selected">Selecione</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <select asp-for="Equipamento.Fabricante" id="fabri" onclick="loadModelo()" class="form-control">
+                <option value="" selected="selected">Selecione</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <select asp-for="Equipamento.Modelo" id="model" class="form-control">
+                <option value="" selected="selected">Selecione</option>
+            </select>
+        </div>
+        <div class="form-group col-md-2">
+            <input asp-for="Equipamento.NSerie" class="form-control" />
+            <span asp-validation-for="Equipamento.NSerie" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Criar" class="btn btn-primary" />
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
+    </div>
+</form>
+
+@section Scripts {
+<!-- Adicionando JQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+
+<script src="~/js/buscar-cep.js"></script>
+<script src="~/js/select-equipamento.js"></script>
         @{
             await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }

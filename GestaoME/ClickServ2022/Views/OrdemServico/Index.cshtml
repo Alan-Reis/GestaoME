@@ -1,5 +1,97 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@model PagedList.IPagedList<ClickServ2022.Models.OrdemServico>
+
+<form asp-action="Index">
+    <div class="form-group">
+        <div class="input-group mb-3">
+            <span class="input-group-text" id="basic-addon1">Filtrar Ordem de Serviço</span>
+            <input type="number" name="os">
+            <input type="submit" value="Buscar" class="btn btn-primary" />
+        </div>
+    </div>
+</form>
+<table class="table table-hover">
+    <thead>
+        <tr class="table-primary table-sm">
+            <th>
+                Ordem de Serviço
+            </th>
+            <th>
+                Data
+            </th>
+            <th>
+                Valor
+            </th>
+            <th>
+                Defeito
+            </th>
+            <th>
+                Relatorio
+            </th>
+            <th>
+                Colaborador
+            </th>
+            <th>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.OrdemServicoID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Data)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Defeito)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Relatorio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Colaborador)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!--Código para gerar paginação-->
+<div>
+    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+    de @Model.PageCount
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.ActionLink("Primeira", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ")
+        ;
+        @Html.ActionLink("Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:<<
+        @Html.Raw(" ")
+        ;
+        @: Anterior
+    }
+
+    @if (Model.HasNextPage)
+    {
+        @Html.ActionLink("Próxima", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+        @Html.Raw(" ")
+        ;
+        @Html.ActionLink("Última", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+    }
+    else
+    {
+        @:Próxima
+        @Html.Raw(" ")
+        @:>>
+    }
+</div>

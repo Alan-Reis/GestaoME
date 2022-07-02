@@ -4,38 +4,37 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Equipamento</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" name="equipamento">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="Cliente.ClienteID" class="control-label"></label>
-                <input asp-for="Cliente.ClienteID" class="form-control" />
-                <span asp-validation-for="Cliente.ClienteID" class="text-danger"></span>
+                <div class="form-group">
+                    <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
+                </div>
+                <div class="form-group">
+                    <input asp-for="Endereco.EnderecoID" class="form-control" type="hidden" />
+                </div>
             </div>
             <div class="form-group">
-                <label asp-for="Cliente.Endereco.EnderecoID" class="control-label"></label>
-                <input asp-for="Cliente.Endereco.EnderecoID" class="form-control" />
-                <span asp-validation-for="Cliente.Endereco.EnderecoID" class="text-danger"></span>
+                <p>Tipo</p>
+                <select asp-for="Tipo" id="equip" onclick="loadFabricante()">
+                    <option value="" selected="selected">Selecione</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Tipo" class="control-label"></label>
-                <input asp-for="Tipo" class="form-control" />
-                <span asp-validation-for="Tipo" class="text-danger"></span>
+                <p>Fabricante</p>
+                 <select asp-for="Fabricante" id="fabri"  onclick="loadModelo()">
+                <option value="" selected="selected">Selecione</option>
+                </select>
             </div>
             <div class="form-group">
-                <label asp-for="Fabricante" class="control-label"></label>
-                <input asp-for="Fabricante" class="form-control" />
-                <span asp-validation-for="Fabricante" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Modelo" class="control-label"></label>
-                <input asp-for="Modelo" class="form-control" />
-                <span asp-validation-for="Modelo" class="text-danger"></span>
+                <p>Modelo</p>
+                 <select asp-for="Modelo" id="model">
+                 <option value="" selected="selected">Selecione</option>
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="NSerie" class="control-label"></label>
@@ -43,17 +42,17 @@
                 <span asp-validation-for="NSerie" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Criar" class="btn btn-primary" />
+                @Html.ActionLink("Voltar", "Details", "Endereco", new { id = Model.Endereco.EnderecoID},new { @class = "btn btn-primary"})
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    @Html.ActionLink("Voltar", "Details", "Cliente", new { id = Model.Cliente.ClienteID})
-</div>
-
 @section Scripts {
+
+    <script src="~/js/select-equipamento.js"></script>
+
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }

@@ -3,58 +3,86 @@
 @{
     ViewData["Title"] = "Details";
 }
+<form asp-action="Edit">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
+    </div>
+    <div class="form-group">
+        <input asp-for="EnderecoID" class="form-control" type="hidden" />
+    </div>
 
-<h1>Details</h1>
+
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input asp-for="Logradouro" class="form-control" placeholder="Logradouro" id="logradouro" required />
+            <span asp-validation-for="Logradouro" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <input asp-for="Complemento" class="form-control" placeholder="Complemento" id="complemento" />
+            <span asp-validation-for="Complemento" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <input asp-for="Bairro" class="form-control" placeholder="Bairro" id="bairro" />
+            <span asp-validation-for="Bairro" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <input asp-for="Cidade" class="form-control" placeholder="Cidade" id="cidade" />
+            <span asp-validation-for="Cidade" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-2">
+            <input asp-for="Uf" class="form-control" placeholder="Uf" id="uf" />
+            <span asp-validation-for="Uf" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <textarea asp-for="Observacao" class="form-control" rows="2" placeholder="Observação" id="observacao"></textarea>
+            <span asp-validation-for="Observacao" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
+            <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
+            @Html.ActionLink("Voltar", "Details","Cliente", new { id = Model.Cliente.ClienteID },new { @class = "btn btn-primary"})
+        </div>
+    </div>
+
+</form>
+
+</br>
+
 
 <div>
-    <h4>Endereco</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.EnderecoID)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.EnderecoID)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Logradouro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Logradouro)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Complemento)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Complemento)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Bairro)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Bairro)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Cidade)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Cidade)
-        </dd>
-         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Estado)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Estado)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Observacao)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Observacao)
-        </dd>
-    </dl>
+    @Html.ActionLink("Novo Equipamento", "Create","Equipamento", new { id = Model.EnderecoID },new { @class = "btn btn-primary"})
 </div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.EnderecoID }) |
-    @Html.ActionLink("Voltar", "Details","Cliente", new { id = Model.Cliente.ClienteID })
-</div>
+<table class="table">
+    <tbody>
+        @foreach (var item in Model.Equipamentos)
+        {
+            <tr>
+                <td>
+                    @Html.ActionLink(item.Tipo, "Details", "Equipamento",  new { id=item.EquipamentoID })
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fabricante)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Modelo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NSerie)
+                </td>
+                <td>
+                    @Html.ActionLink("Atender", "Create", "Atendimento", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Gerar O.S", "Create", "OrdemServico", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script src="~/js/habilitar-botao-endereco.js"></script>
+
+

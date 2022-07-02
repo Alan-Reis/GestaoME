@@ -1,118 +1,105 @@
 ﻿@model ClickServ2022.Models.Cliente
 
 @{
+
     ViewData["Title"] = "Details";
 }
 
-<div>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ClienteID)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ClienteID)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CPF)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CPF)
-        </dd>
-    </dl>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/css/nav-dados-cliente.css" />
+
+<div class="container p-3 my-3 border">
+    <div>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ClienteID" class="form-control" type="hidden" />
+
+            <div class="row">
+                <div class="col">
+                    <input asp-for="Nome" class="form-control" placeholder="Nome" required id="nome" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input asp-for="CPF" class="form-control" placeholder="CPF" id="cpf" />
+                    <span asp-validation-for="CPF" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
+                    <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
+                    @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 
-<div>
-    @Html.ActionLink("Adicionar Contato", "Create","Contato", new { id = Model.ClienteID })
+</br>
+<div class="tab">
+    <button class="tablinks" onclick="openDados(event, 'Contato')">CONTATO</button>
+    <button class="tablinks" onclick="openDados(event, 'Endereco')" id="defaultOpen">ENDEREÇO</button>
 </div>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Celular
-            </th>
-            <th>
-                Telefone
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Contatos)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Celular)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Telefone)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", "Contato", new { id=item.ContatoID }) |
-                    @Html.ActionLink("Deletar", "Delete", "Contato", new { id=item.ContatoID })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+<div id="Contato" class="tabcontent">
+    <div>
+        @Html.ActionLink("Novo Contato", "Create","Contato", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+    </div>
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.Contatos)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Celular)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        <button class="btn btn-warning edit" data-id="@item.ContatoID"><i class="glyphicon glyphicon-edit"></i>Editar</button>
+                        <button class="btn btn-danger delete" data-id="@item.ContatoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
+                    </td>
+                </tr>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                Logradouro
-            </th>
-            <th>
-                Complemento
-            </th>
-            <th>
-                Bairro
-            </th>
-             <th>
-                Equipamento
-            </th>
-             <th>
-                Modelo
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Enderecos)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Logradouro)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Complemento)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Bairro)
-                </td>
-                 <td>
-                    @Html.DisplayFor(modelItem => item.Equipamento.Tipo)
-                </td>
-                 <td>
-                    @Html.DisplayFor(modelItem => item.Equipamento.Modelo)
-                </td>
-                <td>
-                    @Html.ActionLink("Editar", "Edit", "Endereco", new { id=item.EnderecoID }) |
-                    @Html.ActionLink("Detalhes", "Details", "Endereco", new { id=item.EnderecoID }) |
-                    @Html.ActionLink("Deletar", "Delete", "Endereco", new { id=item.EnderecoID })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>  
-
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ClienteID }) |
-    <a asp-action="Index">Voltar</a>
+            }
+        </tbody>
+    </table>
 </div>
+
+<div class="modal" id="modal"></div>
+<div id="Endereco" class="tabcontent">
+    <div>
+        @Html.ActionLink("Novo Endereço", "AddDados", new { id = Model.ClienteID },new { @class = "btn btn-primary"})
+    </div>
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.Enderecos)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.Logradouro, "Details", "Endereco",  new { id=item.EnderecoID })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Complemento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Cidade)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+@section Scripts{
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="~/js/habilitar-botao-cliente.js"></script>
+<script src="~/js/nav-dados-cliente.js"></script>
+<script src="~/js/modal-contato.js"></script>
+
+}

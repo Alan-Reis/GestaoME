@@ -14,14 +14,14 @@ namespace ClickServ2022.Controllers
             endereco = _endereco;
         }
 
-        public IActionResult Details(int? id)
+        public IActionResult Details(int? id, string view)
         {
             if(id == null)
             {
                 return NotFound();
             }
 
-            Endereco endereco = this.endereco.GetEndereco(id);
+            Endereco endereco = this.endereco.GetEndereco(id, view);
 
             if(endereco == null)
             {
@@ -60,50 +60,30 @@ namespace ClickServ2022.Controllers
                 return RedirectToAction("Details", "Cliente", new { id = endereco.Cliente.ClienteID });
             }
             return View(endereco);
-        }
-        public IActionResult Edit(int? id)
-        {
-            if(id == null)
-            {
-                return NotFound();
-            }
-
-            Endereco endereco = this.endereco.GetEndereco(id);
-
-            if(endereco == null)
-            {
-                return NotFound();
-            }
-
-            return View(endereco);
-        }
+        }     
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind]Endereco endereco)
+        public IActionResult Edit([Bind]Endereco endereco)
         {
-            if(id != endereco.EnderecoID)
-            {
-                return NotFound();
-            }
             if (ModelState.IsValid)
             {
                 this.endereco.UpdateEndereco(endereco);
-                return RedirectToAction("Details", "Cliente", new { id = endereco.Cliente.ClienteID });
+                return RedirectToAction("Details", "Endereco", new { id = endereco.EnderecoID });
             }
             return View(endereco);
         }
 
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int? id, string view)
         {
             if(id == null)
             {
                 return NotFound();
             }
 
-            Endereco endereco = this.endereco.GetEndereco(id);
+            Endereco endereco = this.endereco.GetEndereco(id, view);
 
-            if(endereco == null)
+            if (endereco == null)
             {
                 return NotFound();
             }
@@ -113,9 +93,9 @@ namespace ClickServ2022.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id, string view)
         {
-            Endereco endereco = this.endereco.GetEndereco(id);
+            Endereco endereco = this.endereco.GetEndereco(id, view);
 
             this.endereco.DeleteEndereco(id);
             return RedirectToAction("Details", "Cliente", new { id = endereco.Cliente.ClienteID });

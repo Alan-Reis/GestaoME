@@ -30,34 +30,49 @@ namespace ClickServ2022.Controllers
             {
                 //string criada para que se possa obter todos os clientes sem que possa passar um nome como parametro
                 string nomeNull = null;
-                listCliente = this.cliente.GetAllClientes(nomeNull).ToList();
+                string colunaNull = null;
+                listCliente = this.cliente.GetAllClientes(colunaNull, nomeNull).ToList();
 
                 return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
             }
 
-           // return View();
-           
+            return View();
 
-            return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
-     
         }
 
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Index(int? pagina, string nome)
+        public IActionResult Index(int? pagina, string coluna, string nome)
         {
-            if (nome == null)
+            if (coluna == "Condomínio")
             {
-                return NotFound();
+                coluna = "Complemento";
             }
+
             List<Cliente> listCliente = new List<Cliente>();
-            listCliente = cliente.GetAllClientes(nome).ToList();
+            listCliente = cliente.GetAllClientes(coluna, nome).ToList();
+
+            //se não tiver o cliente, vai para adicionar            
+            if(listCliente.Count == 0)
+            {
+                ViewBag.Erro = "Cliente inexistente, deseja criar? ";
+            }
             
+
             //paginação
             int paginaTamanho = 4;
             int paginaNumero = (pagina ?? 1);
             //fim
+
+            //Condicional criada para trazer todos os resultado em uma única página
+            if (listCliente.Count > 4)
+            {
+                //paginação
+                paginaTamanho = listCliente.Count;
+                paginaNumero = (pagina ?? 1);
+                //fim
+            }
 
             return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
         }
@@ -78,15 +93,27 @@ namespace ClickServ2022.Controllers
             return View(cliente);
         }
 
-        public IActionResult Create()
+        public IActionResult Create(Endereco endereco)
         {
+            if (endereco.Logradouro != null)
+            {
+                Cliente cliente = new Cliente();
+                cliente.Endereco = endereco;
+                
+                return View(cliente);
+            }
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Cliente cliente)
+        public IActionResult Create([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf)
         {
+            //Função para setar os valores do CEP
+            cliente.Endereco.Logradouro = logradouro;
+            cliente.Endereco.Bairro     = bairro;
+            cliente.Endereco.Cidade     = cidade;
+            cliente.Endereco.Uf         = uf;
 
             if (ModelState.IsValid)
             {
@@ -97,33 +124,16 @@ namespace ClickServ2022.Controllers
             return View(cliente);
         }
 
-        public IActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            Cliente cliente = this.cliente.GetCliente(id);
-
-            if (cliente == null)
-            {
-                return NotFound();
-            }
-            return View(cliente);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind] Cliente cliente)
+        public IActionResult Edit([Bind] Cliente cliente)
         {
-            if (id != cliente.ClienteID)
-            {
-                return NotFound();
-            }
+                    
             if (ModelState.IsValid)
             {
                 this.cliente.UpdateCliente(cliente);
-                return RedirectToAction("Index");
+                int id = cliente.ClienteID;
+                return RedirectToAction("Details", "Cliente", new { id });
             }
             return View(cliente);
         }
@@ -152,25 +162,38 @@ namespace ClickServ2022.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult AddDados(int? id)
+        public IActionResult AddDados(int? id, Endereco endereco)
         {
-            Cliente cliente = this.cliente.GetCliente(id);
+            Cliente cliente = new Cliente();
 
+            if (endereco.Logradouro != null)
+            {
+                cliente = this.cliente.GetCliente(endereco.EnderecoID);
+                cliente.Endereco = endereco;
+                return View(cliente);
+            }
+            cliente = this.cliente.GetCliente(id);
             return View(cliente);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddDados([Bind] Cliente cliente)
+        public IActionResult AddDados([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf)
         {
+            cliente.Endereco.Logradouro = logradouro;
+            cliente.Endereco.Bairro = bairro;
+            cliente.Endereco.Cidade = cidade;
+            cliente.Endereco.Uf = uf;
 
             if (ModelState.IsValid)
             {
                 this.cliente.AddDados(cliente);
-                return RedirectToAction("Index");
+                int id = cliente.ClienteID;
+                return RedirectToAction("Details","Cliente",new { id });
             }
 
             return View(cliente);
         }
+
     }
 }

@@ -1,8 +1,53 @@
-﻿@{
+﻿@model IEnumerable<ClickServ2022.Models.Evento>
+
+@{
     ViewData["Title"] = "Home Page";
+
 }
 
-<div class="text-center">
-    <h1 class="display-4">Bem-Vindo @ViewBag.Usuario!</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.css">
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm">
+            <div class="text-center">
+        </div>
+        <div class="text-center">
+              <h1 class="display-4">ClickServ2022</h1>
+
+                <h4>Atendimentos</h4>
+                <table class="table" id="todoTable">
+                    <tr>
+                        <td style="font-weight: bold">Equipamento</td>
+                        <td style="font-weight: bold">Data</td>
+                    </tr>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.Title) 
+                            </td>
+                            <td>
+                                    @Html.DisplayFor(modelItem => item.StartDate)
+                            </td>
+                        </tr>
+                    }
+            </table>
+        </div>
+    </div>
+    <div class="col-sm">
+        <div class="calendarContainer">
+            <div id="calendar"></div>
+        </div>
+    </div>
 </div>
+</div>
+
+@section Scripts{
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.js"></script>
+<script src="~/js/pt-br.js"></script>
+<script src="~/js/calendario.js"></script>
+
+}
+
