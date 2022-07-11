@@ -766,15 +766,10 @@ namespace ClickServ2022.Repository
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     equipamento.Tipo = reader["Tipo"].ToString();
                     atendimento.Equipamento = equipamento;
-                    atendimento.Categoria = reader["Categoria"].ToString();
                     atendimento.Defeito = reader["Defeito"].ToString();
                     atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
                     atendimento.Periodo = reader["Periodo"].ToString();
                     atendimento.Observacao = reader["Observacao"].ToString();
-
-
-                    //colaborador.Nome = reader["Nome"].ToString();
-                    //ordemServico.Colaborador = colaborador;
 
                     listAtendimento.Add(atendimento);
                 }
@@ -792,16 +787,81 @@ namespace ClickServ2022.Repository
 
                 var Data = atendimento.Data.ToString("yyyy/MM/dd");
 
-                string comandoSQL = $"INSERT INTO tbl_Atendimento (EquipamentoID, Colaborador, Categoria, Defeito, Data, Periodo, Status, Observacao) " +
+                string comandoSQL = $"INSERT INTO tbl_Atendimento (EquipamentoID, Colaborador, Defeito, Data, Periodo, Observacao) " +
                                     $"Values({atendimento.Equipamento.EquipamentoID}, " +
                                     $"'{atendimento.Colaborador}', " +
-                                    $"'{atendimento.Categoria}', " +
                                     $"'{atendimento.Defeito}', " +
                                     $"'{Data}', " +
                                     $"'{atendimento.Periodo}', " +
-                                    $"'{atendimento.Status}', " +
                                     $"'{atendimento.Observacao}')";
 
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public Atendimento GetAtendimento(int? id)
+        {
+            string connectionString = Conexao();
+            Atendimento atendimento = new Atendimento();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM tbl_Atendimento WHERE AtendimentoID = {id}";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    atendimento.AtendimentoID = Convert.ToInt32(reader["AtendimentoID"]);
+                    atendimento.Defeito = reader["Defeito"].ToString();
+                    atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    atendimento.Periodo = reader["Periodo"].ToString();
+                    atendimento.Observacao = reader["Observacao"].ToString();
+                    atendimento.Colaborador = reader["Colaborador"].ToString();
+                }
+                con.Close();
+            }
+            return atendimento;
+        }
+
+        public void UpdateAtendimento(Atendimento atendimento)
+        {
+            string connectionString = Conexao();
+
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"UPDATE tbl_Atendimento " +
+                                    $"SET Defeito = '{atendimento.Defeito}', " +
+                                    $"Data = '{atendimento.Data}', " +
+                                    $"Periodo = '{atendimento.Periodo}'," +
+                                    $"Observacao = '{atendimento.Observacao}', " +
+                                    $"Colaborador = '{atendimento.Colaborador}' " +
+                                    $"WHERE AtendimentoID = {atendimento.AtendimentoID}";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+
+        }
+
+        public void DeleteAtendimento(int? id)
+        {
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"DELETE FROM tbl_Atendimento WHERE AtendimentoID = {id}";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
 
@@ -835,9 +895,11 @@ namespace ClickServ2022.Repository
 
                     ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
                     ordemServico.Valor = reader["Valor"].ToString();
+                    ordemServico.Categoria = reader["Categoria"].ToString();
                     ordemServico.Defeito = reader["Defeito"].ToString();
                     ordemServico.Relatorio = reader["Relatorio"].ToString();
                     ordemServico.Colaborador = reader["Colaborador"].ToString();
+                    ordemServico.Observacao = reader["Observacao"].ToString();
                 }
                 con.Close();
             }
@@ -886,6 +948,8 @@ namespace ClickServ2022.Repository
                     
                     ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
                     ordemServico.Valor = reader["Valor"].ToString();
+                    ordemServico.Categoria = reader["Categoria"].ToString();
+                    ordemServico.Observacao = reader["Observacao"].ToString();
                     ordemServico.Defeito = reader["Defeito"].ToString();
                     ordemServico.Relatorio = reader["Relatorio"].ToString();
                     ordemServico.Colaborador = reader["Colaborador"].ToString();
@@ -908,13 +972,15 @@ namespace ClickServ2022.Repository
             {
                 var Data = ordemservico.Data.ToString("yyyy/MM/dd");
 
-                string comandoSQL = $"INSERT INTO tbl_OrdemServico (OrdemServicoID, EquipamentoID, Data, Valor, Defeito, Relatorio, Colaborador) " +
+                string comandoSQL = $"INSERT INTO tbl_OrdemServico (OrdemServicoID, EquipamentoID, Data, Valor,Categoria, Defeito, Relatorio,Observacao, Colaborador) " +
                                     $"Values({ordemservico.OrdemServicoID}, " +
                                     $"{ordemservico.Equipamento.EquipamentoID}, " +
                                     $"'{Data}', " +
                                     $"{valor}, " +
+                                    $"'{ordemservico.Categoria}', " +
                                     $"'{ordemservico.Defeito}', " +
                                     $"'{ordemservico.Relatorio}', " +
+                                    $"'{ordemservico.Observacao}', " +
                                     $"'{ordemservico.Colaborador}')";
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
@@ -936,7 +1002,13 @@ namespace ClickServ2022.Repository
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string comandoSQL = $"UPDATE tbl_OrdemServico " +
-                                    $"SET Data = '{ordemServico.Data}', Valor = {valor}, Defeito = '{ordemServico.Defeito}', Relatorio = '{ordemServico.Relatorio}', Colaborador = '{ordemServico.Colaborador}' " +
+                                    $"SET Data = '{ordemServico.Data}', " +
+                                    $"Valor = {valor}, " +
+                                    $"Categoria = '{ordemServico.Categoria}', " +
+                                    $"Defeito = '{ordemServico.Defeito}', " +
+                                    $"Relatorio = '{ordemServico.Relatorio}'," +
+                                    $"Observacao = '{ordemServico.Observacao}', " +
+                                    $" Colaborador = '{ordemServico.Colaborador}' " +
                                     $"WHERE OrdemServicoID = {ordemServico.OrdemServicoID}";
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
@@ -1107,7 +1179,12 @@ namespace ClickServ2022.Repository
             {
                 string dataAtual = DateTime.Now.ToString("yyyy-MM-dd");
 
-                SqlCommand cmd = new SqlCommand($"SELECT E.Tipo, A.Data FROM tbl_Atendimento A INNER JOIN tbl_Equipamento E ON A.EquipamentoID = E.EquipamentoID WHERE A.Data >= '{ dataAtual }'", con);
+                SqlCommand cmd = new SqlCommand($"SELECT A.AtendimentoID, C.Nome, E.Tipo, A.Data FROM tbl_Atendimento A " +
+                                                $"INNER JOIN tbl_Equipamento E " +
+                                                $"ON A.EquipamentoID = E.EquipamentoID " +
+                                                $"INNER JOIN tbl_Cliente C " +
+                                                $"ON E.ClienteID = C.ClienteID " +
+                                                $"WHERE A.Data >= '{ dataAtual }'", con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -1116,10 +1193,15 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     Evento evento = new Evento();
+                    Cliente cliente = new Cliente();
 
+                    atendimento.AtendimentoID = Convert.ToInt32(reader["AtendimentoID"]);
                     equipamento.Tipo = reader["Tipo"].ToString();
+                    cliente.Nome = reader["Nome"].ToString();
                     atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
 
+                    evento.Id = atendimento.AtendimentoID;
+                    evento.Nome = cliente.Nome;
                     evento.Title = equipamento.Tipo;
                     evento.StartDate = atendimento.Data.ToString("yyyy-MM-dd");
 
@@ -1144,7 +1226,7 @@ namespace ClickServ2022.Repository
             {
                 
                 string selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade, A.AtendimentoID," +
-                                  " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Categoria, A.Colaborador, Eq.Tipo, Eq.Fabricante " +
+                                  " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Colaborador, Eq.Tipo, Eq.Fabricante " +
                                   " FROM tbl_Atendimento A " +
                                   " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
                                   " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
@@ -1188,7 +1270,6 @@ namespace ClickServ2022.Repository
                     atendimento.Data = Convert.ToDateTime(reader["Data"].ToString());
                     atendimento.Periodo = reader["Periodo"].ToString();
                     atendimento.Observacao = reader["Observacao"].ToString();
-                    atendimento.Categoria = reader["Categoria"].ToString();
                     atendimento.Colaborador = reader["Colaborador"].ToString();
                     
                     equipamento.Tipo = reader["Tipo"].ToString();

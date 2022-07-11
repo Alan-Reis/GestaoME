@@ -13,15 +13,6 @@
                 <input asp-for="Equipamento.EquipamentoID" class="form-control" type="hidden" />
             </div>
             <div class="form-group">
-                <p>Tipo de atedimento</p>
-                <select name="Tipo" class="form-control">
-                    <option>Novo</option>
-                    <option>Retorno</option>
-                    <option>Garantia</option>
-                </select>
-                <span asp-validation-for="Categoria" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Defeito" class="control-label"></label>
                 <input asp-for="Defeito" class="form-control" />
                 <span asp-validation-for="Defeito" class="text-danger"></span>
@@ -38,17 +29,6 @@
                     <option>Tarde</option>
                 </select>
                 <span asp-validation-for="Periodo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <p>Status do atedimento</p>
-                <select name="Status" class="form-control">
-                    <option>Ativo</option>
-                    <option>Aguardando Aprovação</option>
-                    <option>Aguardando Peça</option>
-                    <option>Cancelado</option>
-                    <option>Concluído</option>
-                </select>
-                <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Observacao" class="control-label"></label>

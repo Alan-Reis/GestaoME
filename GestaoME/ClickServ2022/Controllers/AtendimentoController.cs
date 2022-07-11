@@ -87,5 +87,69 @@ namespace ClickServ2022.Controllers
 
             return Json(listEvento);
         }
+
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            //Popular um SelectList para os técnico
+            ViewBag.Tecnico = this.atendimento.GetAllColaborador().Select(c => new SelectListItem()
+            { Text = c.Nome, Value = c.Nome }).ToList();
+
+            Atendimento atendimento = this.atendimento.GetAtendimento(id);
+
+            if (atendimento == null)
+            {
+                return NotFound();
+            }
+            return View(atendimento);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, [Bind] Atendimento atendimento)
+        {
+            if (id != atendimento.AtendimentoID)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                this.atendimento.UpdateAtendimento(atendimento);
+                return RedirectToAction("Index", "Home");
+            }
+            return View(atendimento);
+        }
+
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Atendimento atendimento = this.atendimento.GetAtendimento(id);
+
+            if (atendimento == null)
+            {
+                return NotFound();
+            }
+            return View(atendimento);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int? id)
+        {
+            Atendimento atendimento = this.atendimento.GetAtendimento(id);
+
+            this.atendimento.DeleteAtendimento(id);
+            return RedirectToAction("Index", "Home");
+        }
+
     }
 }
+

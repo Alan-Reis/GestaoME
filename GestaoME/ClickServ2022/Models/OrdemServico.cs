@@ -15,10 +15,13 @@ namespace ClickServ2022.Models
         [DataType(DataType.Date)]
         public DateTime Data { get; set; }
         public string Valor { get; set; }
+        public string Categoria { get; set; }
         public string Defeito { get; set; }
         [Display(Name ="Relatório")]
         public string Relatorio { get; set; }
         public Equipamento Equipamento { get; set; }
         public string Colaborador { get; set; }
+        [Display(Name ="Observação")]
+        public string Observacao { get; set; }
     }
 }

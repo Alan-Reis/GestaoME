@@ -57,6 +57,9 @@
             <th>
                 Valor
             </th>
+             <th>
+                Categoria
+            </th>
             <th>
                 Defeito
             </th>
@@ -65,6 +68,11 @@
             </th>
             <th>
                 Colaborador
+            </th>
+             <th>
+                Observação
+            </th>
+            <th>
             </th>
             <th>
             </th>
@@ -84,6 +92,9 @@
                 @Html.DisplayFor(modelItem => item.Valor)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Categoria)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Defeito)
             </td>
             <td>
@@ -93,8 +104,13 @@
                 @Html.DisplayFor(modelItem => item.Colaborador)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Observacao)
+            </td>
+            <td>
                 <button class="btn btn-warning edit" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-edit"></i>Editar</button>
-                <button class="btn btn-danger delete" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
+            </td>
+            <td>
+                 <button class="btn btn-danger delete" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
             </td>
         </tr>
         }

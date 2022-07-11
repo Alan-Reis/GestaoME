@@ -46,8 +46,9 @@ namespace ClickServ2022.Service
         #region Atendimento
         //IEnumerable<Atendimento>GetAllAtedimentos(string data);
         void AddAtendimento(Atendimento atendimento);
-        //void UpdateAtendimento(Atendimento atendimento);
-        //Atendimento GetAtendimento(int? id);
+        void UpdateAtendimento(Atendimento atendimento);
+        Atendimento GetAtendimento(int? id);
+        void DeleteAtendimento(int? id);
         #endregion
 
         #region Colaborador

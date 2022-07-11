@@ -24,6 +24,8 @@ function selLinha(linha, multiplos) {
 //Exemplo de como capturar os dados
 var btnEnviarWhatsApp = document.getElementById("EnviarWhatsApp");
 
+var phone = document.getElementById("phone").value;
+
 btnEnviarWhatsApp.addEventListener("click", function () {
     var selecionados = tabela.getElementsByClassName("selecionado");
     //Verificar se eestá selecionado
@@ -76,6 +78,9 @@ btnEnviarWhatsApp.addEventListener("click", function () {
         dadosWhatsApp += mensagem;
 
     }
+
+    var phone = document.getElementById("phone").value;
+
     window.open('https://api.whatsapp.com/send?phone=' + phone + '&text=' + dadosWhatsApp)
 
 });

@@ -13,7 +13,7 @@
     <thead>
         <tr class="table-primary table-sm">
             <th>
-                Ordem de Serviço
+                O.S
             </th>
             <th>
                 Data
@@ -22,10 +22,16 @@
                 Valor
             </th>
             <th>
+                Categoria
+            </th>
+            <th>
                 Defeito
             </th>
             <th>
-                Relatorio
+                Relatório
+            </th>
+            <th>
+                Observação
             </th>
             <th>
                 Colaborador
@@ -48,10 +54,16 @@
                     @Html.DisplayFor(modelItem => item.Valor)
                 </td>
                 <td>
+                    @Html.DisplayFor(modelItem => item.Categoria)
+                </td>
+                <td>
                     @Html.DisplayFor(modelItem => item.Defeito)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Relatorio)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observacao)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Colaborador)

@@ -10,8 +10,9 @@ function loadData() {
     for (let tr of trElem) {
         let tdElems = tr.getElementsByTagName("td");
         let eventObj = {
-            title: tdElems[0].innerText,
-            start: tdElems[1].innerText,
+            id: tdElems[0].innerText,
+            title: tdElems[1].innerText,
+            start: tdElems[3].innerText,
         }
         eventsArr.push(eventObj);
     }
@@ -30,6 +31,13 @@ function initCalendar() {
             initialView: 'dayGridMonth',
             locale: 'pt-br',
 
+            eventClick: function (info) {
+                var eventoObj = info.event;
+                console.log(eventoObj.id);
+                var url = 'Atendimento/Edit/' + eventoObj.id;
+
+                window.location.href = url;
+            },
 
             events: eventsArr,
 
