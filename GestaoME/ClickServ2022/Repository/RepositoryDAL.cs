@@ -44,7 +44,7 @@ namespace ClickServ2022.Repository
 
             string stringQuery;
             //IF realizado para consulta por nome ou condomínio
-            if(nome != null)
+            if (nome != null)
             {
                 stringQuery = $"SELECT * FROM tbl_Cliente C " +
                               $"INNER JOIN tbl_Endereco E " +
@@ -187,7 +187,7 @@ namespace ClickServ2022.Repository
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
- 
+
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -573,7 +573,7 @@ namespace ClickServ2022.Repository
                     Endereco endereco = new Endereco();
                     endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
                     equipamento.Endereco = endereco;
-                    
+
                     Cliente cliente = new Cliente();
                     cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
                     equipamento.Cliente = cliente;
@@ -729,14 +729,14 @@ namespace ClickServ2022.Repository
 
                 if (data == null)
                 {
-                   selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade," +
-                                 " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Categoria, Eq.Tipo " +
-                                 " FROM tbl_Atendimento A " +
-                                 " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
-                                 " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
-                                 " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
-                                 " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID" +
-                                 $" WHERE A.Data = '{ data }'";
+                    selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade," +
+                                  " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Categoria, Eq.Tipo " +
+                                  " FROM tbl_Atendimento A " +
+                                  " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
+                                  " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
+                                  " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
+                                  " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID" +
+                                  $" WHERE A.Data = '{ data }'";
 
                 }
                 else
@@ -748,7 +748,7 @@ namespace ClickServ2022.Repository
                                 " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
                                 " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
                                 " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID";
-                              
+
                 }
 
                 SqlCommand cmd = new SqlCommand(selectQuery, con);
@@ -887,7 +887,7 @@ namespace ClickServ2022.Repository
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 while (reader.Read())
-                { 
+                {
                     ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
 
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
@@ -916,13 +916,13 @@ namespace ClickServ2022.Repository
 
             if (view == "OS")
             {
-                if(id != 0000)
+                if (id != 0000)
                 {
                     stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE OrdemServicoID = {id}";
                 }
                 else
                 {
-                    stringQuery = $"SELECT * FROM tbl_OrdemServico";
+                    stringQuery = $"SELECT * FROM tbl_OrdemServico ORDER BY Data DESC";
                 }
             }
             else
@@ -945,7 +945,7 @@ namespace ClickServ2022.Repository
 
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     ordemServico.Equipamento = equipamento;
-                    
+
                     ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
                     ordemServico.Valor = reader["Valor"].ToString();
                     ordemServico.Categoria = reader["Categoria"].ToString();
@@ -985,7 +985,7 @@ namespace ClickServ2022.Repository
 
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);
                 cmd.CommandType = CommandType.Text;
-                
+
                 con.Open();
                 cmd.ExecuteNonQuery();
                 con.Close();
@@ -1136,7 +1136,7 @@ namespace ClickServ2022.Repository
 
             List<Modelo> listModelo = new List<Modelo>();
 
-            
+
 
 
 
@@ -1163,6 +1163,35 @@ namespace ClickServ2022.Repository
             }
 
             return listModelo;
+        }
+        #endregion
+
+        #region Categoria de Ordem de Serviço
+        public List<OrdemServico> GetAllCategoria()
+        {
+            string connectionString = Conexao();
+
+            List<OrdemServico> listCategoria = new List<OrdemServico>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand($" SELECT * FROM tbl_CategoriaOrdemServico", con);
+
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    OrdemServico ordemServico = new OrdemServico();
+                    ordemServico.Categoria = reader["Categoria"].ToString();
+
+                    listCategoria.Add(ordemServico);
+                }
+                con.Close();
+            }
+
+            return listCategoria;
         }
         #endregion
 
@@ -1224,7 +1253,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                
+
                 string selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade, A.AtendimentoID," +
                                   " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Colaborador, Eq.Tipo, Eq.Fabricante " +
                                   " FROM tbl_Atendimento A " +
@@ -1271,16 +1300,16 @@ namespace ClickServ2022.Repository
                     atendimento.Periodo = reader["Periodo"].ToString();
                     atendimento.Observacao = reader["Observacao"].ToString();
                     atendimento.Colaborador = reader["Colaborador"].ToString();
-                    
+
                     equipamento.Tipo = reader["Tipo"].ToString();
                     equipamento.Fabricante = reader["Fabricante"].ToString();
 
-                    relatorio.Cliente       = cliente;
-                    relatorio.Contato       = contato;
-                    relatorio.Endereco      = endereco;
-                    relatorio.Atendimento   = atendimento;
-                    relatorio.Equipamento   = equipamento;
-                                                           
+                    relatorio.Cliente = cliente;
+                    relatorio.Contato = contato;
+                    relatorio.Endereco = endereco;
+                    relatorio.Atendimento = atendimento;
+                    relatorio.Equipamento = equipamento;
+
                     relatorioAtendimento.Add(relatorio);
                 }
                 con.Close();

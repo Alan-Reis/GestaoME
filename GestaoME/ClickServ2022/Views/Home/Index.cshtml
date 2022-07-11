@@ -5,44 +5,45 @@
 
 }
 
+<link rel="stylesheet" href="~/css/fullcalendario.css" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.css">
 
 <div class="container">
     <div class="row">
         <div class="col-sm">
             <div class="text-center">
-        </div>
-        <div class="text-center">
-              <h1 class="display-4">ClickServ2022</h1>
+            </div>
+            <div class="text-center">
+                <h1 class="display-4">ClickServ2022</h1>
 
                 <h4>Atendimentos</h4>
-                <table class="table" id="todoTable">
+                <table class="table table-sm" id="todoTable">
                     @foreach (var item in Model)
                     {
                         <tr>
                             <td>
-                                    @Html.DisplayFor(modelItem => item.Id) 
+                                @Html.DisplayFor(modelItem => item.Id)
                             </td>
                             <td>
-                                    @Html.DisplayFor(modelItem => item.Nome) 
+                                @Html.DisplayFor(modelItem => item.Nome)
                             </td>
                             <td>
-                                    @Html.DisplayFor(modelItem => item.Title) 
+                                @Html.DisplayFor(modelItem => item.Title)
                             </td>
                             <td>
-                                    @Html.DisplayFor(modelItem => item.StartDate)
+                                @Html.DisplayFor(modelItem => item.StartDate)
                             </td>
                         </tr>
                     }
-            </table>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="calendarContainer">
+                <div id="calendar"></div>
+            </div>
         </div>
     </div>
-    <div class="col-sm">
-        <div class="calendarContainer">
-            <div id="calendar"></div>
-        </div>
-    </div>
-</div>
 </div>
 
 @section Scripts{

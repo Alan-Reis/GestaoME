@@ -15,52 +15,53 @@
             @Html.AntiForgeryToken()
 
             <div class="modal-body">
-      <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="AtendimentoID" class="form-control" type="hidden"/>
-                <span asp-validation-for="AtendimentoID" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Defeito" class="control-label"></label>
-                <input asp-for="Defeito" class="form-control" />
-                <span asp-validation-for="Defeito" class="text-danger"></span>
-            </div>
-            <div class="row">
-                 <div class="form-group col-md-4">
-                <label asp-for="Data" class="control-label"></label>
-                <input asp-for="Data" class="form-control" />
-                <span asp-validation-for="Data" class="text-danger"></span>
-            </div>
-            <div class="form-group col-md-4">
-                <label asp-for="Periodo" class="control-label"></label>
-                <input asp-for="Periodo" class="form-control" />
-                <span asp-validation-for="Periodo" class="text-danger"></span>
-            </div>
-            </div>
-            <div class="form-group">
-                <label asp-for="Observacao" class="control-label"></label>
-                <input asp-for="Observacao" class="form-control" />
-                <span asp-validation-for="Observacao" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Colaborador" class="control-label"></label>
-                <input asp-for="Colaborador" class="form-control" />
-                <span asp-validation-for="Colaborador" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Salvar" class="btn btn-primary" />
-                @Html.ActionLink("Deletar", "Delete","Atendimento",new {id = Model.AtendimentoID}, new { @class = "btn btn-danger"})
-                @Html.ActionLink("Voltar", "Index","Home",null, new { @class = "btn btn-primary"})
-            </div>
+                <form asp-action="Edit">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input asp-for="AtendimentoID" class="form-control" type="hidden" />
+                        <span asp-validation-for="AtendimentoID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Defeito" class="control-label"></label>
+                        <input asp-for="Defeito" class="form-control" />
+                        <span asp-validation-for="Defeito" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-4">
+                            <label asp-for="Data" class="control-label"></label>
+                            <input asp-for="Data" class="form-control" />
+                            <span asp-validation-for="Data" class="text-danger"></span>
+                        </div>
+                        <div class="form-group col-md-4">
+                            <label asp-for="Periodo" class="control-label"></label>
+                            <input asp-for="Periodo" class="form-control" />
+                            <span asp-validation-for="Periodo" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Observacao" class="control-label"></label>
+                        <input asp-for="Observacao" class="form-control" />
+                        <span asp-validation-for="Observacao" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <select asp-for="Colaborador"
+                            asp-items="@ViewBag.Tecnico" class="form-control">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                        @Html.ActionLink("Deletar", "Delete","Atendimento",new {id = Model.AtendimentoID}, new { @class = "btn btn-danger"})
+                        @Html.ActionLink("Voltar", "Index","Home",null, new { @class = "btn btn-primary"})
+                    </div>
                 </form>
             </div>
         }
     </div><!-- /.modal-content -->
 </div><!-- /.modal-dialog -->
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }
 
 

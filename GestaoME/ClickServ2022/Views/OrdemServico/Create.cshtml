@@ -34,11 +34,12 @@
                 <span asp-validation-for="Valor" class="text-danger"></span>
             </div>
         </div>
-                <div class="col-md-1">
+        <div class="col-md-1">
             <div class="form-group">
                 <label asp-for="Categoria" class="control-label"></label>
-                <input asp-for="Categoria" class="form-control" />
-                <span asp-validation-for="Categoria" class="text-danger"></span>
+                <select asp-for="Categoria"
+                        asp-items="@ViewBag.Categoria" class="form-control">
+                </select>
             </div>
         </div>
     </div>
@@ -54,7 +55,7 @@
             <span asp-validation-for="Relatorio" class="text-danger"></span>
         </div>
     </div>
-     <div class="form-row">
+    <div class="form-row">
         <div class="form-group col-md-6">
             <input asp-for="Observacao" class="form-control" placeholder="Observação" />
             <span asp-validation-for="Observacao" class="text-danger"></span>
@@ -79,7 +80,7 @@
 
 @section Scripts {
 
-    <script src="~/js/valida-ordem-servico.js"></script>
+<script src="~/js/valida-ordem-servico.js"></script>
 
     @{
     await Html.RenderPartialAsync("_ValidationScriptsPartial");

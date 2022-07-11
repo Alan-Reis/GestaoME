@@ -76,6 +76,10 @@ namespace ClickServ2022.Controllers
             ViewBag.Tecnico = this.ordemservico.GetAllColaborador().Select(c => new SelectListItem()
             { Text = c.Nome, Value = c.Nome }).ToList();
 
+            //Popular um SelectList para os categoria
+            ViewBag.Categoria = this.ordemservico.GetAllCategoria().Select(c => new SelectListItem()
+            { Text = c.Categoria, Value = c.Categoria }).ToList();
+
             OrdemServico ordemservico = new OrdemServico();
             Equipamento equipamento = this.ordemservico.GetEquipamento(id, equip);
             ordemservico.Equipamento = equipamento;
@@ -95,6 +99,8 @@ namespace ClickServ2022.Controllers
         {
             Equipamento equipamento = this.ordemservico.GetEquipamento(id, equip);
             ordemservico.Equipamento = equipamento;
+
+
 
             if (ModelState.IsValid)
             {
@@ -116,6 +122,10 @@ namespace ClickServ2022.Controllers
             //Popular um SelectList para os técnico
             ViewBag.Tecnico = this.ordemservico.GetAllColaborador().Select(c => new SelectListItem()
             { Text = c.Nome, Value = c.Nome }).ToList();
+
+            //Popular um SelectList para os categoria
+            ViewBag.Categoria = this.ordemservico.GetAllCategoria().Select(c => new SelectListItem()
+            { Text = c.Categoria, Value = c.Categoria }).ToList();
 
             OrdemServico ordemServico = this.ordemservico.GetOrdemServico(id);
 
