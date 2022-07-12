@@ -33,9 +33,10 @@
                             <span asp-validation-for="Data" class="text-danger"></span>
                         </div>
                         <div class="form-group col-md-4">
-                            <label asp-for="Periodo" class="control-label"></label>
-                            <input asp-for="Periodo" class="form-control" />
-                            <span asp-validation-for="Periodo" class="text-danger"></span>
+                            <p>Período</p>
+                            <select asp-for="Periodo"
+                                asp-items="@ViewBag.Periodo" class="form-control">
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
@@ -60,8 +61,8 @@
 </div><!-- /.modal-dialog -->
 @section Scripts {
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-}
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
 
 

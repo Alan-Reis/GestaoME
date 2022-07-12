@@ -34,6 +34,10 @@ namespace ClickServ2022.Controllers
             ViewBag.Tecnico = this.atendimento.GetAllColaborador().Select(c => new SelectListItem()
             { Text = c.Nome, Value = c.Nome }).ToList();
 
+            //Popular um SelectList para período
+            ViewBag.Periodo = this.atendimento.GetPeriodo().Select(c => new SelectListItem()
+            { Text = c.Periodo, Value = c.Periodo }).ToList();
+
             Atendimento atendimento = new Atendimento();
             Equipamento equipamento = new Equipamento();
             equipamento.EquipamentoID = (int)id;
@@ -98,6 +102,10 @@ namespace ClickServ2022.Controllers
             //Popular um SelectList para os técnico
             ViewBag.Tecnico = this.atendimento.GetAllColaborador().Select(c => new SelectListItem()
             { Text = c.Nome, Value = c.Nome }).ToList();
+
+            //Popular um SelectList para período
+            ViewBag.Periodo = this.atendimento.GetPeriodo().Select(c => new SelectListItem()
+            { Text = c.Periodo, Value = c.Periodo }).ToList();
 
             Atendimento atendimento = this.atendimento.GetAtendimento(id);
 

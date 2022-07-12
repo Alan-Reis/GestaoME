@@ -100,8 +100,6 @@ namespace ClickServ2022.Controllers
             Equipamento equipamento = this.ordemservico.GetEquipamento(id, equip);
             ordemservico.Equipamento = equipamento;
 
-
-
             if (ModelState.IsValid)
             {
                 this.ordemservico.AddOrdemServico(ordemservico);

@@ -26,6 +26,8 @@
                 <div class="form-group">
                     <select name="coluna" class="form-control">
                         <option>Nome</option>
+                        <option>CPF</option>
+                        <option>Logradouro</option>
                         <option>Condomínio</option>
                     </select>
                 </div>
@@ -66,10 +68,10 @@
                     @Html.ActionLink(item.Nome, "Details",  new { id=item.ClienteID})
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Endereco.Logradouro)
+                    @Html.ActionLink(item.Endereco.Logradouro, "Details",  new { id=item.ClienteID})
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Endereco.Complemento)
+                    @Html.ActionLink(item.Endereco.Complemento, "Details",  new { id=item.ClienteID})
                 </td>
             </tr>
         }

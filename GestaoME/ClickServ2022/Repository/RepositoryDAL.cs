@@ -835,12 +835,13 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
+            var Data = atendimento.Data.ToString("yyyy/MM/dd");
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string comandoSQL = $"UPDATE tbl_Atendimento " +
                                     $"SET Defeito = '{atendimento.Defeito}', " +
-                                    $"Data = '{atendimento.Data}', " +
+                                    $"Data = '{Data}', " +
                                     $"Periodo = '{atendimento.Periodo}'," +
                                     $"Observacao = '{atendimento.Observacao}', " +
                                     $"Colaborador = '{atendimento.Colaborador}' " +
@@ -1137,11 +1138,6 @@ namespace ClickServ2022.Repository
 
             List<Modelo> listModelo = new List<Modelo>();
 
-
-
-
-
-
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 SqlCommand cmd = new SqlCommand($" SELECT F.NomeFabricante, M.NomeModelo FROM tbl_Fabricante F" +
@@ -1164,6 +1160,35 @@ namespace ClickServ2022.Repository
             }
 
             return listModelo;
+        }
+        #endregion
+
+        #region Período
+        public List<Atendimento> GetPeriodo()
+        {
+            string connectionString = Conexao();
+
+            List<Atendimento> listPeriodo = new List<Atendimento>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand($" SELECT * FROM Tbl_Periodo", con);
+
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Atendimento atendimento = new Atendimento();
+                    atendimento.Periodo = reader["Periodo"].ToString();
+
+                    listPeriodo.Add(atendimento);
+                }
+                con.Close();
+            }
+
+            return listPeriodo;
         }
         #endregion
 

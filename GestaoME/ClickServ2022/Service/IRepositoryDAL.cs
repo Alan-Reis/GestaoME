@@ -68,6 +68,7 @@ namespace ClickServ2022.Service
         List<Fabricante> GetAllFabricante(string equipamento);
         List<Modelo> GetAllModelo(string model);
         List<OrdemServico> GetAllCategoria();
+        List<Atendimento> GetPeriodo();
         IEnumerable<Evento> GetAllEventos();
         #endregion
 

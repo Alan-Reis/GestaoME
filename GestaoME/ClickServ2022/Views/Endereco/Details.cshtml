@@ -66,10 +66,10 @@
                     @Html.ActionLink(item.Tipo, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Fabricante)
+                     @Html.ActionLink(item.Fabricante, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Modelo)
+                     @Html.ActionLink(item.Modelo, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.NSerie)

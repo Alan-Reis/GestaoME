@@ -82,10 +82,10 @@
                         @Html.ActionLink(item.Logradouro, "Details", "Endereco",  new { id=item.EnderecoID })
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Complemento)
+                         @Html.ActionLink(item.Complemento, "Details", "Endereco",  new { id=item.EnderecoID })
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Cidade)
+                         @Html.ActionLink(item.Cidade, "Details", "Endereco",  new { id=item.EnderecoID })
                     </td>
                 </tr>
             }
