@@ -54,9 +54,10 @@ namespace ClickServ2022.Repository
             }
             else
             {
-                stringQuery = $"SELECT * FROM tbl_Cliente C " +
+                stringQuery = $"SELECT TOP(12) * FROM tbl_Cliente C " +
                               $"INNER JOIN tbl_Endereco E " +
-                              $"ON C.ClienteID = E.ClienteID";
+                              $"ON C.ClienteID = E.ClienteID" +
+                              $" ORDER BY C.ClienteID DESC";
 
             }
 
@@ -922,7 +923,7 @@ namespace ClickServ2022.Repository
                 }
                 else
                 {
-                    stringQuery = $"SELECT * FROM tbl_OrdemServico ORDER BY Data DESC";
+                    stringQuery = $"SELECT TOP(12)* FROM tbl_OrdemServico ORDER BY Data DESC";
                 }
             }
             else
@@ -1213,7 +1214,8 @@ namespace ClickServ2022.Repository
                                                 $"ON A.EquipamentoID = E.EquipamentoID " +
                                                 $"INNER JOIN tbl_Cliente C " +
                                                 $"ON E.ClienteID = C.ClienteID " +
-                                                $"WHERE A.Data >= '{ dataAtual }'", con);
+                                                $"WHERE A.Data >= '{ dataAtual }'" +
+                                                $" ORDER BY A.Data ", con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();

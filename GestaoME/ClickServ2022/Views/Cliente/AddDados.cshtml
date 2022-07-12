@@ -12,7 +12,8 @@
         <div class="form-group col-md-4">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="validationTooltipUsernamePrepend">Buscar endereço por CEP</span>
-                <input name="cep" type="text" id="cep" value="" size="10" maxlength="9" class="form-control" />
+                <input name="cep" type="text" id="cep" size="10" maxlength="9" class="form-control" />
+                <input type="button" value="Buscar" class="btn btn-primary" onclick="pesquisacep();" />
             </div>
         </div>
     </div>
@@ -79,15 +80,15 @@
 </form>
 
 @section Scripts {
-<!-- Adicionando JQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    <!-- Adicionando JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
 
-<script src="~/js/buscar-cep.js"></script>
-<script src="~/js/select-equipamento.js"></script>
+    <script src="~/js/cep.js"></script>
+    <script src="~/js/select-equipamento.js"></script>
 
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
         }
