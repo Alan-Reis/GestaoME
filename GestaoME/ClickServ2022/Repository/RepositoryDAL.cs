@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace ClickServ2022.Repository
 {
@@ -891,10 +892,9 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
-
+                
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     ordemServico.Equipamento = equipamento;
-
                     ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
                     ordemServico.Valor = reader["Valor"].ToString();
                     ordemServico.Categoria = reader["Categoria"].ToString();
@@ -965,8 +965,17 @@ namespace ClickServ2022.Repository
         }
         public void AddOrdemServico(OrdemServico ordemservico)
         {
-            //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
-            string valor = ordemservico.Valor.Replace(',', '.');
+            string valor = "";
+
+            if (ordemservico.Valor != null)
+            {
+                //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
+                valor = ordemservico.Valor.Replace(',', '.');
+            }
+            else
+            {
+                valor = "0";
+            }
 
             string connectionString = Conexao();
 
@@ -998,8 +1007,18 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
+            string valor = "";
+
+            if (ordemServico.Valor != null)
+            {
             //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
-            string valor = ordemServico.Valor.Replace(',', '.');
+             valor = ordemServico.Valor.Replace(',', '.');
+            }
+            else
+            {
+                valor = "0";
+            }
+
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {

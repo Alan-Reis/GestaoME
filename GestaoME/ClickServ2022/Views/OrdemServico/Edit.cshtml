@@ -29,7 +29,7 @@
                         </div>
                         <div class="form-group col-md-4">
                             <label asp-for="Valor" class="control-label"></label>
-                            <input asp-for="Valor" class="form-control" required />
+                            <input asp-for="Valor" class="form-control" />
                             <span asp-validation-for="Valor" class="text-danger"></span>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                     </div>
                     <div class="form-group">
                         <label asp-for="Defeito" class="control-label"></label>
-                        <input asp-for="Defeito" class="form-control" />
+                        <input asp-for="Defeito" class="form-control" required/>
                         <span asp-validation-for="Defeito" class="text-danger"></span>
                     </div>
                     <div class="form-group">
