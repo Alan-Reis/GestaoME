@@ -117,6 +117,33 @@ namespace ClickServ2022.Repository
             return cliente;
         }
 
+        public Cliente GetClienteOrdemServico(int? id)
+        {
+            string connectionString = Conexao();
+            Cliente cliente = new Cliente();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string query = $"SELECT ClienteID FROM tbl_OrdemServico OS" +
+                                $" INNER JOIN tbl_Equipamento E" +
+                                $" ON OS.EquipamentoID = E.EquipamentoID" +
+                                $" WHERE OS.OrdemServicoID = {id}";
+
+                SqlCommand cmd = new SqlCommand(query, con);
+
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
+                    
+                }
+                con.Close();
+            }
+            return cliente;
+        }
+
         public int GetClienteLast()
         {
             string connectionString = Conexao();
@@ -589,6 +616,44 @@ namespace ClickServ2022.Repository
             return listEquipamento;
         }
 
+        public IEnumerable<Equipamento> GetAllEquipamentosCliente(int? id)
+        {
+            Cliente ClienteID = GetClienteOrdemServico(id);
+            int idcliente = ClienteID.ClienteID;
+
+            string connectionString = Conexao();
+            List<Equipamento> listEquipamento = new List<Equipamento>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+             
+                string query = $" SELECT * FROM tbl_Equipamento WHERE ClienteID = {idcliente}";              
+
+                SqlCommand cmd = new SqlCommand(query, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Equipamento equipamento = new Equipamento();
+                    equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
+
+                    string Tipo = reader["Tipo"].ToString();
+                    string Fabricante = reader["Fabricante"].ToString();
+                    string Modelo = reader["Modelo"].ToString();
+                    string NSerie = reader["NSerie"].ToString();
+                    
+                    equipamento.Tipo = Tipo + ' ' + Fabricante + ' ' + Modelo + ' ' + NSerie;
+                    
+
+                    listEquipamento.Add(equipamento);
+                }
+                con.Close();
+            }
+
+            return listEquipamento;
+        }
+
         public Equipamento GetEquipamento(int? id, string view)
         {
 
@@ -891,8 +956,21 @@ namespace ClickServ2022.Repository
 
                 while (reader.Read())
                 {
+
+                    /*/Criado pela necessidade de ter ordem duplicada no sistema
+                    string Duplicado = reader["Duplicado"].ToString();
+                    if (Duplicado == "D")
+                    {
+                        int OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
+                        ordemServico.OrdemServicoID = OrdemServicoID + Duplicado;
+                    }
+                    else
+                    {
+                        ordemServico.OrdemServicoID = reader["OrdemServicoID"].ToString();
+                    }
+                    */
+
                     ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
-                
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     ordemServico.Equipamento = equipamento;
                     ordemServico.Data = Convert.ToDateTime(reader["Data"].ToString());
@@ -929,7 +1007,7 @@ namespace ClickServ2022.Repository
             }
             else
             {
-                stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE EquipamentoID = {id}";
+                stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE EquipamentoID = {id} ";
             }
 
             using (SqlConnection con = new SqlConnection(connectionString))
@@ -943,8 +1021,9 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     OrdemServico ordemServico = new OrdemServico();
+                   
+               
                     ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
-
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     ordemServico.Equipamento = equipamento;
 
@@ -983,9 +1062,51 @@ namespace ClickServ2022.Repository
             {
                 var Data = ordemservico.Data.ToString("yyyy/MM/dd");
 
-                string comandoSQL = $"INSERT INTO tbl_OrdemServico (OrdemServicoID, EquipamentoID, Data, Valor,Categoria, Defeito, Relatorio,Observacao, Colaborador) " +
+                string comandoSQL = $"INSERT INTO tbl_OrdemServico (OrdemServicoID,Duplicado, EquipamentoID, Data, Valor,Categoria, Defeito, Relatorio,Observacao, Colaborador) " +
                                     $"Values({ordemservico.OrdemServicoID}, " +
+                                    $"'N', " +
                                     $"{ordemservico.Equipamento.EquipamentoID}, " +
+                                    $"'{Data}', " +
+                                    $"{valor}, " +
+                                    $"'{ordemservico.Categoria}', " +
+                                    $"'{ordemservico.Defeito}', " +
+                                    $"'{ordemservico.Relatorio}', " +
+                                    $"'{ordemservico.Observacao}', " +
+                                    $"'{ordemservico.Colaborador}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public void AddOrdemServicoDuplicado(OrdemServico ordemservico)
+        {
+            string valor = "";
+
+            if (ordemservico.Valor != null)
+            {
+                //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
+                valor = ordemservico.Valor.Replace(',', '.');
+            }
+            else
+            {
+                valor = "0";
+            }
+
+            string connectionString = Conexao();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                var Data = ordemservico.Data.ToString("yyyy/MM/dd");
+
+                string comandoSQL = $"INSERT INTO tbl_OrdemServico (OrdemServicoID, Duplicado, EquipamentoID, Data, Valor,Categoria, Defeito, Relatorio,Observacao, Colaborador) " +
+                                    $"Values({ordemservico.OrdemServicoID}, " +
+                                    $"'D', " +
+                                    $"{ordemservico.Equipamento.Tipo}, " +
                                     $"'{Data}', " +
                                     $"{valor}, " +
                                     $"'{ordemservico.Categoria}', " +

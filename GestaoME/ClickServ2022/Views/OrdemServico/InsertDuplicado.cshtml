@@ -1,0 +1,52 @@
+﻿@model ClickServ2022.Models.OrdemServico
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+                <form asp-action="InsertDuplicado">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <input asp-for="Equipamento.EquipamentoID" class="form-control" type="hidden" />
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-3">
+                            <input asp-for="OrdemServicoID" class="form-control" id="os" type="hidden" />
+                            <span asp-validation-for="OrdemServicoID" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p>Selecione o equipamento que deseja duplicar a ordem de serviço</p>
+                        <select asp-for="Equipamento.Tipo"
+                            asp-items="@ViewBag.EquipamentoCompleto" class="form-control">
+                        </select>
+                    </div>
+                    <input asp-for="Data" class="form-control" type="hidden" />
+                    <input asp-for="Valor" class="form-control" type="hidden" />
+                    <input asp-for="Categoria" class="form-control" type="hidden" />
+                    <input asp-for="Defeito" class="form-control" type="hidden" />
+                    <input asp-for="Relatorio" class="form-control" type="hidden" />
+                    <input asp-for="Observacao" class="form-control" type="hidden" />
+                    <input asp-for="Colaborador" class="form-control" type="hidden" />
+                    <div class="form-group">
+                        <input type="submit" value="Salvar" class="btn btn-primary" />
+                        @Html.ActionLink("Cancelar", "Details","Equipamento", new { id = Model.Equipamento.EquipamentoID },new { @class = "btn btn-primary"})
+                    </div>
+                </form>
+            </div>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+@section Scripts {
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

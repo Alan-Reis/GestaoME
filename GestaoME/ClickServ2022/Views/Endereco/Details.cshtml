@@ -72,7 +72,7 @@
                      @Html.ActionLink(item.Modelo, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.NSerie)
+                    @Html.ActionLink(item.NSerie, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
                     @Html.ActionLink("Atender", "Create", "Atendimento", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})

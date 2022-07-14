@@ -12,6 +12,7 @@ namespace ClickServ2022.Models
     {
         [Display(Name ="O.S")]
         public int OrdemServicoID { get; set; }
+        public string Duplicado { get; set; }
         [DataType(DataType.Date)]
         public DateTime Data { get; set; }
         public string Valor { get; set; }

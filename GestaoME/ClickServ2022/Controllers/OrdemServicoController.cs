@@ -150,6 +150,37 @@ namespace ClickServ2022.Controllers
             return View(ordemServico);
         }
 
+        public IActionResult InsertDuplicado(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ViewBag.EquipamentoCompleto = this.ordemservico.GetAllEquipamentosCliente(id).Select(c => new SelectListItem()
+            { Text = c.Tipo, Value = c.EquipamentoID.ToString() }).ToList();
+
+            OrdemServico ordemServico = this.ordemservico.GetOrdemServico(id);
+
+            if (ordemservico == null)
+            {
+                return NotFound();
+            }
+            return View(ordemServico);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult InsertDuplicado(int id, [Bind] OrdemServico ordemServico)
+        {
+            if (ModelState.IsValid)
+            {
+                this.ordemservico.AddOrdemServicoDuplicado(ordemServico);
+                return RedirectToAction("Details", "Equipamento", new { id = ordemServico.Equipamento.EquipamentoID });
+            }
+            return View(ordemServico);
+        }
+
         public IActionResult Delete(int? id)
         {
             if (id == null)
