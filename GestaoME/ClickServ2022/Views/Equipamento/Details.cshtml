@@ -57,7 +57,7 @@
             <th>
                 Valor
             </th>
-             <th>
+            <th>
                 Categoria
             </th>
             <th>
@@ -69,8 +69,10 @@
             <th>
                 Colaborador
             </th>
-             <th>
+            <th>
                 Observação
+            </th>
+            <th>
             </th>
             <th>
             </th>
@@ -106,14 +108,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Observacao)
             </td>
-             <td>
-                <button class="btn btn-warning duplicar" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-edit"></i>Duplicar</button>
+            <td>
+                <button class="btn btn-secondary duplicar" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-duplicate"></i>Duplicar</button>
             </td>
             <td>
                 <button class="btn btn-warning edit" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-edit"></i>Editar</button>
             </td>
             <td>
-                 <button class="btn btn-danger delete" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
+                <button class="btn btn-danger delete" data-id="@item.OrdemServicoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
             </td>
         </tr>
         }
