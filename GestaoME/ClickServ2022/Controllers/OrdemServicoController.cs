@@ -65,8 +65,10 @@ namespace ClickServ2022.Controllers
             return Json(0);
         }
 
-        public IActionResult Create(int? id, string equip)
+        public IActionResult Create(int? id, string view)
         {
+            Equipamento equipamento = this.ordemservico.GetEquipamento(id, view);
+
             if (id == null)
             {
                 return NotFound();
@@ -81,7 +83,6 @@ namespace ClickServ2022.Controllers
             { Text = c.Categoria, Value = c.Categoria }).ToList();
 
             OrdemServico ordemservico = new OrdemServico();
-            Equipamento equipamento = this.ordemservico.GetEquipamento(id, equip);
             ordemservico.Equipamento = equipamento;
             ordemservico.Data = DateTime.Now.Date;
 
@@ -95,15 +96,15 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] OrdemServico ordemservico, int? id, string equip)
+        public IActionResult Create([Bind] OrdemServico ordemservico, int? id, string view)
         {
-            Equipamento equipamento = this.ordemservico.GetEquipamento(id, equip);
+            Equipamento equipamento = this.ordemservico.GetEquipamento(id, view);
             ordemservico.Equipamento = equipamento;
 
             if (ModelState.IsValid)
             {
                 this.ordemservico.AddOrdemServico(ordemservico);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", "Endereco", new { id = ordemservico.Equipamento.Endereco.EnderecoID });
             }
 
             return View(ordemservico);
@@ -204,7 +205,7 @@ namespace ClickServ2022.Controllers
             OrdemServico ordemServico = this.ordemservico.GetOrdemServico(id);
 
             this.ordemservico.DeleteOrdemServico(id);
-            return RedirectToAction("Index", "Cliente");
+            return RedirectToAction("Details", "Equipamento", new { id = ordemServico.Equipamento.EquipamentoID });
         }
 
     }

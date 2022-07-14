@@ -30,6 +30,9 @@ namespace ClickServ2022.Controllers
                 return NotFound();
             }
 
+            string view = "";
+            Equipamento equipamento = this.atendimento.GetEquipamento(id, view);
+
             //Popular um SelectList para os técnico
             ViewBag.Tecnico = this.atendimento.GetAllColaborador().Select(c => new SelectListItem()
             { Text = c.Nome, Value = c.Nome }).ToList();
@@ -39,8 +42,6 @@ namespace ClickServ2022.Controllers
             { Text = c.Periodo, Value = c.Periodo }).ToList();
 
             Atendimento atendimento = new Atendimento();
-            Equipamento equipamento = new Equipamento();
-            equipamento.EquipamentoID = (int)id;
             atendimento.Equipamento = equipamento;
             atendimento.Data = DateTime.Now.Date;
 
@@ -59,7 +60,7 @@ namespace ClickServ2022.Controllers
             if (ModelState.IsValid)
             {
                 this.atendimento.AddAtendimento(atendimento);
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Details", "Endereco", new { id = atendimento.Equipamento.EquipamentoID });
             }
             return View(atendimento);
         }

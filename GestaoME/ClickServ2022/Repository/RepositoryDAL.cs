@@ -686,6 +686,10 @@ namespace ClickServ2022.Repository
                     cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
                     equipamento.Cliente = cliente;
 
+                    Endereco endereco = new Endereco();
+                    endereco.EnderecoID = Convert.ToInt32(reader["EnderecoID"]);
+
+                    equipamento.Endereco = endereco;
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     equipamento.Tipo = reader["Tipo"].ToString();
                     equipamento.Fabricante = reader["Fabricante"].ToString();

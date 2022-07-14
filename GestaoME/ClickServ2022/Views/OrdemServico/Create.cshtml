@@ -45,7 +45,7 @@
     </div>
     <div class="form-row">
         <div class="form-group col-md-4">
-            <input asp-for="Defeito" class="form-control" placeholder="Defeito" required/>
+            <input asp-for="Defeito" class="form-control" placeholder="Defeito" required />
             <span asp-validation-for="Defeito" class="text-danger"></span>
         </div>
     </div>
@@ -73,16 +73,16 @@
 
     <div class="form-group">
         <input type="submit" value="Salvar" id="botao" class="btn btn-primary" onclick="valida_form()}" />
-        @Html.ActionLink("Cancelar", "Index","Home",null, new { @class = "btn btn-danger"})
+        @Html.ActionLink("Cancelar", "Details", "Endereco", new { id = Model.Equipamento.Endereco.EnderecoID},new { @class = "btn btn-danger"})
     </div>
 </form>
 
 
 @section Scripts {
 
-<script src="~/js/valida-ordem-servico.js"></script>
+    <script src="~/js/valida-ordem-servico.js"></script>
 
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-}
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

@@ -41,7 +41,7 @@
             </div>
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-primary" />
-                @Html.ActionLink("Voltar", "Index", "Home", null, new { @class = "btn btn-primary"})
+                @Html.ActionLink("Cancelar", "Details", "Endereco", new { id = Model.Equipamento.Endereco.EnderecoID}, new { @class = "btn btn-danger"})
             </div>
         </form>
     </div>
