@@ -63,14 +63,17 @@
 
             var equipamento = tipo + ' ' + fabricante + enter + defeito;
 
+            //Observação
+            var observacao = 'Observação: ' + selecionado[10].innerHTML.trim();
+
             //Data
-            var data = 'Data: ' + selecionado[10].innerHTML.trim();
-            var periodo = selecionado[11].innerHTML.trim();
-            var colaborador = selecionado[12].innerHTML.trim();
+            var data = '*Data:* ' + selecionado[11].innerHTML.trim();
+            var periodo = selecionado[12].innerHTML.trim();
+            var colaborador = selecionado[13].innerHTML.trim();
 
             var agenda = data + ' - ' + periodo + ' ' + colaborador + enter;
 
-            mensagem = contato + endereco + equipamento + agenda + enter;
+            mensagem = contato + endereco + equipamento + observacao + enter + agenda + enter;
 
             //Fim edição
 

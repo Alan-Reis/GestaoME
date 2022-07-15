@@ -23,14 +23,13 @@ namespace ClickServ2022.Controllers
             return View();
         }
 
-        public IActionResult Create(int? id, string equip)
+        public IActionResult Create(int? id, string view)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            string view = "";
             Equipamento equipamento = this.atendimento.GetEquipamento(id, view);
 
             //Popular um SelectList para os técnico
@@ -55,12 +54,16 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Atendimento atendimento)
+        public IActionResult Create([Bind] Atendimento atendimento, int? id, string view)
         {
+
+            Equipamento equipamento = this.atendimento.GetEquipamento(id, view);
+            atendimento.Equipamento = equipamento;
+
             if (ModelState.IsValid)
             {
                 this.atendimento.AddAtendimento(atendimento);
-                return RedirectToAction("Details", "Endereco", new { id = atendimento.Equipamento.EquipamentoID });
+                return RedirectToAction("Details", "Endereco", new { id = atendimento.Equipamento.Endereco.EnderecoID });
             }
             return View(atendimento);
         }
