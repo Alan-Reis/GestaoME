@@ -81,6 +81,6 @@ btnEnviarWhatsApp.addEventListener("click", function () {
 
     var phone = document.getElementById("phone").value;
 
-    window.open('https://api.whatsapp.com/send?phone=' + phone + '&text=' + dadosWhatsApp)
+    window.open('https://api.whatsapp.com/send?phone=55' + phone + '&text=' + dadosWhatsApp)
 
 });

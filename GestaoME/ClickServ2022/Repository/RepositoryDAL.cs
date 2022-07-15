@@ -961,19 +961,6 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
 
-                    /*/Criado pela necessidade de ter ordem duplicada no sistema
-                    string Duplicado = reader["Duplicado"].ToString();
-                    if (Duplicado == "D")
-                    {
-                        int OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
-                        ordemServico.OrdemServicoID = OrdemServicoID + Duplicado;
-                    }
-                    else
-                    {
-                        ordemServico.OrdemServicoID = reader["OrdemServicoID"].ToString();
-                    }
-                    */
-
                     ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     ordemServico.Equipamento = equipamento;
@@ -1011,7 +998,7 @@ namespace ClickServ2022.Repository
             }
             else
             {
-                stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE EquipamentoID = {id} ";
+                stringQuery = $"SELECT * FROM tbl_OrdemServico WHERE EquipamentoID = {id} ORDER BY Data DESC";
             }
 
             using (SqlConnection con = new SqlConnection(connectionString))
