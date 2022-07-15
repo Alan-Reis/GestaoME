@@ -1208,7 +1208,7 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_TipoEquipamento", con);
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_TipoEquipamento ORDER BY Equipamento", con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -1241,7 +1241,7 @@ namespace ClickServ2022.Repository
                 SqlCommand cmd = new SqlCommand($"SELECT * FROM tbl_TipoEquipamento te" +
                                                 $" INNER JOIN tbl_Fabricante f" +
                                                 $" ON te.TipoID = f.TipoID" +
-                                                $" WHERE te.Equipamento = '{equipamento}'", con);
+                                                $" WHERE te.Equipamento = '{equipamento}' ORDER BY f.NomeFabricante", con);
                 cmd.CommandType = CommandType.Text;
 
                 con.Open();
@@ -1274,7 +1274,7 @@ namespace ClickServ2022.Repository
                 SqlCommand cmd = new SqlCommand($" SELECT F.NomeFabricante, M.NomeModelo FROM tbl_Fabricante F" +
                                                 $" INNER JOIN tbl_Modelo M" +
                                                 $" ON F.FabricanteID = M.FabricanteID" +
-                                                $" WHERE F.NomeFabricante = '{ model }'", con);
+                                                $" WHERE F.NomeFabricante = '{ model }' ORDER BY M.NomeModelo", con);
 
                 cmd.CommandType = CommandType.Text;
 
