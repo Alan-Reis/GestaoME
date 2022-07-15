@@ -105,7 +105,7 @@ namespace ClickServ2022.Controllers
             {
                 this.equipamento.UpdateEquipamento(equipamento);
                 equipamento.Endereco = endereco;
-                return RedirectToAction("Details", "Endereco", new { id = equipamento.Endereco.EnderecoID });
+                return RedirectToAction("Details", "Equipamento", new { id = equipamento.EquipamentoID });
             }
             return View(equipamento);
         }

@@ -1131,11 +1131,12 @@ namespace ClickServ2022.Repository
                 valor = "0";
             }
 
+            var Data = ordemServico.Data.ToString("yyyy/MM/dd");
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string comandoSQL = $"UPDATE tbl_OrdemServico " +
-                                    $"SET Data = '{ordemServico.Data}', " +
+                                    $"SET Data = '{Data}', " +
                                     $"Valor = {valor}, " +
                                     $"Categoria = '{ordemServico.Categoria}', " +
                                     $"Defeito = '{ordemServico.Defeito}', " +
