@@ -63,7 +63,7 @@ btnEnviarWhatsApp.addEventListener("click", function () {
         var fabricante = selecionado[8].innerHTML.trim();
         var defeito = selecionado[9].innerHTML.trim();
 
-        var equipamento = tipo + ' ' + fabricante + enter + defeito + enter;
+        var equipamento = tipo + ' ' + fabricante + ' - ' + defeito + enter;
 
         //Observação
         var observacao = '*Observação:* ' + selecionado[10].innerHTML.trim();
