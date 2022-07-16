@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Globalization;
 
 namespace ClickServ2022.Repository
 {
@@ -137,7 +136,7 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
-                    
+
                 }
                 con.Close();
             }
@@ -626,8 +625,8 @@ namespace ClickServ2022.Repository
 
             using (SqlConnection con = new SqlConnection(connectionString))
             {
-             
-                string query = $" SELECT * FROM tbl_Equipamento WHERE ClienteID = {idcliente}";              
+
+                string query = $" SELECT * FROM tbl_Equipamento WHERE ClienteID = {idcliente}";
 
                 SqlCommand cmd = new SqlCommand(query, con);
                 cmd.CommandType = CommandType.Text;
@@ -642,9 +641,9 @@ namespace ClickServ2022.Repository
                     string Fabricante = reader["Fabricante"].ToString();
                     string Modelo = reader["Modelo"].ToString();
                     string NSerie = reader["NSerie"].ToString();
-                    
+
                     equipamento.Tipo = Tipo + ' ' + Fabricante + ' ' + Modelo + ' ' + NSerie;
-                    
+
 
                     listEquipamento.Add(equipamento);
                 }
@@ -807,7 +806,7 @@ namespace ClickServ2022.Repository
                                   " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
                                   " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
                                   " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID" +
-                                  $" WHERE A.Data = '{ data }'";
+                                  $" WHERE A.Data = '{data}'";
 
                 }
                 else
@@ -1012,8 +1011,8 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     OrdemServico ordemServico = new OrdemServico();
-                   
-               
+
+
                     ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
                     ordemServico.Equipamento = equipamento;
@@ -1123,8 +1122,8 @@ namespace ClickServ2022.Repository
 
             if (ordemServico.Valor != null)
             {
-            //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
-             valor = ordemServico.Valor.Replace(',', '.');
+                //Converter a virgula em ponto, o SQL dar erro em caso de virgula.
+                valor = ordemServico.Valor.Replace(',', '.');
             }
             else
             {
@@ -1275,7 +1274,7 @@ namespace ClickServ2022.Repository
                 SqlCommand cmd = new SqlCommand($" SELECT F.NomeFabricante, M.NomeModelo FROM tbl_Fabricante F" +
                                                 $" INNER JOIN tbl_Modelo M" +
                                                 $" ON F.FabricanteID = M.FabricanteID" +
-                                                $" WHERE F.NomeFabricante = '{ model }' ORDER BY M.NomeModelo", con);
+                                                $" WHERE F.NomeFabricante = '{model}' ORDER BY M.NomeModelo", con);
 
                 cmd.CommandType = CommandType.Text;
 
@@ -1371,7 +1370,7 @@ namespace ClickServ2022.Repository
                                                 $"ON A.EquipamentoID = E.EquipamentoID " +
                                                 $"INNER JOIN tbl_Cliente C " +
                                                 $"ON E.ClienteID = C.ClienteID " +
-                                                $"WHERE A.Data >= '{ dataAtual }'" +
+                                                $"WHERE A.Data >= '{dataAtual}'" +
                                                 $" ORDER BY A.Data ", con);
                 cmd.CommandType = CommandType.Text;
 
@@ -1420,7 +1419,7 @@ namespace ClickServ2022.Repository
                                   " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
                                   " INNER JOIN tbl_Cliente C ON Eq.ClienteID = C.ClienteID" +
                                   " INNER JOIN tbl_Contato Cont ON C.ClienteID = Cont.ClienteID" +
-                                  $" WHERE A.Data = '{ data }'" +
+                                  $" WHERE A.Data = '{data}'" +
                                   $" ORDER BY A.Data DESC";
 
 

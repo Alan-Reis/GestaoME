@@ -80,7 +80,8 @@
             dadosPDF += mensagem;
         }
         var doc = new jsPDF();
-        doc.text(10, 10, dadosPDF);
+        doc.setFontSize(12);
+        doc.text(dadosPDF,10, 10);
         doc.save('Atendimentos.pdf');
     });
 
