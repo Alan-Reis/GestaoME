@@ -1413,7 +1413,7 @@ namespace ClickServ2022.Repository
             {
 
                 string selectQuery = "SELECT C.Nome, Cont.Celular, Cont.Telefone, E.Logradouro, E.Bairro, E.Cidade, A.AtendimentoID," +
-                                  " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Colaborador, Eq.Tipo, Eq.Fabricante " +
+                                  " E.Uf, E.Complemento, A.Defeito, A.Data, A.Periodo, A.Observacao, A.Colaborador, Eq.Tipo, Eq.Fabricante, Eq.Modelo " +
                                   " FROM tbl_Atendimento A " +
                                   " INNER JOIN tbl_Equipamento Eq ON A.EquipamentoID = Eq.EquipamentoID" +
                                   " INNER JOIN tbl_Endereco E ON Eq.EnderecoID = E.EnderecoID" +
@@ -1461,6 +1461,7 @@ namespace ClickServ2022.Repository
 
                     equipamento.Tipo = reader["Tipo"].ToString();
                     equipamento.Fabricante = reader["Fabricante"].ToString();
+                    equipamento.Modelo = reader["Modelo"].ToString();
 
                     relatorio.Cliente = cliente;
                     relatorio.Contato = contato;

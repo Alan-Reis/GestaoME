@@ -63,6 +63,9 @@
                     Fabricante
                 </th>
                 <th>
+                    Modelo
+                </th>
+                <th>
                     Defeito
                 </th>
                   <th>
@@ -112,6 +115,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Equipamento.Fabricante)
                         </td>
+                         <td>
+                            @Html.DisplayFor(modelItem => item.Equipamento.Modelo)
+                        </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Atendimento.Defeito)
                         </td>
@@ -136,7 +142,7 @@
 
 @section Scripts {
     <!--PDF-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
 
 <script src="~/js/relatorio-atendimento-whatsapp.js"></script>
 <script src="~/js/relatorio-atendimento-imprimir.js"></script>
@@ -144,6 +150,6 @@
 <script src="~/js/relatorio-atendimento-pdf.js"></script>
 
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-}
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }
