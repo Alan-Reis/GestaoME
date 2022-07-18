@@ -178,7 +178,7 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult AddDados([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf)
+        public IActionResult AddDados([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf, int? id)
         {
             cliente.Endereco.Logradouro = logradouro;
             cliente.Endereco.Bairro = bairro;
@@ -187,8 +187,8 @@ namespace ClickServ2022.Controllers
 
             if (ModelState.IsValid)
             {
-                this.cliente.AddDados(cliente);
-                int id = cliente.ClienteID;
+                cliente.ClienteID = (int)id;
+                this.cliente.AddDados(cliente);                
                 return RedirectToAction("Details","Cliente",new { id });
             }
 
