@@ -709,6 +709,8 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
+            string modeloGas = equipamento.Modelo + ' ' + equipamento.Gas;
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 //Para cadastro vindo do Cliente/Details
@@ -720,7 +722,7 @@ namespace ClickServ2022.Repository
                                    $"'{equipamento.Cliente.ClienteID}', " +
                                    $"'{equipamento.Tipo}', " +
                                    $"'{equipamento.Fabricante}', " +
-                                   $"'{equipamento.Modelo}', " +
+                                   $"'{modeloGas}', " +
                                    $"'{equipamento.NSerie}')";
 
                 }
@@ -748,12 +750,14 @@ namespace ClickServ2022.Repository
         {
             string connectionString = Conexao();
 
+            string modeloGas = equipamento.Modelo + ' ' + equipamento.Gas;
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 string comandoSQL = $"UPDATE tbl_Equipamento SET " +
                                     $"Tipo =       '{equipamento.Tipo}', " +
                                     $"Fabricante = '{equipamento.Fabricante}', " +
-                                    $"Modelo =     '{equipamento.Modelo}', " +
+                                    $"Modelo =     '{modeloGas}', " +
                                     $"NSerie =     '{equipamento.NSerie}' " +
                                     $"WHERE EquipamentoID = '{equipamento.EquipamentoID}'";
                 SqlCommand cmd = new SqlCommand(comandoSQL, con);

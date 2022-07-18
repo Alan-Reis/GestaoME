@@ -6,7 +6,7 @@
 
 <hr />
 <div class="row">
-    <div class="col-md-4">
+    <div>
         <form asp-action="Create" name="equipamento">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
@@ -19,27 +19,34 @@
                 </div>
             </div>
             <div class="form-group">
-                <p>Tipo</p>
-                <select asp-for="Tipo" id="equip" onclick="loadFabricante()">
-                    <option value="" selected="selected">Selecione</option>
+                <select asp-for="Tipo" id="equip" class="form-control" onclick="loadFabricante()">
+                    <option value="" selected="selected">Selecione o tipo de equipamento</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <select asp-for="Gas" id="gas" class="form-control">
+                    <option value="" selected="selected">Tipo de gás</option>
+                    <option value="GN">GN</option>
+                    <option value="GLP">GLP</option>
                 </select>
             </div>
             <div class="form-group">
                 <p>Fabricante</p>
-                 <select asp-for="Fabricante" id="fabri"  onclick="loadModelo()">
-                <option value="" selected="selected">Selecione</option>
+                <select asp-for="Fabricante" id="fabri" class="form-control" onclick="loadModelo()">
+                    <option value="" selected="selected">Selecione o fabricante</option>
                 </select>
             </div>
             <div class="form-group">
                 <p>Modelo</p>
-                 <select asp-for="Modelo" id="model">
-                 <option value="" selected="selected">Selecione</option>
+                <select asp-for="Modelo" id="model" class="form-control">
+                    <option value="" selected="selected">Selecione o modelo</option>
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="NSerie" class="control-label"></label>
-                <input asp-for="NSerie" class="form-control" />
-                <span asp-validation-for="NSerie" class="text-danger"></span>
+                <div class="form-group">
+                    <input asp-for="NSerie" class="form-control" placeholder="Nº de série" />
+                    <span asp-validation-for="NSerie" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Criar" class="btn btn-primary" />
@@ -54,6 +61,6 @@
     <script src="~/js/select-equipamento.js"></script>
 
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
-}
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

@@ -15,6 +15,8 @@ namespace ClickServ2022.Models
         public string Modelo { get; set; }
         [Display(Name="Nº série")]
         public string NSerie { get; set; }
+        [Display(Name ="Tipo de gás")]
+        public string Gas { get; set; }
         public Cliente Cliente { get; set; }
         public Endereco Endereco { get; set; }
         public OrdemServico OrdemServico { get; set; }

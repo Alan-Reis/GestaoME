@@ -103,3 +103,23 @@ function clearModel() {
         model.remove(0);
     }
 }
+
+
+
+//Selecionar o tipo de gás quando o equipamento for aquecedor à gás ou trocador de calor
+//usando na página create
+document.getElementById('gas').style.display = 'none';
+
+addEventListener("change", function tipo() {
+    var tiposSelect = document.getElementById('equip').value;
+
+    if (tiposSelect == 'Aquecedor à gás' || tiposSelect == 'Trocador de calor') {
+        document.getElementById('gas').style.display = '';
+    }
+    else {
+        document.getElementById('gas').style.display = 'none';
+
+    }
+
+});
+

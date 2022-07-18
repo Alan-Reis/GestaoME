@@ -61,17 +61,18 @@ btnEnviarWhatsApp.addEventListener("click", function () {
         //Equipamento
         var tipo = '*Equipamento:* ' + selecionado[7].innerHTML.trim();
         var fabricante = selecionado[8].innerHTML.trim();
-        var defeito = selecionado[9].innerHTML.trim();
+        var modelo = selecionado[9].innerHTML.trim();
+        var defeito = '*Defeito:* ' + selecionado[10].innerHTML.trim();
 
-        var equipamento = tipo + ' ' + fabricante + ' - ' + defeito + enter;
+        var equipamento = tipo + ' ' + fabricante + ' ' + modelo + enter + defeito + enter;
 
         //Observação
-        var observacao = '*Observação:* ' + selecionado[10].innerHTML.trim();
+        var observacao = '*Observação:* ' + selecionado[11].innerHTML.trim();
 
         //Data
-        var data = '*Data:* ' + selecionado[11].innerHTML.trim();
-        var periodo = selecionado[12].innerHTML.trim();
-        var colaborador = selecionado[13].innerHTML.trim();
+        var data = '*Data:* ' + selecionado[12].innerHTML.trim();
+        var periodo = selecionado[13].innerHTML.trim();
+        var colaborador = selecionado[14].innerHTML.trim();
 
         var agenda = data + ' - ' + periodo + enter + colaborador;
 
