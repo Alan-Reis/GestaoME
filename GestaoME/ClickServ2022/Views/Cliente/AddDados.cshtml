@@ -58,6 +58,13 @@
                 <option value="" selected="selected">Selecione</option>
             </select>
         </div>
+        <div class="form-group">
+            <select asp-for="Equipamento.Gas" id="gas" class="form-control">
+                <option value="" selected="selected">Tipo de gás</option>
+                <option value="GN">GN</option>
+                <option value="GLP">GLP</option>
+            </select>
+        </div>
         <div class="form-group col-md-2">
             <select asp-for="Equipamento.Fabricante" id="fabri" onclick="loadModelo()" class="form-control">
                 <option value="" selected="selected">Selecione</option>

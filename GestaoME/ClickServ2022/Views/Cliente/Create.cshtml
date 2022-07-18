@@ -81,6 +81,13 @@
                 <option value="" selected="selected">Selecione</option>
             </select>
         </div>
+        <div class="form-group">
+            <select asp-for="Equipamento.Gas" id="gas" class="form-control">
+                <option value="" selected="selected">Tipo de gás</option>
+                <option value="GN">GN</option>
+                <option value="GLP">GLP</option>
+            </select>
+        </div>
         <div class="form-group col-md-2">
             <select asp-for="Equipamento.Fabricante" id="fabri" onclick="loadModelo()" class="form-control">
                 <option value="" selected="selected">Selecione</option>
@@ -103,14 +110,14 @@
 </form>
 
 @section Scripts {
-<!-- Adicionando JQuery -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    <!-- Adicionando JQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
         crossorigin="anonymous"></script>
 
-<script src="~/js/cep.js"></script>
-<script src="~/js/select-equipamento.js"></script>
-        @{
-            await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+    <script src="~/js/cep.js"></script>
+    <script src="~/js/select-equipamento.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
         }
