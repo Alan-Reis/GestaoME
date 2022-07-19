@@ -985,7 +985,7 @@ namespace ClickServ2022.Repository
             string connectionString = Conexao();
 
             List<OrdemServico> listOrdemServico = new List<OrdemServico>();
-            Equipamento equipamento = new Equipamento();
+            List<Equipamento> listEquipamento = new List<Equipamento>();
             string stringQuery;
 
             if (view == "OS")
@@ -1015,7 +1015,7 @@ namespace ClickServ2022.Repository
                 while (reader.Read())
                 {
                     OrdemServico ordemServico = new OrdemServico();
-
+                    Equipamento equipamento = new Equipamento();
 
                     ordemServico.OrdemServicoID = Convert.ToInt32(reader["OrdemServicoID"]);
                     equipamento.EquipamentoID = Convert.ToInt32(reader["EquipamentoID"]);
@@ -1029,6 +1029,7 @@ namespace ClickServ2022.Repository
                     ordemServico.Relatorio = reader["Relatorio"].ToString();
                     ordemServico.Colaborador = reader["Colaborador"].ToString();
 
+                    listEquipamento.Add(equipamento);
                     listOrdemServico.Add(ordemServico);
                 }
                 con.Close();
