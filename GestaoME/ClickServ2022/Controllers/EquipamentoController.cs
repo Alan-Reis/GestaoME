@@ -1,11 +1,6 @@
 ﻿using ClickServ2022.Models;
 using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClickServ2022.Controllers
 {
@@ -17,14 +12,17 @@ namespace ClickServ2022.Controllers
         {
             equipamento = _equipamento;
         }
-        public IActionResult Details(int? id, string view)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            Equipamento equipamento = this.equipamento.GetEquipamento(id, view);
+            Equipamento equipamento = this.equipamento.GetEquipamento(id);
+            //Utilizado para pegar criar a lista no Details dos equipamentos 
+            string view = null;
+            equipamento.OrdemServicos = this.equipamento.GetAllOrdemServico(id, view);
 
             ViewBag.Tipo = equipamento.Tipo;
             ViewBag.Fabricante = equipamento.Fabricante;
@@ -37,7 +35,7 @@ namespace ClickServ2022.Controllers
             return View(equipamento);
         }
 
-       
+
         public JsonResult Equipamento()
         {
             ViewBag.Equipamento = this.equipamento.GetAllTipoEquipamento();
@@ -49,7 +47,7 @@ namespace ClickServ2022.Controllers
         public JsonResult Fabricante(string fabri)
         {
             ViewBag.Fabricante = this.equipamento.GetAllFabricante(fabri);
-           
+
             return Json(ViewBag.Fabricante);
         }
 
@@ -61,46 +59,69 @@ namespace ClickServ2022.Controllers
         }
 
 
-        public IActionResult Create(int? id, string tipo, string fabricante)
+        public IActionResult Create(int? id, string tipoEnderecoSistema, string sistema)
         {
-            
-            string view = "Endereco";
-            var cliente = this.equipamento.GetEquipamento(id, view);
+            ViewBag.tipoEnderecoSistema = tipoEnderecoSistema;
+
+            var cliente = this.equipamento.GetEndereco(id, sistema);
 
             Equipamento equipamento = new Equipamento();
-            Endereco endereco = new Endereco();
-            endereco.EnderecoID = (int)id;
-            equipamento.Endereco = endereco;
+            equipamento.Endereco = cliente;
             equipamento.Cliente = cliente.Cliente;
 
-            if (equipamento == null)
-            {
-                return NotFound();
-            }
-
             return View(equipamento);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Equipamento equipamento, string tipo)
+        public IActionResult Create([Bind] Cliente cliente, int? id, string tipoEnderecoSistema)
         {
-            if (ModelState.IsValid)
+           
+            if(tipoEnderecoSistema == "sistema")
             {
-                this.equipamento.AddEquipamento(equipamento);
-                return RedirectToAction("Details", "Endereco", new { id = equipamento.Endereco.EnderecoID });
+                Sistema sistema = new Sistema();
+                sistema.SistemaID = (int)id;
+
+                Endereco endereco = new Endereco();
+                endereco.EnderecoID = 0;
+
+                cliente.Endereco = endereco;
+                cliente.Sistema = sistema;
+
+                if (ModelState.IsValid)
+                {
+                    this.equipamento.AddEquipamento(cliente);
+                    return RedirectToAction("Details", "Sistema", new { id = cliente.Sistema.SistemaID });
+                }
             }
+            else
+            {
+                Endereco endereco = new Endereco();
+                endereco.EnderecoID = (int)id;
+
+                Sistema sistema = new Sistema();
+                sistema.SistemaID = 0;
+
+                cliente.Sistema = sistema;
+                cliente.Endereco = endereco;
+
+                if (ModelState.IsValid)
+                {
+                    this.equipamento.AddEquipamento(cliente);
+                    return RedirectToAction("Details", "Endereco", new { id = cliente.Endereco.EnderecoID });
+                }
+            }
+           
             return View(equipamento);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([Bind] Equipamento equipamento)
+        public IActionResult Edit([Bind] Equipamento equipamento, string sistema)
         {
-            string view = "Endereco";
             int cliente = equipamento.Cliente.ClienteID;
-            Endereco endereco = this.equipamento.GetEndereco(cliente, view);
-                    
+            Endereco endereco = this.equipamento.GetEndereco(cliente, sistema);
+
             if (ModelState.IsValid)
             {
                 this.equipamento.UpdateEquipamento(equipamento);
@@ -109,33 +130,5 @@ namespace ClickServ2022.Controllers
             }
             return View(equipamento);
         }
-
-        public IActionResult Delete(int? id, string view)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            Equipamento equipamento = this.equipamento.GetEquipamento(id, view);
-
-            if (equipamento == null)
-            {
-                return NotFound();
-            }
-
-            return View(equipamento);
-        }
-
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id, string view)
-        {
-            Equipamento equipamento = this.equipamento.GetEquipamento(id, view);
-
-            this.equipamento.DeleteEquipamento(id);
-            return RedirectToAction("Details", "Cliente", new { id = equipamento.Cliente.ClienteID });
-        }
-
     }
 }

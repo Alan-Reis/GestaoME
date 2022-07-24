@@ -5,46 +5,47 @@ namespace ClickServ2022.Service
 {
     public interface IRepositoryDAL
     {
-        #region GestaoME
-    
-        #endregion
-
         #region Cliente
-        IEnumerable<Cliente> GetAllClientes(string coluna, string nome);
+        IEnumerable<Cliente> GetClientes(string coluna, string nome, string tipoCliente);
         void AddCliente(Cliente cliente);
-        void AddDados(Cliente cliente);
         void UpdateCliente(Cliente cliente);
         Cliente GetCliente(int? id);
-        void DeleteCliente(int? id);
+        int GetClienteLast();
         #endregion
 
         #region Contato
-        IEnumerable<Contato> GetAllContatos(int? id);
-        void AddContato(Contato contato);
+        IEnumerable<Contato> GetContatos(int? id);
+        void AddContato(Cliente cliente);
         void UpdateContato(Contato contato);
         Contato GetContato(int? id);
         void DeleteContato(int? id);
         #endregion
 
+        #region ContatoAuxiliar
+        IEnumerable<ContatoAuxiliar> GetContatosAuxiliar(int? id);
+        void AddContatoAuxiliar(ContatoAuxiliar contato);
+        void UpdateContatoAuxiliar(ContatoAuxiliar contato);
+        ContatoAuxiliar GetContatoAuxiliar(int? id);
+        void DeleteContatoAuxiliar(int? id);
+        #endregion
+
         #region Endereço
-        IEnumerable<Endereco> GetAllEnderecos(int? id);
-        void AddEndereco(Endereco endereco);
+        IEnumerable<Endereco> GetEnderecos(int? id);
+        Endereco GetEndereco(int? id, string sistema);
+        void AddEndereco(Cliente cliente);
         void UpdateEndereco(Endereco endereco);
-        Endereco GetEndereco(int? id, string view);
-        void DeleteEndereco(int? id);
+        int GetEnderecoLast();
         #endregion
 
         #region Equipamento
-        IEnumerable<Equipamento> GetAllEquipamentos(int? id, string view);
+        IEnumerable<Equipamento> GetEquipamentos(int? id, string sistemaEndereco);
+        Equipamento GetEquipamento(int? id);
         IEnumerable<Equipamento> GetAllEquipamentosCliente(int? id);
-        void AddEquipamento(Equipamento equipamento);
+        void AddEquipamento(Cliente cliente);
         void UpdateEquipamento(Equipamento equipamento);
-        Equipamento GetEquipamento(int? id, string view);
-        void DeleteEquipamento(int? id);
         #endregion
 
         #region Atendimento
-        //IEnumerable<Atendimento>GetAllAtedimentos(string data);
         void AddAtendimento(Atendimento atendimento);
         void UpdateAtendimento(Atendimento atendimento);
         Atendimento GetAtendimento(int? id);
@@ -56,10 +57,9 @@ namespace ClickServ2022.Service
         #endregion
 
         #region Ordem de Serviço
-        void AddOrdemServico(OrdemServico ordemservico);
-        void AddOrdemServicoDuplicado(OrdemServico ordemServico);
-        IEnumerable<OrdemServico> GetAllOrdemServico(int? id, string view);
         OrdemServico GetOrdemServico(int? os);
+        IEnumerable<OrdemServico> GetAllOrdemServico(int? id, string view);
+        void AddOrdemServico(OrdemServico ordemservico, string duplicado);
         void UpdateOrdemServico(OrdemServico ordemServico);
         void DeleteOrdemServico(int? id);
         #endregion
@@ -75,6 +75,13 @@ namespace ClickServ2022.Service
 
         #region Relatórios
         IEnumerable<RelatorioAtendimento> RelatorioAtendimento(string data);
+        #endregion
+
+        #region Sistema
+        IEnumerable<Sistema> GetSistemas(int? id);
+        Sistema GetSistema(int? id);
+        void AddSistema(Sistema sistema);
+        void UpdateSistema(Sistema sistema);
         #endregion
     }
 }

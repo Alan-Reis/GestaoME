@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClickServ2022.Controllers
 {
@@ -23,14 +22,17 @@ namespace ClickServ2022.Controllers
             return View();
         }
 
-        public IActionResult Create(int? id, string view)
+        public IActionResult Create(int? id, string redirecionar)
         {
+
+            ViewBag.Redirecionar = redirecionar;
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            Equipamento equipamento = this.atendimento.GetEquipamento(id, view);
+            Equipamento equipamento = this.atendimento.GetEquipamento(id);
 
             //Popular um SelectList para os técnico
             ViewBag.Tecnico = this.atendimento.GetAllColaborador().Select(c => new SelectListItem()
@@ -54,15 +56,20 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Atendimento atendimento, int? id, string view)
+        public IActionResult Create([Bind] Atendimento atendimento, int? id, string redirecionar)
         {
 
-            Equipamento equipamento = this.atendimento.GetEquipamento(id, view);
+
+            Equipamento equipamento = this.atendimento.GetEquipamento(id);
             atendimento.Equipamento = equipamento;
 
             if (ModelState.IsValid)
             {
                 this.atendimento.AddAtendimento(atendimento);
+                if (redirecionar == "sistema")
+                {
+                    return RedirectToAction("Details", "Sistema", new { id = atendimento.Equipamento.Sistema.SistemaID });
+                }
                 return RedirectToAction("Details", "Endereco", new { id = atendimento.Equipamento.Endereco.EnderecoID });
             }
             return View(atendimento);
@@ -70,7 +77,7 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         public IActionResult RelatorioAtendimento(string data)
-        {            
+        {
             List<RelatorioAtendimento> atendimentoList = new List<RelatorioAtendimento>();
             atendimentoList = atendimento.RelatorioAtendimento(data).ToList();
 

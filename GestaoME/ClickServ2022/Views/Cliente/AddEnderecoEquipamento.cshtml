@@ -1,36 +1,13 @@
 ﻿@model ClickServ2022.Models.Cliente
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] ="Novo Endereço";
 }
 
-<form asp-action="Create">
+<hr />
+<form asp-action="AddEnderecoEquipamento">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-    <div class="form-row">
-        <div class="form-group col-md-4">
-            <input asp-for="Nome" class="form-control" required placeholder="Nome" />
-            <span asp-validation-for="Nome" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-2">
-            <input maxlength="14" asp-for="CPF" class="form-control" placeholder="CPF/CNPJ" />
-            <span asp-validation-for="CPF" class="text-danger"></span>
-        </div>
-    </div>
-    <div class="form-row">
-        <div class="form-group col-md-2">
-            <input asp-for="Contato.Telefone" class="form-control" placeholder="Telefone" />
-            <span asp-validation-for="Contato.Telefone" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-2">
-            <input asp-for="Contato.Celular" class="form-control" placeholder="Celular" required />
-            <span asp-validation-for="Contato.Celular" class="text-danger"></span>
-        </div>
-        <div class="form-group col-md-4">
-            <input asp-for="Contato.Email" class="form-control" placeholder="E-mail" />
-            <span type="email" asp-validation-for="Contato.Email" class="text-danger"></span>
-        </div>
-    </div>
     <div class="form-row">
         <div class="form-group col-md-5">
             <div class="input-group-prepend">
@@ -105,7 +82,7 @@
     </div>
     <div class="form-group">
         <input type="submit" value="Criar" class="btn btn-primary" />
-        <a asp-action="Index" class="btn btn-primary">Voltar</a>
+        @Html.ActionLink("Voltar", "Details", new { id = Model.ClienteID }, new { @class = "btn btn-primary"})
     </div>
 </form>
 
@@ -117,6 +94,7 @@
 
     <script src="~/js/cep.js"></script>
     <script src="~/js/select-equipamento.js"></script>
+
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

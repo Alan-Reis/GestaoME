@@ -11,8 +11,6 @@
     <div class="form-group">
         <input asp-for="EnderecoID" class="form-control" type="hidden" />
     </div>
-
-
     <div class="form-row">
         <div class="form-group col-md-6">
             <input asp-for="Logradouro" class="form-control" placeholder="Logradouro" id="logradouro" required />
@@ -48,10 +46,9 @@
             @Html.ActionLink("Voltar", "Details","Cliente", new { id = Model.Cliente.ClienteID },new { @class = "btn btn-primary"})
         </div>
     </div>
-
 </form>
 
-</br>
+<br/>
 
 
 <div>
@@ -75,8 +72,8 @@
                     @Html.ActionLink(item.NSerie, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
-                    @Html.ActionLink("Atender", "Create", "Atendimento", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})
-                    @Html.ActionLink("Gerar O.S", "Create", "OrdemServico", new { id=item.EquipamentoID,  equip=item.Tipo }, new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Atender", "Create", "Atendimento", new { id=item.EquipamentoID }, new { @class = "btn btn-primary"})
+                    @Html.ActionLink("Gerar O.S", "Create", "OrdemServico", new { id=item.EquipamentoID }, new { @class = "btn btn-primary"})
                 </td>
             </tr>
         }

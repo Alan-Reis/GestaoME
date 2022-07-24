@@ -1,5 +1,3 @@
-using System;
-
 namespace ClickServ2022.Models
 {
     public class ErrorViewModel

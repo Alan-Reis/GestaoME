@@ -9,22 +9,16 @@
     <div>
         <form asp-action="Create" name="equipamento">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" name="tipoEnderecoSistema" value="@ViewBag.tipoEnderecoSistema" />
+            <input asp-for="Cliente.ClienteID" type="hidden" />
 
             <div class="form-group">
-                <div class="form-group">
-                    <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
-                </div>
-                <div class="form-group">
-                    <input asp-for="Endereco.EnderecoID" class="form-control" type="hidden" />
-                </div>
-            </div>
-            <div class="form-group">
-                <select asp-for="Tipo" id="equip" class="form-control" onclick="loadFabricante()">
+                <select asp-for="Cliente.Equipamento.Tipo" id="equip" class="form-control" onclick="loadFabricante()">
                     <option value="" selected="selected">Selecione o tipo de equipamento</option>
                 </select>
             </div>
             <div class="form-group">
-                <select asp-for="Gas" id="gas" class="form-control">
+                <select asp-for="Cliente.Equipamento.Gas" id="gas" class="form-control">
                     <option value="" selected="selected">Tipo de gás</option>
                     <option value="GN">GN</option>
                     <option value="GLP">GLP</option>
@@ -32,25 +26,25 @@
             </div>
             <div class="form-group">
                 <p>Fabricante</p>
-                <select asp-for="Fabricante" id="fabri" class="form-control" onclick="loadModelo()">
+                <select asp-for="Cliente.Equipamento.Fabricante" id="fabri" class="form-control" onclick="loadModelo()">
                     <option value="" selected="selected">Selecione o fabricante</option>
                 </select>
             </div>
             <div class="form-group">
                 <p>Modelo</p>
-                <select asp-for="Modelo" id="model" class="form-control">
+                <select asp-for="Cliente.Equipamento.Modelo" id="model" class="form-control">
                     <option value="" selected="selected">Selecione o modelo</option>
                 </select>
             </div>
             <div class="form-group">
                 <div class="form-group">
-                    <input asp-for="NSerie" class="form-control" placeholder="Nº de série" />
+                    <input asp-for="Cliente.Equipamento.NSerie" class="form-control" placeholder="Nº de série" />
                     <span asp-validation-for="NSerie" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Criar" class="btn btn-primary" />
-                @Html.ActionLink("Voltar", "Details", "Endereco", new { id = Model.Endereco.EnderecoID},new { @class = "btn btn-primary"})
+                <input type="button" value="Voltar" onclick="btnVoltar()" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -59,7 +53,7 @@
 @section Scripts {
 
     <script src="~/js/select-equipamento.js"></script>
-
+    <script src="~/js/btn-voltar.js"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

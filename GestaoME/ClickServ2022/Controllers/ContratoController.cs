@@ -8,10 +8,10 @@ using System.Linq;
 
 namespace ClickServ2022.Controllers
 {
-    public class ClienteController : Controller
+    public class ContratoController : Controller
     {
         private readonly IRepositoryDAL cliente;
-        public ClienteController(IRepositoryDAL _cliente)
+        public ContratoController(IRepositoryDAL _cliente)
         {
             cliente = _cliente;
 
@@ -31,8 +31,8 @@ namespace ClickServ2022.Controllers
                 //string criada para que se possa obter todos os clientes sem que possa passar um nome como parametro
                 string nomeNull = null;
                 string colunaNull = null;
-                //CA = Cliente Avulso
-                string tipoCliente = "CA";
+                //CA = Cliente Contrato
+                string tipoCliente = "CC";
                 listCliente = this.cliente.GetClientes(colunaNull, nomeNull, tipoCliente).ToList();
 
                 return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
@@ -53,8 +53,8 @@ namespace ClickServ2022.Controllers
             }
 
             List<Cliente> listCliente = new List<Cliente>();
-            //CA = Cliente Avulso
-            string tipoCliente = "CA";
+            //CC = Cliente Contrato
+            string tipoCliente = "CC";
             listCliente = cliente.GetClientes(coluna, nome, tipoCliente).ToList();
 
             //se não tiver o cliente, vai para adicionar            
@@ -89,8 +89,10 @@ namespace ClickServ2022.Controllers
             }
 
             Cliente cliente = this.cliente.GetCliente(id);
-            cliente.Enderecos = this.cliente.GetEnderecos(id);
-            cliente.Contatos = this.cliente.GetContatos(id);
+            string sistema = "sistema";
+            cliente.Endereco = this.cliente.GetEndereco(id, sistema);
+            cliente.Sistemas = this.cliente.GetSistemas(id);
+            cliente.ContatosAuxiliar = this.cliente.GetContatosAuxiliar(id);
 
             if (cliente == null)
             {
@@ -123,23 +125,12 @@ namespace ClickServ2022.Controllers
 
             if (ModelState.IsValid)
             {
-                cliente.TipoCliente = "CA";
+                cliente.TipoCliente = "CC";
                 this.cliente.AddCliente(cliente);
+
                 //Pega o último ClienteID inserido no banco de dados
                 cliente.ClienteID = Convert.ToInt32(this.cliente.GetClienteLast());
-
-                this.cliente.AddContato(cliente);
                 this.cliente.AddEndereco(cliente);
-                //Pega endereçoID para salvar na FK da tbl Equipamento
-                cliente.Endereco.EnderecoID = this.cliente.GetEnderecoLast();
-
-                Sistema sistema = new Sistema();
-                sistema.SistemaID = 0;
-
-                cliente.Sistema = sistema;
-
-                this.cliente.AddEquipamento(cliente);
-   
                 return RedirectToAction("Index");
             }
 
@@ -148,54 +139,16 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit([Bind] Cliente cliente)
+        public IActionResult Edit([Bind] Cliente cliente, Endereco endereco)
         {
 
             if (ModelState.IsValid)
             {
                 this.cliente.UpdateCliente(cliente);
                 int id = cliente.ClienteID;
-                return RedirectToAction("Details", "Cliente", new { id });
+                return RedirectToAction("Details", "Contrato", new { id });
             }
             return View(cliente);
         }
-
-        public IActionResult AddEnderecoEquipamento(int? id, Endereco endereco)
-        {
-            Cliente cliente = new Cliente();
-
-            if (endereco.Logradouro != null)
-            {
-                cliente = this.cliente.GetCliente(endereco.EnderecoID);
-                cliente.Endereco = endereco;
-                return View(cliente);
-            }
-            cliente = this.cliente.GetCliente(id);
-            return View(cliente);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult AddEnderecoEquipamento([Bind] Cliente cliente, string logradouro, string bairro, string cidade, string uf, int? id)
-        {
-            cliente.Endereco.Logradouro = logradouro;
-            cliente.Endereco.Bairro = bairro;
-            cliente.Endereco.Cidade = cidade;
-            cliente.Endereco.Uf = uf;
-
-            if (ModelState.IsValid)
-            {
-                cliente.ClienteID = (int)id;
-                this.cliente.AddEndereco(cliente);
-                //Pega endereçoID para salvar na FK da tbl Equipamento
-                cliente.Endereco.EnderecoID = this.cliente.GetEnderecoLast();
-                this.cliente.AddEquipamento(cliente);
-                this.cliente.AddCliente(cliente);
-                return RedirectToAction("Details", "Cliente", new { id });
-            }
-
-            return View(cliente);
-        }
-
     }
 }

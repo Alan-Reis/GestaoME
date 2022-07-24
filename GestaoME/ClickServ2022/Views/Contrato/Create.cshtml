@@ -1,13 +1,22 @@
 ﻿@model ClickServ2022.Models.Cliente
 
 @{
-    ViewData["Title"] = "AddDados";
+    ViewData["Title"] = "Create";
 }
 
-<hr />
-<form asp-action="AddDados">
+<form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
+    <div class="form-row">
+        <div class="form-group col-md-4">
+            <input asp-for="Nome" class="form-control" required placeholder="Nome" />
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-2">
+            <input maxlength="14" asp-for="CPF" class="form-control" placeholder="CPF/CNPJ" />
+            <span asp-validation-for="CPF" class="text-danger"></span>
+        </div>
+    </div>
     <div class="form-row">
         <div class="form-group col-md-5">
             <div class="input-group-prepend">
@@ -47,42 +56,9 @@
             <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
         </div>
     </div>
-
-    <div class="container mt-1">
-        <h4 class="bg-primary text-white text-center">Informações do equipamento</h4>
-    </div>
-
-    <div class="form-row">
-        <div class="form-group col-md-2">
-            <select asp-for="Equipamento.Tipo" id="equip" onclick="loadFabricante()" class="form-control" required>
-                <option value="" selected="selected">Selecione</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <select asp-for="Equipamento.Gas" id="gas" class="form-control">
-                <option value="" selected="selected">Tipo de gás</option>
-                <option value="GN">GN</option>
-                <option value="GLP">GLP</option>
-            </select>
-        </div>
-        <div class="form-group col-md-2">
-            <select asp-for="Equipamento.Fabricante" id="fabri" onclick="loadModelo()" class="form-control">
-                <option value="" selected="selected">Selecione</option>
-            </select>
-        </div>
-        <div class="form-group col-md-2">
-            <select asp-for="Equipamento.Modelo" id="model" class="form-control">
-                <option value="" selected="selected">Selecione</option>
-            </select>
-        </div>
-        <div class="form-group col-md-2">
-            <input asp-for="Equipamento.NSerie" class="form-control" />
-            <span asp-validation-for="Equipamento.NSerie" class="text-danger"></span>
-        </div>
-    </div>
     <div class="form-group">
         <input type="submit" value="Criar" class="btn btn-primary" />
-        @Html.ActionLink("Voltar", "Details", new { id = Model.ClienteID }, new { @class = "btn btn-primary"})
+        <a asp-action="Index" class="btn btn-primary">Voltar</a>
     </div>
 </form>
 
@@ -94,7 +70,6 @@
 
     <script src="~/js/cep.js"></script>
     <script src="~/js/select-equipamento.js"></script>
-
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

@@ -1,0 +1,59 @@
+﻿@model ClickServ2022.Models.ContatoAuxiliar
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        @using (Html.BeginForm())
+        {
+            <div class="modal-header">
+                <h4 class="modal-title">Excluir contato</h4>
+            </div>
+
+            @Html.AntiForgeryToken()
+
+            <div class="modal-body">
+
+                <h3 style="color:red">Deseja excluir contato?</h3>
+
+                <form asp-action="Delete">
+                    <input type="submit" value="Sim" class="btn btn-danger" />
+                    @Html.ActionLink("Não", "Details", "Contrato", new { id= Model.Cliente.ClienteID}, new  { @class = "btn btn-primary"})
+                </form>
+
+                <div>
+                    <hr />
+                    <dl class="row">
+                        <div class="form-group">
+                            <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
+                        </div>
+                        <div class="form-group">
+                            <input asp-for="ContatoID" class="form-control" type="hidden" />
+                        </div>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Telefone)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Telefone)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Celular)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Celular)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>
+                    </dl>
+
+                </div>
+            </div>
+        }
+    </div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->

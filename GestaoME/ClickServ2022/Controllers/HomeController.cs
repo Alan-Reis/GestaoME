@@ -1,12 +1,9 @@
 ﻿using ClickServ2022.Models;
 using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClickServ2022.Controllers
 {

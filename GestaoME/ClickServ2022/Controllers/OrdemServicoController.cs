@@ -1,5 +1,4 @@
-﻿
-using ClickServ2022.Models;
+﻿using ClickServ2022.Models;
 using ClickServ2022.Service;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -7,7 +6,6 @@ using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ClickServ2022.Controllers
 {
@@ -38,7 +36,7 @@ namespace ClickServ2022.Controllers
         [HttpPost]
         public IActionResult Index(int? pagina, int? os)
         {
-           
+
             string view = "OS";
             List<OrdemServico> ordemServicos = new List<OrdemServico>();
             ordemServicos = this.ordemservico.GetAllOrdemServico(os, view).ToList();
@@ -55,24 +53,26 @@ namespace ClickServ2022.Controllers
         public JsonResult ValidarOS(int? os)
         {
             OrdemServico ordemServico = this.ordemservico.GetOrdemServico(os);
-            
+
             //Se tiver a ordem de serviço digitado no campo Ordem de Serviço entra no IF e 
             //retorna para a função enviar() da página Create.
-            if(ordemServico.OrdemServicoID == os)
+            if (ordemServico.OrdemServicoID == os)
             {
                 return Json(1);
             }
             return Json(0);
         }
 
-        public IActionResult Create(int? id, string view)
+        public IActionResult Create(int? id, string redirecionar)
         {
-            Equipamento equipamento = this.ordemservico.GetEquipamento(id, view);
-
+            ViewBag.Redirecionar = redirecionar;
+           
             if (id == null)
             {
                 return NotFound();
             }
+
+            Equipamento equipamento = this.ordemservico.GetEquipamento(id);
 
             //Popular um SelectList para os técnico
             ViewBag.Tecnico = this.ordemservico.GetAllColaborador().Select(c => new SelectListItem()
@@ -96,14 +96,19 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] OrdemServico ordemservico, int? id, string view)
+        public IActionResult Create([Bind] OrdemServico ordemservico, int? id, string redirecionar)
         {
-            Equipamento equipamento = this.ordemservico.GetEquipamento(id, view);
+            Equipamento equipamento = this.ordemservico.GetEquipamento(id);
             ordemservico.Equipamento = equipamento;
 
             if (ModelState.IsValid)
             {
-                this.ordemservico.AddOrdemServico(ordemservico);
+                string duplicado = "N";
+                this.ordemservico.AddOrdemServico(ordemservico, duplicado);
+                if(redirecionar == "sistema")
+                {
+                    return RedirectToAction("Details", "Sistema", new { id = ordemservico.Equipamento.Sistema.SistemaID });
+                }
                 return RedirectToAction("Details", "Endereco", new { id = ordemservico.Equipamento.Endereco.EnderecoID });
             }
 
@@ -176,7 +181,8 @@ namespace ClickServ2022.Controllers
         {
             if (ModelState.IsValid)
             {
-                this.ordemservico.AddOrdemServicoDuplicado(ordemServico);
+                string duplicado = "D";
+                this.ordemservico.AddOrdemServico(ordemServico, duplicado);
                 return RedirectToAction("Details", "Equipamento", new { id = ordemServico.Equipamento.EquipamentoID });
             }
             return View(ordemServico);

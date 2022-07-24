@@ -4,11 +4,11 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ClickServ2022.Controllers
 {
-    public class ContatoController : Controller
+    public class ContatoAuxiliarController : Controller
     {
         private readonly IRepositoryDAL contato;
 
-        public ContatoController(IRepositoryDAL _contato)
+        public ContatoAuxiliarController(IRepositoryDAL _contato)
         {
             contato = _contato;
         }
@@ -20,7 +20,7 @@ namespace ClickServ2022.Controllers
                 return NotFound();
             }
 
-            Contato contato = new Contato();
+            ContatoAuxiliar contato = new ContatoAuxiliar();
             Cliente cliente = new Cliente();
             cliente.ClienteID = (int)id;
             contato.Cliente = cliente;
@@ -35,12 +35,12 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind] Cliente cliente)
+        public IActionResult Create([Bind] ContatoAuxiliar contato)
         {
             if (ModelState.IsValid)
             {
-                this.contato.AddContato(cliente);
-                return RedirectToAction("Details", "Cliente", new { id = cliente.ClienteID });
+                this.contato.AddContatoAuxiliar(contato);
+                return RedirectToAction("Details", "Contrato", new { id = contato.Cliente.ClienteID });
             }
 
             return View(contato);
@@ -53,7 +53,7 @@ namespace ClickServ2022.Controllers
                 return NotFound();
             }
 
-            Contato contato = this.contato.GetContato(id);
+            ContatoAuxiliar contato = this.contato.GetContatoAuxiliar(id);
 
             if (contato == null)
             {
@@ -64,7 +64,7 @@ namespace ClickServ2022.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind] Contato contato)
+        public IActionResult Edit(int id, [Bind] ContatoAuxiliar contato)
         {
             if (id != contato.ContatoID)
             {
@@ -72,8 +72,8 @@ namespace ClickServ2022.Controllers
             }
             if (ModelState.IsValid)
             {
-                this.contato.UpdateContato(contato);
-                return RedirectToAction("Details", "Cliente", new { id = contato.Cliente.ClienteID });
+                this.contato.UpdateContatoAuxiliar(contato);
+                return RedirectToAction("Details", "Contrato", new { id = contato.Cliente.ClienteID });
             }
             return View(contato);
         }
@@ -85,7 +85,7 @@ namespace ClickServ2022.Controllers
                 return NotFound();
             }
 
-            Contato contato = this.contato.GetContato(id);
+            ContatoAuxiliar contato = this.contato.GetContatoAuxiliar(id);
 
             if (contato == null)
             {
@@ -98,10 +98,10 @@ namespace ClickServ2022.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int? id)
         {
-            Contato contato = this.contato.GetContato(id);
+            ContatoAuxiliar contato = this.contato.GetContatoAuxiliar(id);
 
             this.contato.DeleteContato(id);
-            return RedirectToAction("Details", "Cliente", new { id = contato.Cliente.ClienteID });
+            return RedirectToAction("Details", "Contrato", new { id = contato.Cliente.ClienteID });
         }
     }
 }

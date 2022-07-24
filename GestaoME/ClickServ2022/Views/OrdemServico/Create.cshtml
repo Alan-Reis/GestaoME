@@ -11,6 +11,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <input asp-for="Equipamento.Endereco.EnderecoID" class="form-control" type="hidden" />
+                <input name="redirecionar" value="@ViewBag.Redirecionar" type="hidden" />
             </div>
             <div class="form-group">
                 <input asp-for="Equipamento.EquipamentoID" class="form-control" type="hidden" />
@@ -76,7 +77,7 @@
 
     <div class="form-group">
         <input type="submit" value="Salvar" id="botao" class="btn btn-primary" onclick="valida_form()}" />
-        @Html.ActionLink("Cancelar", "Details", "Endereco", new { id = Model.Equipamento.Endereco.EnderecoID},new { @class = "btn btn-danger"})
+        <input type="button" value="Voltar" onclick="btnVoltar()" class="btn btn-primary" />
     </div>
 </form>
 
@@ -84,6 +85,7 @@
 @section Scripts {
 
     <script src="~/js/valida-ordem-servico.js"></script>
+    <script src="~/js/btn-voltar.js"></script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

@@ -1,0 +1,163 @@
+﻿@model ClickServ2022.Models.Cliente //Contrato
+
+@{
+
+    ViewData["Title"] = "Details";
+}
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="~/css/nav-dados-cliente.css" />
+
+<div class="container p-3 my-3 border">
+    <div>
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="ClienteID" class="form-control" type="hidden" />
+
+            <div class="form-row">
+                <div class="form-group col-md-4">
+                    <input asp-for="Nome" class="form-control" id="nome" required placeholder="Nome" />
+                    <span asp-validation-for="Nome" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-2">
+                    <input maxlength="14" asp-for="CPF" class="form-control" id="cpf" placeholder="CPF/CNPJ" />
+                    <span asp-validation-for="CPF" class="text-danger"></span>
+                </div>
+                <div class="col">
+                    <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
+                    <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
+                    @Html.ActionLink("Voltar", "Index", null,null, new { @class = "btn btn-primary"})
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<br />
+<div class="nav nav-pills mb-3">
+    <div class="nav-item">
+        <button class="nav-link" onclick="openDados(event, 'Contato')">CONTATO</button>
+    </div>
+    <div class="nav-item">
+        <button class="nav-link" onclick="openDados(event, 'Endereco')">ENDEREÇO</button>
+    </div>
+    <div class="nav-item">
+        <button class="nav-link" onclick="openDados(event, 'Sistema')" id="defaultOpen">SISTEMAS</button>
+    </div>
+</div>
+
+<div id="Contato" class="tab-content">
+    <br />
+    <div>
+        @Html.ActionLink("Novo Contato", "Create","ContatoAuxiliar", new { id = Model.ClienteID },new { @class = "btn btn-secondary"})
+    </div>
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.ContatosAuxiliar)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Atribuicao)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Celular)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Telefone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        <button class="btn btn-warning edit" data-id="@item.ContatoID"><i class="glyphicon glyphicon-edit"></i>Editar</button>
+                        <button class="btn btn-danger delete" data-id="@item.ContatoID"><i class="glyphicon glyphicon-trash"></i>Deletar</button>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+</div>
+
+
+<div id="Endereco" class="tab-content">
+    <br />
+
+    <form asp-action="Edit" , asp-controller="Endereco">
+
+        <input asp-for="Endereco.EnderecoID" type="hidden" />
+        <input asp-for="Endereco.Cliente.ClienteID" type="hidden" />
+        <input name="redirecionar" value="sistema" type="hidden" />
+
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <input asp-for="Endereco.Logradouro" id="logradouro" class="form-control" placeholder="Logradouro" required />
+                <span asp-validation-for="Endereco.Logradouro" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <input asp-for="Endereco.Bairro" type="text" id="bairro" class="form-control" placeholder="Bairro" />
+                <span asp-validation-for="Endereco.Bairro" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-3">
+                <input asp-for="Endereco.Cidade" id="cidade" class="form-control" placeholder="Cidade" />
+                <span asp-validation-for="Endereco.Cidade" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-1">
+                <input asp-for="Endereco.Uf" id="uf" class="form-control" placeholder="UF" />
+                <span asp-validation-for="Endereco.Uf" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <input asp-for="Endereco.Complemento" class="form-control" id="complemento" placeholder="Complemento" />
+                <span asp-validation-for="Endereco.Complemento" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <input asp-for="Endereco.Observacao" class="form-control" id="observacao" placeholder="Observação" />
+                <span asp-validation-for="Endereco.Observacao" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="button" value="Editar" class="btn btn-warning" onclick="habilitarContrato()" />
+            <input type="submit" value="Salvar" class="btn btn-success" id="btnSalvar" />
+        </div>
+    </form>
+</div>
+
+
+
+<div id="Sistema" class="tab-content">
+    <br />
+    <div>
+        @Html.ActionLink("Novo Sistema", "AddSistema","Sistema", new { id = Model.ClienteID }, new { @class = "btn btn-secondary "})
+    </div>
+    <table class="table">
+        <tbody>
+            @foreach (var item in Model.Sistemas)
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(item.NomeSistema, "Details", "Sistema",  new { id=item.SistemaID })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal" id="modal"></div>
+
+@section Scripts{
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="~/js/habilitar-botao-endereco-contrato.js"></script>
+    <script src="~/js/habilitar-botao-cliente.js"></script>
+    <script src="~/js/navbar-contrato.js"></script>
+    <script src="~/js/modal-contato-auxiliar.js"></script>
+    }
