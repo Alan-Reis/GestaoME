@@ -1,0 +1,46 @@
+﻿@model ClickServ2022.Models.Preventiva
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div>
+    <input asp-for="PreventivaID" class="form-control" type="hidden" />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ano)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ano)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Data)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Data)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Tecnico)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Tecnico)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Relatorio)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Relatorio)
+        </dd>
+    </dl>
+</div>
+<div>
+    @Html.ActionLink("Deletar", "Delete", new { id = Model.PreventivaID }, new { @class="btn btn-danger"})
+    @Html.ActionLink("Editar", "Edit", new { id = Model.PreventivaID }, new { @class="btn btn-warning"})
+    @Html.ActionLink("Voltar", "Details", "Contrato", new { id = Model.Cliente.ClienteID }, new { @class="btn btn-primary"})
+</div>

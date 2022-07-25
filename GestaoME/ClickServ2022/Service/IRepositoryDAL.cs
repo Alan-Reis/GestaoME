@@ -83,5 +83,13 @@ namespace ClickServ2022.Service
         void AddSistema(Sistema sistema);
         void UpdateSistema(Sistema sistema);
         #endregion
+
+        #region Manutenção Preventiva
+        IEnumerable<Preventiva> GetPreventivas(int? id);
+        void AddPreventiva(Preventiva preventiva);
+        void UpdatePreventiva(Preventiva preventiva);
+        Preventiva GetPreventiva(int? id);
+        void DeletePreventiva(int? id);
+        #endregion
     }
 }

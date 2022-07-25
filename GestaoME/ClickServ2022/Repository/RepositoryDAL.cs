@@ -1081,6 +1081,129 @@ namespace ClickServ2022.Repository
         }
         #endregion
 
+        #region Manutenção Preventiva
+        public IEnumerable<Preventiva> GetPreventivas(int? id)
+        {
+            string connectionString = Conexao();
+
+            List<Preventiva> listPreventiva = new List<Preventiva>();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                SqlCommand cmd = new SqlCommand("SELECT * FROM tbl_Preventiva WHERE ClienteID = " + id, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    Preventiva preventiva = new Preventiva();
+                    Cliente cliente = new Cliente();
+
+                    cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
+                    preventiva.Cliente = cliente;
+
+                    preventiva.PreventivaID = Convert.ToInt32(reader["PreventivaID"]);
+                    preventiva.Mes = reader["Mes"].ToString();
+                    preventiva.Ano = reader["Ano"].ToString();
+                    preventiva.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    preventiva.Relatorio = reader["Relatorio"].ToString();
+                    preventiva.Tecnico = reader["Tecnico"].ToString();
+
+                    listPreventiva.Add(preventiva);
+                }
+                con.Close();
+            }
+
+            return listPreventiva;
+        }
+
+        public Preventiva GetPreventiva(int? id)
+        {
+            string connectionString = Conexao();
+            Preventiva preventiva = new Preventiva();
+            Cliente cliente = new Cliente();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM tbl_Preventiva WHERE PreventivaID = {id}";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
+                    preventiva.Cliente = cliente;
+
+                    preventiva.PreventivaID = Convert.ToInt32(reader["PreventivaID"]);
+                    preventiva.Mes = reader["Mes"].ToString();
+                    preventiva.Ano = reader["Ano"].ToString();
+                    preventiva.Data = Convert.ToDateTime(reader["Data"].ToString());
+                    preventiva.Relatorio = reader["Relatorio"].ToString();
+                    preventiva.Tecnico = reader["Tecnico"].ToString();
+                }
+                con.Close();
+            }
+            return preventiva;
+        }
+
+        public void UpdatePreventiva(Preventiva preventiva)
+        {
+            string connectionString = Conexao();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+
+                string comandoSQL = $"UPDATE tbl_Preventiva SET " +
+                                    $"Mes = '{preventiva.Mes}', " +
+                                    $"Ano = '{preventiva.Ano}', " +
+                                    $"Data = '{preventiva.Data}', " +
+                                    $"Relatorio = '{preventiva.Relatorio}', " +
+                                    $"Tecnico = '{preventiva.Tecnico}'" +
+                                    " WHERE PreventivaID = " + preventiva.PreventivaID;
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public void AddPreventiva(Preventiva preventiva)
+        {
+            string connectionString = Conexao();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"INSERT INTO tbl_Preventiva (ClienteID, Mes, Ano, Data, Relatorio, Tecnico) " +
+                                    $"Values({preventiva.Cliente.ClienteID}, " +
+                                    $"'{preventiva.Mes}', " +
+                                    $"'{preventiva.Ano}', " +
+                                    $"'{preventiva.Data}', " +
+                                    $"'{preventiva.Relatorio}'," +
+                                    $"'{preventiva.Tecnico}')";
+
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+
+        public void DeletePreventiva(int? id)
+        {
+            string connectionString = Conexao();
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string comandoSQL = $"DELETE FROM tbl_Preventiva WHERE PreventivaID = {id}";
+                SqlCommand cmd = new SqlCommand(comandoSQL, con);
+                cmd.CommandType = CommandType.Text;
+                con.Open();
+                cmd.ExecuteNonQuery();
+                con.Close();
+            }
+        }
+        #endregion
+
         #region Colaborador
         public IEnumerable<Colaborador> GetAllColaborador()
         {

@@ -1,0 +1,71 @@
+﻿@model ClickServ2022.Models.Preventiva
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
+            <input asp-for="PreventivaID" class="form-control" type="hidden" />
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Mes" class="control-label"></label>
+                    <select asp-for="Mes" class="form-control">
+                        <option>Janeiro</option>
+                        <option>Fevereiro</option>
+                        <option>Março</option>
+                        <option>Abril</option>
+                        <option>Maio</option>
+                        <option>Junho</option>
+                        <option>Julho</option>
+                        <option>Agosto</option>
+                        <option>Setembro</option>
+                        <option>Outrubro</option>
+                        <option>Novembro</option>
+                        <option>Dezembro</option>
+                    </select>
+                </div>
+                <div class="form-group col-md-2">
+                    <label asp-for="Ano" class="control-label"></label>
+                    <input asp-for="Ano" class="form-control" />
+                    <span asp-validation-for="Ano" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-4">
+                    <label asp-for="Data" class="control-label"></label>
+                    <input asp-for="Data" class="form-control" />
+                    <span asp-validation-for="Data" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label asp-for="Tecnico" class="control-label"></label>
+                    <select asp-for="Tecnico"
+                            asp-items="@ViewBag.Tecnico" class="form-control">
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Relatorio" class="control-label"></label>
+                <textarea asp-for="Relatorio" rows="6" class="form-control"></textarea>
+                <span asp-validation-for="Relatorio" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-success" />
+                <input type="button" value="Voltar" onclick="btnVoltar()" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+
+    <script src="~/js/btn-voltar.js"></script>
+
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

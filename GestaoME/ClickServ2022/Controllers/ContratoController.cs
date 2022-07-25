@@ -93,6 +93,7 @@ namespace ClickServ2022.Controllers
             cliente.Endereco = this.cliente.GetEndereco(id, sistema);
             cliente.Sistemas = this.cliente.GetSistemas(id);
             cliente.ContatosAuxiliar = this.cliente.GetContatosAuxiliar(id);
+            cliente.Preventivas = this.cliente.GetPreventivas(id);
 
             if (cliente == null)
             {

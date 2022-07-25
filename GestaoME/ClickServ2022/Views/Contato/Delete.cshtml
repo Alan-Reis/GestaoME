@@ -15,12 +15,14 @@
             @Html.AntiForgeryToken()
 
             <div class="modal-body">
-
-                <h3 style="color:red">Deseja excluir contato?</h3>
-
+                <div class="form-group">
+                    <h3 style="color:red">Deseja excluir contato?</h3>
+                </div>
                 <form asp-action="Delete">
-                    <input type="submit" value="Sim" class="btn btn-danger" />
-                    @Html.ActionLink("Não", "Details", "Cliente", new { id= Model.Cliente.ClienteID}, new  { @class = "btn btn-primary"})
+                    <div class="form-group">
+                        <input type="submit" value="Sim" class="btn btn-danger" />
+                        @Html.ActionLink("Não", "Details", "Cliente", new { id= Model.Cliente.ClienteID}, new  { @class = "btn btn-primary"})
+                    </div>
                 </form>
 
                 <div>

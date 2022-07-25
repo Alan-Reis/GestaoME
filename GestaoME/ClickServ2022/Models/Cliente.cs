@@ -13,12 +13,13 @@ namespace ClickServ2022.Models
         public Endereco Endereco { get; set; }
         public Equipamento Equipamento { get; set; }
         public Sistema Sistema { get; set; }
+        public Preventiva Preventiva { get; set; }
 
-        public IEnumerable<Sistema> Sistemas;
         public IEnumerable<Contato> Contatos;
         public IEnumerable<ContatoAuxiliar> ContatosAuxiliar;
         public IEnumerable<Endereco> Enderecos;
         public IEnumerable<Equipamento> Equipamentos;
-
+        public IEnumerable<Sistema> Sistemas;
+        public IEnumerable<Preventiva> Preventivas;
     }
 }

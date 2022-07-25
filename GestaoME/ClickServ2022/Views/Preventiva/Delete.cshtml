@@ -1,0 +1,32 @@
+﻿@model ClickServ2022.Models.Preventiva
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<div>
+    <dl class="row">
+        <input asp-for="Cliente.ClienteID" class="form-control" type="hidden" />
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Mes)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Mes)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Ano)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Ano)
+        </dd>
+    </dl>
+    <div class="form-group">
+        <h3 style="color:red">Deseja excluir a preventiva?</h3>
+    </div>
+    <form asp-action="Delete">
+        <div class="form-group">
+            <input type="submit" value="Sim" class="btn btn-danger" />
+            @Html.ActionLink("Não", "Details", "Preventiva", new { id = Model.PreventivaID }, new { @class="btn btn-primary"})
+        </div>
+    </form>
+</div>
