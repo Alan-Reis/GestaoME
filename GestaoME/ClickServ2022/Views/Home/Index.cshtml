@@ -10,9 +10,15 @@
 
 <div class="container">
     <div class="row">
+
+
         <div class="col-sm-auto">
-            <div class="text-center">
-                <h1 class="display-4">ClickServ2022</h1>
+            <div class="row">
+                <div class="text-center">
+                    <h1 class="display-4">ClickServ2022</h1>
+                </div>
+            </div>
+            <div class="row">
                 <h4>Atendimentos</h4>
                 <table class="table table-sm" id="todoTable">
                     @foreach (var item in Model)
@@ -35,6 +41,7 @@
                 </table>
             </div>
         </div>
+
         <div class="col-sm">
             <div class="calendarContainer">
                 <div id="calendar"></div>
@@ -45,9 +52,9 @@
 
 @section Scripts{
 
-<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.js"></script>
-<script src="~/js/pt-br.js"></script>
-<script src="~/js/fullcalendario.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.1.0/main.min.js"></script>
+    <script src="~/js/pt-br.js"></script>
+    <script src="~/js/fullcalendario.js"></script>
 
 }
 

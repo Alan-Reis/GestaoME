@@ -1,7 +1,6 @@
 ﻿using ClickServ2022.Models;
 using ClickServ2022.Service;
 using GemBox.Document;
-using GemBox.Document.Tables;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -117,23 +116,7 @@ namespace ClickServ2022.Controllers
             return View(preventiva);
         }
 
-        public IActionResult RelatorioPreventiva()
-        {
-            string coluna = null;
-            string nome = null;
-            string tipoCliente = "CC";
-
-            ViewBag.Mes = DateTime.Now.ToString("MMMM").ToUpper();
-            ViewBag.Ano = DateTime.Now.ToString("yyyy");
-
-            List<Cliente> listCliente = new List<Cliente>();
-            listCliente = this.preventiva.GetClientes(coluna, nome, tipoCliente).ToList();
-            
-
-            return View(listCliente);
-        }
-
-        public IActionResult GerarRelatorio()
+        public IActionResult GerarPreventivas()
         {
             string coluna = null;
             string nome = null;
@@ -162,22 +145,17 @@ namespace ClickServ2022.Controllers
 
                 string arquivo = "preventiva.docx";
                 Arquivo ArquivoCaminho = this.preventiva.GetCaminhoArquivo(arquivo);
-
                 ComponentInfo.SetLicense("FREE-LIMITED-KEY");
 
-                string caminho = ArquivoCaminho.Caminho.Replace("\"","");
-                
+                string caminho = ArquivoCaminho.Caminho.Replace("\"","");  
                 string procurar = caminho + arquivo;
 
-                var document = DocumentModel.Load(procurar);
-                
+                var document = DocumentModel.Load(procurar);              
                 document.MailMerge.Execute(data);
-
                 arquivo = contrato + ".pdf";
-
                 document.Save(caminho + arquivo);
             }
-            return RedirectToAction("RelatorioPreventiva");
+            return RedirectToAction("Index","Contrato");
         }    
 
         public IActionResult Delete(int? id)

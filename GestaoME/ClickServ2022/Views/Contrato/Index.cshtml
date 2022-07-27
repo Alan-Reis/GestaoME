@@ -5,53 +5,56 @@
 }
 
 <div class="container p-3 my-3 border">
-<div class="row m-1">
-    @Html.ActionLink("Novo Contrato", "Create",null,null,new { @class = "btn btn-secondary "})
-</div>
+    <div class="row m-1">
+        <div class="form-group">
+            @Html.ActionLink("Novo Contrato", "Create",null,null,new { @class = "btn btn-secondary "})
+            @Html.ActionLink("Gerar Preventivas", "GerarPreventivas","Preventiva", null, new {@class = "btn btn-success"})
+        </div>
+    </div>
 
-<br />
+    <br />
 
-<form asp-action="Index">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <table>
-        <tr>
-            <td>
-                <div class="form-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="validationTooltipUsernamePrepend">Pesquisar por</span>
+    <form asp-action="Index">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <table>
+            <tr>
+                <td>
+                    <div class="form-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="validationTooltipUsernamePrepend">Pesquisar por</span>
+                        </div>
                     </div>
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <select name="coluna" class="form-control">
-                        <option>Nome</option>
-                        <option>CPF/CNPJ</option>
-                        <option>Logradouro</option>
-                        <option>Condomínio</option>
-                    </select>
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <input name="nome" class="form-control" focus required />
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
-                    <input type="submit" value="Buscar" class="btn btn-primary" />
-                </div>
-            </td>
-        </tr>
-    </table>
-</form>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <select name="coluna" class="form-control">
+                            <option>Nome</option>
+                            <option>CPF/CNPJ</option>
+                            <option>Logradouro</option>
+                            <option>Condomínio</option>
+                        </select>
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input name="nome" class="form-control" focus required />
+                    </div>
+                </td>
+                <td>
+                    <div class="form-group">
+                        <input type="submit" value="Buscar" class="btn btn-primary" />
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </form>
 </div>
 
-  <div class="container mt-1">
-      <h4 class="bg-secondary text-white text-center">CONTRATOS</h4>
-  </div>
+<div class="container mt-1">
+    <h4 class="bg-secondary text-white text-center">CONTRATOS</h4>
+</div>
 
-    <table class="table table-hover">
+<table class="table table-hover">
     <tbody>
 
         <h5 style="color:red">@ViewBag.Erro</h5>
@@ -107,7 +110,7 @@
     }
     else
     {
-        @:Próxima 
+        @:Próxima
         @Html.Raw(" ")
         @:>>
     }
