@@ -1,11 +1,13 @@
 ﻿using ClickServ2022.Models;
 using ClickServ2022.Service;
+using GemBox.Document;
+using GemBox.Document.Tables;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using PagedList;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 
 namespace ClickServ2022.Controllers
 {
@@ -114,6 +116,70 @@ namespace ClickServ2022.Controllers
             }
             return View(preventiva);
         }
+
+        public IActionResult RelatorioPreventiva()
+        {
+            string coluna = null;
+            string nome = null;
+            string tipoCliente = "CC";
+
+            ViewBag.Mes = DateTime.Now.ToString("MMMM").ToUpper();
+            ViewBag.Ano = DateTime.Now.ToString("yyyy");
+
+            List<Cliente> listCliente = new List<Cliente>();
+            listCliente = this.preventiva.GetClientes(coluna, nome, tipoCliente).ToList();
+            
+
+            return View(listCliente);
+        }
+
+        public IActionResult GerarRelatorio()
+        {
+            string coluna = null;
+            string nome = null;
+            string tipoCliente = "CC";
+            List<Cliente> listCliente = new List<Cliente>();
+            listCliente = this.preventiva.GetClientes(coluna, nome, tipoCliente).ToList();
+                
+            foreach (var cliente in listCliente)
+            {
+               string contrato = cliente.Nome;
+               string cnpj = cliente.CPF;
+               string logradouro = cliente.Endereco.Logradouro;
+               string bairro = cliente.Endereco.Bairro;
+               string cidade = cliente.Endereco.Cidade;
+
+                var data = new
+                {
+                    mes = DateTime.Now.ToString("MMMM").ToUpper(),
+                    ano = DateTime.Now.ToString("yyyy"),
+                    nome = contrato,
+                    cnpj = cnpj,
+                    logradouro = logradouro,
+                    bairro = bairro,
+                    cidade = cidade
+                };
+
+                string arquivo = "preventiva.docx";
+                Arquivo ArquivoCaminho = this.preventiva.GetCaminhoArquivo(arquivo);
+
+                ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+
+                string caminho = ArquivoCaminho.Caminho.Replace("\"","");
+                
+                string procurar = caminho + arquivo;
+
+                var document = DocumentModel.Load(procurar);
+                
+                document.MailMerge.Execute(data);
+
+                arquivo = contrato + ".pdf";
+
+                document.Save(caminho + arquivo);
+            }
+            return RedirectToAction("RelatorioPreventiva");
+        }    
+
         public IActionResult Delete(int? id)
         {
             if (id == null)

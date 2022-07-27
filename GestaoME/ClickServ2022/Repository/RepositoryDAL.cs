@@ -156,9 +156,15 @@ namespace ClickServ2022.Repository
                     Cliente cliente = new Cliente();
                     Endereco endereco = new Endereco();
                     cliente.ClienteID = Convert.ToInt32(reader["ClienteID"]);
+                    cliente.CPF = reader["CPF"].ToString();
+
                     cliente.Nome = reader["Nome"].ToString();
                     endereco.Logradouro = reader["Logradouro"].ToString();
                     endereco.Complemento = reader["Complemento"].ToString();
+                    endereco.Bairro = reader["Bairro"].ToString();
+                    endereco.Cidade = reader["Cidade"].ToString();
+                    endereco.Uf = reader["Uf"].ToString();
+                    endereco.Observacao = reader["Observacao"].ToString();
 
                     cliente.Endereco = endereco;
 
@@ -1509,6 +1515,29 @@ namespace ClickServ2022.Repository
             return relatorioAtendimento;
         }
 
+        #endregion
+
+        #region Caminho Arquivo
+        public Arquivo GetCaminhoArquivo(string arquivo)
+        {
+            string connectionString = Conexao();
+            Arquivo nomeArquivo = new Arquivo();
+
+            using (SqlConnection con = new SqlConnection(connectionString))
+            {
+                string sqlQuery = $"SELECT * FROM tbl_CaminhoArquivo WHERE Arquivo = '{arquivo}'";
+                SqlCommand cmd = new SqlCommand(sqlQuery, con);
+                con.Open();
+                SqlDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    nomeArquivo.NomeArquivo = reader["Arquivo"].ToString();
+                    nomeArquivo.Caminho = reader["Caminho"].ToString();
+                }
+                con.Close();
+            }
+            return nomeArquivo;
+        }
         #endregion
     }
 }

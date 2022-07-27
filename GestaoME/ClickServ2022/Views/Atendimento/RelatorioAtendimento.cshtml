@@ -4,7 +4,6 @@
     ViewData["Title"] = "RelatorioAtendimento";
 }
 
-
 <link rel="stylesheet" href="~/css/select-row-color.css" />
 
 <form asp-action="RelatorioAtendimento">
@@ -25,8 +24,8 @@
     </div>
     <div class="row">
         <div class="col">
-            <button id="expPDF" onclick="exportarPDF();" class="btn btn-primary">PDF</button>
-            <button id="imprimir" onclick="imprimir();" class="btn btn-primary">Imprimir</button>
+            <button id="expPDF" class="btn btn-primary">PDF</button>
+            <button id="imprimir" class="btn btn-primary">Imprimir</button>
         </div>
     </div>
 </div>
@@ -68,7 +67,7 @@
                 <th>
                     Defeito
                 </th>
-                  <th>
+                <th>
                     Observação
                 </th>
                 <th>
@@ -115,13 +114,13 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Equipamento.Fabricante)
                         </td>
-                         <td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Equipamento.Modelo)
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Atendimento.Defeito)
                         </td>
-                         <td>
+                        <td>
                             @Html.DisplayFor(modelItem => item.Atendimento.Observacao)
                         </td>
                         <td>
@@ -144,10 +143,10 @@
     <!--PDF-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
 
-<script src="~/js/relatorio-atendimento-whatsapp.js"></script>
-<script src="~/js/relatorio-atendimento-imprimir.js"></script>
-<script src="~/js/bloquear-linha-tabela.js"></script>
-<script src="~/js/relatorio-atendimento-pdf.js"></script>
+    <script src="~/js/relatorio-atendimento-whatsapp.js"></script>
+    <script src="~/js/relatorio-atendimento-imprimir.js"></script>
+    <script src="~/js/bloquear-linha-tabela.js"></script>
+    <script src="~/js/relatorio-atendimento-pdf.js"></script>
 
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

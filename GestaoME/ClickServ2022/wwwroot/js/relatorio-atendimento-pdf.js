@@ -1,4 +1,4 @@
-﻿function exportarPDF() {
+﻿
     var tabela = document.getElementById("minhaTabela");
     var linhas = tabela.getElementsByTagName("tr");
 
@@ -40,7 +40,7 @@
 
             //Edição realizada por mim
             var enter = "\n";
-         
+
             //Contato
             var nome = 'Contato: ' + selecionado[0].innerHTML.trim();
             var celular = selecionado[1].innerHTML.trim();
@@ -82,8 +82,7 @@
         }
         var doc = new jsPDF();
         doc.setFontSize(12);
-        doc.text(dadosPDF,10, 10);
+        doc.text(dadosPDF, 10, 10);
         doc.save('Atendimentos.pdf');
     });
 
-}

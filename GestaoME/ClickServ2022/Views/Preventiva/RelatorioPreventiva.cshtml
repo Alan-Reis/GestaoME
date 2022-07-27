@@ -1,0 +1,85 @@
+﻿@model IEnumerable<ClickServ2022.Models.Cliente>
+@{
+
+    ViewData["Title"] = "Relatório Preventivas";
+}
+
+<link rel="stylesheet" href="~/css/select-row-color.css" />
+<link rel="stylesheet" href="~/css/img-logo-relatorio-preventiva.css" />
+
+<img src="~/imagens/logo-empresa.png" asp-append-version="true" id="logo"/>
+<br/>
+<div class="row">
+    <div class="col">
+        <button id="expPDF" class="btn btn-primary">Salvar em PDF</button>
+        @Html.ActionLink("Gerar Relatório", "GerarRelatorio","Preventiva", null, new {@class = "btn btn-primary"})
+    </div>
+</div>
+<table class="table table-hover" id="minhaTabela">
+    <thead>
+        <tr id="trBlock">
+            <th>
+                <p>Mês</p>
+            </th>
+            <th>
+                <p>Ano</p>
+            </th>
+            <th>
+                <p>Nome</p>
+            </th>
+            <th>
+                <p>CNPJ</p>
+            </th>
+            <th>
+                <p>Logradouro</p>
+            </th>
+            <th>
+                <p>Bairro</p>
+            </th>
+            <th>
+                <p>Cidade</p>
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @ViewBag.Mes
+                </td>
+                <td>
+                    @ViewBag.Ano
+                </td>
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CPF)
+                </td>
+                <td class="text-capitalize">
+                    @Html.DisplayFor(modelItem => item.Endereco.Logradouro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Endereco.Bairro)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Endereco.Cidade)
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <!--PDF-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.debug.js" integrity="sha384-THVO/sM0mFD9h7dfSndI6TS0PgAGavwKvB5hAxRRvc0o9cPLohB0wb/PTA7LdUHs" crossorigin="anonymous"></script>
+
+    <script src="~/js/relatorio-preventiva.js"></script>
+    <script src="~/js/bloquear-linha-tabela.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    }

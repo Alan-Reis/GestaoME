@@ -91,5 +91,9 @@ namespace ClickServ2022.Service
         Preventiva GetPreventiva(int? id);
         void DeletePreventiva(int? id);
         #endregion
+
+        #region Caminho Arquivo
+        Arquivo GetCaminhoArquivo(string arquivo);
+        #endregion
     }
 }

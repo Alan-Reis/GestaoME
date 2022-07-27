@@ -1,4 +1,4 @@
-﻿function imprimir() {
+﻿
     var tabela = document.getElementById("minhaTabela");
     var linhas = tabela.getElementsByTagName("tr");
 
@@ -86,4 +86,3 @@
         }
         document.write(dadosImpressao);
     });
-}
