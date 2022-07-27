@@ -43,12 +43,11 @@
         <div class="form-group">
             <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
             <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
-            <input type="button" value="Voltar" onclick="btnVoltar()" class="btn btn-primary" />
         </div>
     </div>
 </form>
 
-<br/>
+<br />
 
 
 <div>
@@ -63,10 +62,10 @@
                     @Html.ActionLink(item.Tipo, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
-                     @Html.ActionLink(item.Fabricante, "Details", "Equipamento",  new { id=item.EquipamentoID })
+                    @Html.ActionLink(item.Fabricante, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
-                     @Html.ActionLink(item.Modelo, "Details", "Equipamento",  new { id=item.EquipamentoID })
+                    @Html.ActionLink(item.Modelo, "Details", "Equipamento",  new { id=item.EquipamentoID })
                 </td>
                 <td>
                     @Html.ActionLink(item.NSerie, "Details", "Equipamento",  new { id=item.EquipamentoID })
@@ -81,5 +80,5 @@
 </table>
 
 <script src="~/js/habilitar-botao-endereco.js"></script>
- <script src="~/js/btn-voltar.js"></script>
+<script src="~/js/btn-voltar.js"></script>
 
