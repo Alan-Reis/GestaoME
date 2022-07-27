@@ -43,6 +43,7 @@
         <div class="form-group">
             <input type="button" value="Editar" class="btn btn-warning" onclick="habilitar()" />
             <input type="submit" value="Salvar" class="btn btn-success" id="salvar" />
+            @Html.ActionLink("Voltar", "Details","Cliente", new { id = Model.Cliente.ClienteID },new { @class = "btn btn-primary"})
         </div>
     </div>
 </form>
@@ -80,5 +81,5 @@
 </table>
 
 <script src="~/js/habilitar-botao-endereco.js"></script>
-<script src="~/js/btn-voltar.js"></script>
+
 
