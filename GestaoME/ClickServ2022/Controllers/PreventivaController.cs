@@ -35,7 +35,7 @@ namespace ClickServ2022.Controllers
             //Popular um SelectList para os técnico
             ViewBag.Tecnico = this.preventiva.GetAllColaborador().Select(c => new SelectListItem()
             { Text = c.Nome, Value = c.Nome }).ToList();
- 
+
             Cliente cliente = new Cliente();
             cliente.ClienteID = (int)id;
             preventiva.Cliente = cliente;
@@ -118,19 +118,20 @@ namespace ClickServ2022.Controllers
 
         public IActionResult GerarPreventivas()
         {
+            //Pega nome dos clientes para nomear o arquivo .docx
             string coluna = null;
             string nome = null;
             string tipoCliente = "CC";
             List<Cliente> listCliente = new List<Cliente>();
             listCliente = this.preventiva.GetClientes(coluna, nome, tipoCliente).ToList();
-                
+
             foreach (var cliente in listCliente)
             {
-               string contrato = cliente.Nome;
-               string cnpj = cliente.CPF;
-               string logradouro = cliente.Endereco.Logradouro;
-               string bairro = cliente.Endereco.Bairro;
-               string cidade = cliente.Endereco.Cidade;
+                string contrato = cliente.Nome;
+                string cnpj = cliente.CPF;
+                string logradouro = cliente.Endereco.Logradouro;
+                string bairro = cliente.Endereco.Bairro;
+                string cidade = cliente.Endereco.Cidade;
 
                 var data = new
                 {
@@ -143,20 +144,21 @@ namespace ClickServ2022.Controllers
                     cidade = cidade
                 };
 
+                //Busca nome e caminho do arquivo
                 string arquivo = "preventiva.docx";
                 Arquivo ArquivoCaminho = this.preventiva.GetCaminhoArquivo(arquivo);
-                ComponentInfo.SetLicense("FREE-LIMITED-KEY");
-
-                string caminho = ArquivoCaminho.Caminho.Replace("\"","");  
+                string caminho = ArquivoCaminho.Caminho.Replace("\"", "");
                 string procurar = caminho + arquivo;
 
-                var document = DocumentModel.Load(procurar);              
+                ComponentInfo.SetLicense("FREE-LIMITED-KEY");
+
+                var document = DocumentModel.Load(procurar);
                 document.MailMerge.Execute(data);
                 arquivo = contrato + ".pdf";
                 document.Save(caminho + arquivo);
             }
-            return RedirectToAction("Index","Contrato");
-        }    
+            return RedirectToAction("Index", "Contrato");
+        }
 
         public IActionResult Delete(int? id)
         {
