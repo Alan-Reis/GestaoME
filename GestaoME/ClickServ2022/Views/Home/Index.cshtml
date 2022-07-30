@@ -11,35 +11,30 @@
 <div class="container">
     <div class="row">
 
-
         <div class="col-sm-auto">
-            <div class="row">
-                <div class="text-center">
-                    <h1 class="display-4">ClickServ2022</h1>
-                </div>
+            <div class="text-center">
+                <h1 class="display-4">ClickServ</h1>
             </div>
-            <div class="row">
-                <h4>Atendimentos</h4>
-                <table class="table table-sm" id="todoTable">
-                    @foreach (var item in Model)
-                    {
-                        <tr>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Id)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Nome)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.Title)
-                            </td>
-                            <td>
-                                @Html.DisplayFor(modelItem => item.StartDate)
-                            </td>
-                        </tr>
-                    }
-                </table>
-            </div>
+            <h4>Atendimentos</h4>
+            <table class="table table-sm" id="todoTable">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Id)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.StartDate)
+                        </td>
+                    </tr>
+                }
+            </table>
         </div>
 
         <div class="col-sm">
@@ -47,6 +42,7 @@
                 <div id="calendar"></div>
             </div>
         </div>
+
     </div>
 </div>
 

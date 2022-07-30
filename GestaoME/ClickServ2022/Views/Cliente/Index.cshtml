@@ -5,110 +5,98 @@
 }
 
 <div class="container p-3 my-3 border">
-<div class="row m-1">
-    @Html.ActionLink("Novo Cliente", "Create",null,null,new { @class = "btn btn-primary"})
-</div>
+    <div class="row m-1">
+        @Html.ActionLink("Novo Cliente", "Create",null,null,new { @class = "btn btn-primary"})
+    </div>
 
-<br />
+    <br />
 
-<form asp-action="Index">
-    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <table>
-        <tr>
-            <td>
-                <div class="form-group">
-                      <div class="input-group-prepend">
-                        <span class="input-group-text" id="validationTooltipUsernamePrepend">Pesquisar por</span>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
+    <div class="row">
+        <form asp-action="Index">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="col">
+                <div class="input-group">
+                    <div class="input-group-text">Pesquisar por</div>
                     <select name="coluna" class="form-control">
                         <option>Nome</option>
                         <option>CPF/CNPJ</option>
                         <option>Logradouro</option>
                         <option>Condomínio</option>
                     </select>
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
                     <input name="nome" class="form-control" focus required />
-                </div>
-            </td>
-            <td>
-                <div class="form-group">
                     <input type="submit" value="Buscar" class="btn btn-primary" />
                 </div>
-            </td>
-        </tr>
-    </table>
-</form>
+            </div>
+        </form>
+    </div>
 </div>
 
-  <div class="container mt-1">
-      <h4 class="bg-primary text-white text-center">CLIENTES</h4>
-  </div>
+<div class="container p-3 my-3 border">
+    <h4 class="bg-primary text-white text-center">CLIENTES</h4>
 
-    <table class="table table-hover">
-    <tbody>
 
         <h5 style="color:red">@ViewBag.Erro</h5>
 
         @if (Model.Count == 0)
         {
-            @Html.ActionLink("SIM", "Create",null,null,new { @class = "btn btn-primary"})
-            @Html.ActionLink("NÃO", "Index",null,null,new { @class = "btn btn-danger"})
+            <div class="form-group">
+                @Html.ActionLink("SIM", "Create",null,null,new { @class = "btn btn-primary"})
+                @Html.ActionLink("NÃO", "Index",null,null,new { @class = "btn btn-danger"})
+            </div>
+
         }
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.ActionLink(item.Nome, "Details",  new { id=item.ClienteID})
-                </td>
-                <td>
-                    @Html.ActionLink(item.Endereco.Logradouro, "Details",  new { id=item.ClienteID})
-                </td>
-                <td>
-                    @Html.ActionLink(item.Endereco.Complemento, "Details",  new { id=item.ClienteID})
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
 
-<!--Código para gerar paginação-->
-<div>
-    Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
-    de @Model.PageCount
+        <table class="table table-hover">
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.ActionLink(item.Nome, "Details",  new { id=item.ClienteID})
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.Endereco.Logradouro, "Details",  new { id=item.ClienteID})
+                        </td>
+                        <td>
+                            @Html.ActionLink(item.Endereco.Complemento, "Details",  new { id=item.ClienteID})
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
 
-    @if (Model.HasPreviousPage)
-    {
-        @Html.ActionLink("Primeira", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
-        @Html.Raw(" ")
-        ;
-        @Html.ActionLink("Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
-    }
-    else
-    {
-        @:<<
-        @Html.Raw(" ")
-        ;
-        @: Anterior
-    }
+        <!--Código para gerar paginação-->
+        <div>
+            Página @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+            de @Model.PageCount
 
-    @if (Model.HasNextPage)
-    {
-        @Html.ActionLink("Próxima", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
-        @Html.Raw(" ")
-        ;
-        @Html.ActionLink("Última", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
-    }
-    else
-    {
-        @:Próxima 
-        @Html.Raw(" ")
-        @:>>
-    }
-</div>
+            @if (Model.HasPreviousPage)
+            {
+                @Html.ActionLink("Primeira", "Index", new { pagina = 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+                @Html.Raw(" ")
+                ;
+                @Html.ActionLink("Anterior", "Index", new { pagina = Model.PageNumber - 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+            }
+            else
+            {
+                @:<<
+                @Html.Raw(" ")
+                ;
+                @: Anterior
+            }
+
+            @if (Model.HasNextPage)
+            {
+                @Html.ActionLink("Próxima", "Index", new { pagina = Model.PageNumber + 1, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+                @Html.Raw(" ")
+                ;
+                @Html.ActionLink("Última", "Index", new { pagina = Model.PageCount, sortOrder = ViewBag.CurrentSort, currentFilter=ViewBag.CurrentFilter  })
+            }
+            else
+            {
+                @:Próxima
+                @Html.Raw(" ")
+                @:>>
+            }
+        </div>
+</div>      

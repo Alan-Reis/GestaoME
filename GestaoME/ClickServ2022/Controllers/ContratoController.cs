@@ -10,10 +10,10 @@ namespace ClickServ2022.Controllers
 {
     public class ContratoController : Controller
     {
-        private readonly IRepositoryDAL cliente;
-        public ContratoController(IRepositoryDAL _cliente)
+        private readonly IRepositoryDAL contrato;
+        public ContratoController(IRepositoryDAL _contrato)
         {
-            cliente = _cliente;
+            contrato = _contrato;
 
         }
 
@@ -33,7 +33,7 @@ namespace ClickServ2022.Controllers
                 string colunaNull = null;
                 //CA = Cliente Contrato
                 string tipoCliente = "CC";
-                listCliente = this.cliente.GetClientes(colunaNull, nomeNull, tipoCliente).ToList();
+                listCliente = this.contrato.GetClientes(colunaNull, nomeNull, tipoCliente).ToList();
 
                 return View(listCliente.ToPagedList(paginaNumero, paginaTamanho));
             }
@@ -55,7 +55,7 @@ namespace ClickServ2022.Controllers
             List<Cliente> listCliente = new List<Cliente>();
             //CC = Cliente Contrato
             string tipoCliente = "CC";
-            listCliente = cliente.GetClientes(coluna, nome, tipoCliente).ToList();
+            listCliente = contrato.GetClientes(coluna, nome, tipoCliente).ToList();
 
             //se não tiver o cliente, vai para adicionar            
             if (listCliente.Count == 0)
@@ -88,12 +88,12 @@ namespace ClickServ2022.Controllers
                 return NotFound();
             }
 
-            Cliente cliente = this.cliente.GetCliente(id);
+            Cliente cliente = this.contrato.GetCliente(id);
             string sistema = "sistema";
-            cliente.Endereco = this.cliente.GetEndereco(id, sistema);
-            cliente.Sistemas = this.cliente.GetSistemas(id);
-            cliente.ContatosAuxiliar = this.cliente.GetContatosAuxiliar(id);
-            cliente.Preventivas = this.cliente.GetPreventivas(id);
+            cliente.Endereco = this.contrato.GetEndereco(id, sistema);
+            cliente.Sistemas = this.contrato.GetSistemas(id);
+            cliente.ContatosAuxiliar = this.contrato.GetContatosAuxiliar(id);
+            cliente.Preventivas = this.contrato.GetPreventivas(id);
 
             if (cliente == null)
             {
@@ -127,11 +127,11 @@ namespace ClickServ2022.Controllers
             if (ModelState.IsValid)
             {
                 cliente.TipoCliente = "CC";
-                this.cliente.AddCliente(cliente);
+                this.contrato.AddCliente(cliente);
 
                 //Pega o último ClienteID inserido no banco de dados
-                cliente.ClienteID = Convert.ToInt32(this.cliente.GetClienteLast());
-                this.cliente.AddEndereco(cliente);
+                cliente.ClienteID = Convert.ToInt32(this.contrato.GetClienteLast());
+                this.contrato.AddEndereco(cliente);
                 return RedirectToAction("Index");
             }
 
@@ -145,7 +145,7 @@ namespace ClickServ2022.Controllers
 
             if (ModelState.IsValid)
             {
-                this.cliente.UpdateCliente(cliente);
+                this.contrato.UpdateCliente(cliente);
                 int id = cliente.ClienteID;
                 return RedirectToAction("Details", "Contrato", new { id });
             }
